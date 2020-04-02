@@ -14,13 +14,16 @@ public class Order {
 	private User user;
 	
 	@OneToOne(fetch = FetchType.LAZY)
+	private User deliveryUser;
+	
+	@OneToOne(fetch = FetchType.LAZY)
 	private Status myState;
 	
 	@OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
 	private Set<Status> status =new HashSet<Status>();
 	
 	@OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
-	private Set<Product> product =new HashSet<Product>();
+	private Set<Product> products =new HashSet<Product>();
 	
 	public Order() {
 	}
@@ -88,6 +91,14 @@ public class Order {
 		return myState;
 	}
 	
+	public User getDeliveryUser() {
+		return deliveryUser;
+	}
+
+	public void setDeliveryUser(User deliveryUser) {
+		this.deliveryUser = deliveryUser;
+	}
+	
 	
 	public Order(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
 		this.client = client;
@@ -118,6 +129,11 @@ public class Order {
 	public void addStatus(Status myState) {
 		this.status.add(myState);
 	}
+	
+	
+    public Set<Product> getProducts() {
+		return products;
+    }
 	
 	
 }
