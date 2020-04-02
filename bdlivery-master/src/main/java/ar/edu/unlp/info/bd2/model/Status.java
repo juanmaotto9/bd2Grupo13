@@ -9,7 +9,9 @@ public abstract class Status {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	protected Order myOrder;
-
+	
+	public Status() {
+	}
 	
 	@Id
 	protected Long id;

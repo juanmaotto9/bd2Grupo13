@@ -134,6 +134,46 @@ public class Order {
     public Set<Product> getProducts() {
 		return products;
     }
+    
+
+	public Boolean isSended() {
+		return myState.isSent();
+	}
+
+	public Boolean isFinish() {
+		return myState.isReceived();
+	}
+
+	public Boolean isCancel() {
+		return myState.isCanceled();
+	}
+
+	public Boolean isPending() {
+		return myState.isPending();
+	}
+	
+	public Order changeStateToSent() {
+		this.addStatus(getMyState());
+		this.myState = new Sent();
+		return this;
+	}
+
+	public Order changeStateToReceived() {
+		this.addStatus(getMyState());
+		this.myState = new Received();
+		return this;
+	}
+
+	public Order changeStateToCanceled() {
+		this.addStatus(getMyState());
+		this.myState = new Canceled();
+		return this;
+	}
+
+	public Order deliverOrder(User deliveryUser){
+		setDeliveryUser(deliveryUser);
+		return changeStateToSent();
+	}
 	
 	
 }
