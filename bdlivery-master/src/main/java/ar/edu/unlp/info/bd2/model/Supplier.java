@@ -5,7 +5,7 @@ import java.util.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Supplier")
+@Table(name = "supplier")
 public class Supplier {
 	
 	@OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)

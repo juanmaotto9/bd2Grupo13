@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Entity
-@Table(name = "Price")
+@Table(name = "price")
 public class Price {
 
 	@ManyToOne(fetch = FetchType.LAZY)

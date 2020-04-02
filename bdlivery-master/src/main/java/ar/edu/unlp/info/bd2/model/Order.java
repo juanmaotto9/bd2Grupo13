@@ -205,6 +205,7 @@ public class Order {
 	public Order deliverOrder(User deliveryUser, Date date) {
 		this.setDeliveryUser(deliveryUser);
 		this.changeStateToSent(date);
+		return this;
 	}
 	
 	

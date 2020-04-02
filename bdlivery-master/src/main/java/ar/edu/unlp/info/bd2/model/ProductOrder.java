@@ -17,8 +17,7 @@ public class ProductOrder {
 	@Column(name= "quantity")
 	private Long quantity;
 	
-
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(mappedBy="productOrder", fetch = FetchType.LAZY)
 	private Product product;
 
 	public ProductOrder() {}
