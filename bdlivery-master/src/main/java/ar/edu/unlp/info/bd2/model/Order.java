@@ -134,7 +134,7 @@ public class Order {
 	
 	
 	public void addProductOrder(Long quantity, Product product) {
-		ProductOrder productOrder = new ProductOrder(quantity, product);
+		ProductOrder productOrder = new ProductOrder(quantity, product, this);
 		this.products.add(productOrder);
 	}
 	

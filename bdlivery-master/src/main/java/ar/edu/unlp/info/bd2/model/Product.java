@@ -16,6 +16,10 @@ public class Product {
 	@OneToOne(fetch = FetchType.LAZY)
 	private ProductOrder productOrder;
 	
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	private Price priceNow;
+	
 	@OneToMany(mappedBy = "price", cascade = CascadeType.ALL)
 	private Set<Price> prices =new HashSet<Price>();
 	
@@ -96,14 +100,24 @@ public class Product {
 	
 	public void setPrices(Float price) {
 		Price newPrice = new Price(price);
+		this.priceNow = newPrice;
 		this.prices.add(newPrice);
 	}
-	/*  nono, no se como encararlo */
+	
+	public void setPrices(Float price, Date startDate) {
+		Price newPrice= new Price(price, startDate);
+		this.priceNow = newPrice;
+		this.prices.add(newPrice);
+	}
+	
+	/*  Solucionado y encaradisimo */
 	public Price updateProductPrice(Float newPrice, Date startDate) {
-		Price price= new Price(newPrice, startDate);
-		this.prices.add(price);
+		this.priceNow.setEndDate(startDate);
+		//Price price= new Price(newPrice, startDate);
+		//this.prices.add(price);
+		this.setPrices(newPrice, startDate);
 		this.setPrice(newPrice);
-		return price;
+		return priceNow;
 	}
 	
 	public Date getCreationDate() {

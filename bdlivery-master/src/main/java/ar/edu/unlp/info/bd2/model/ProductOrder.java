@@ -22,10 +22,11 @@ public class ProductOrder {
 
 	public ProductOrder() {}
 	
-	public ProductOrder(Long quantity, Product product) {
+	public ProductOrder(Long quantity, Product product, Order myOrden) {
 		super();
 		this.quantity = quantity;
 		this.product = product;
+		this.orden = myOrden;
 	}
 
 	public Long getQuantity() {
