@@ -1,7 +1,7 @@
 package ar.edu.unlp.info.bd2.model;
 
-public class State {
-
+public class Status {
+	
 	private Integer id;
 	
 	public Integer getId() {

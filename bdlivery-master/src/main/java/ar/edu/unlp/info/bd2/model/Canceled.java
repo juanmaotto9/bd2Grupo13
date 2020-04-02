@@ -1,5 +1,5 @@
 package ar.edu.unlp.info.bd2.model;
 
-public class Canceled extends State {
+public class Canceled extends Status {
 
 }
