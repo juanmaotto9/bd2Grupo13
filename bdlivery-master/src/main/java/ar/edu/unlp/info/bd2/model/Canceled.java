@@ -6,11 +6,11 @@ import javax.persistence.*;
 @DiscriminatorValue(value="canceled")
 public class Canceled extends Status {
 	
-	public Integer getId(){
+	public Long getId(){
         return id;
     }
 
-    public void setId(Integer id){
+    public void setId(Long id){
         this.id = id;
     }
 	

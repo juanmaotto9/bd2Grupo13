@@ -9,12 +9,13 @@ public abstract class Status {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	protected Order myOrder;
+
 	
 	@Id
-	public Integer id;
+	protected Long id;
 	
-    public abstract void setId(Integer id);
-    public abstract Integer getId();
+    public abstract void setId(Long id);
+    public abstract Long getId();
 	
     protected Boolean isSent(){
         return false;

@@ -7,23 +7,26 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-@Table(name="order")
+@Table(name="orden")
 public class Order {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 	
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
+	private Status myState;
+	
+	@OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
 	private Set<Status> status =new HashSet<Status>();
 	
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
 	private Set<Product> product =new HashSet<Product>();
 	
 	public Order() {
 	}
 	
 	@Id
-	private Integer id;
+	private Long id;
 	
 	@Column(name="dateOfOrder")
 	private Date dateOfOrder;
@@ -40,10 +43,10 @@ public class Order {
 	@Column(name="client")
 	private User client;
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public Date getDateOfOrder() {
@@ -77,6 +80,15 @@ public class Order {
 		this.client = client;
 	}
 	
+	public void setMyState(Status status) {
+		this.myState = status;
+	}
+	
+	public Status getMyState() {
+		return myState;
+	}
+	
+	
 	public Order(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
 		this.client = client;
 		this.address = address;
@@ -94,6 +106,17 @@ public class Order {
 		this.coordY = coordY;
 		this.status.add(new Pending());
 		return this;
+	}
+	
+
+	/* Nota: status es la coleccion de estados que tuve, y myState es el estado actual*/
+	
+	public Set<Status> getStatus() {
+		return status;
+	}
+
+	public void addStatus(Status myState) {
+		this.status.add(myState);
 	}
 	
 	
