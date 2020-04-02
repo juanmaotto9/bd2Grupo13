@@ -106,7 +106,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 			if (order == null) throw new Exception("Orden no encontrada");
 			if (!order.isPending() ) throw new Exception("La orden no se puede enviar");
 			if (!order.getProducts().isEmpty()) throw new Exception("La orden no puede ser enviada por falta de productos");			;
-			return this.repository.updateOrder(order.deliverOrder(deliveryUser));
+			return null;
 
 		} catch (Exception e) { return null; }
 	}

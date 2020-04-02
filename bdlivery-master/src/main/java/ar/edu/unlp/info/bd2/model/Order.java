@@ -41,8 +41,6 @@ public class Order {
 	@Column(name="coordY")
 	private Float coordY;
 	
-	@Column(name="client")
-	private User client;
 	
 	public Long getId() {
 		return id;
@@ -74,12 +72,6 @@ public class Order {
 	public void setCoordY(Float coordY) {
 		this.coordY = coordY;
 	}
-	public User getClient() {
-		return client;
-	}
-	public void setClient(User client) {
-		this.client = client;
-	}
 	
 	public void setMyState(Status status) {
 		this.myState = status;
@@ -87,6 +79,14 @@ public class Order {
 	
 	public Status getMyState() {
 		return myState;
+	}
+	
+	public User getClient() {
+		return user;
+	}
+
+	public void setClient(User client) {
+		this.user = client;
 	}
 	
 	public User getDeliveryUser() {
@@ -101,23 +101,23 @@ public class Order {
 	}
 	
 	public Order(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
-		this.client = client;
+		this.user = client;
 		this.address = address;
 		this.dateOfOrder = dateOfOrder;
 		this.coordX = coordX;
 		this.coordY = coordY;
 		this.status.add(new Pending());
 	}
-	/*
+	
 	public Order createOrder(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
-		this.client = client;
+		this.user = client;
 		this.address = address;
 		this.dateOfOrder = dateOfOrder;
 		this.coordX = coordX;
 		this.coordY = coordY;
 		this.status.add(new Pending());
 		return this;
-	}	*/
+	}	
 	
 
 	/* Nota: status es la coleccion de estados que tuve, y myState es el estado actual*/

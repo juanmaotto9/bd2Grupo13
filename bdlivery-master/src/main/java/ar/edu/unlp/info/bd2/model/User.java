@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class User {
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Set<Order> orders =new HashSet<Order>();
+	private Set<Order> ordens =new HashSet<Order>();
 
     public User() {
     };
@@ -90,11 +90,11 @@ public class User {
     }
 	
     public Set<Order> getOrders() {
-        return orders;
+        return ordens;
     }
 
     public void setOrders(Order order) {
-        this.orders.add(order);
+        this.ordens.add(order);
     }
 
     public void addOrder(Order order) {

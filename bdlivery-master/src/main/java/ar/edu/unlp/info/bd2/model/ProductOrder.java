@@ -12,13 +12,13 @@ public class ProductOrder {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Order order;
+	private Order orden;
 	
 	@Column(name= "quantity")
 	private Long quantity;
 	
 
-	@OneToOne(mappedBy = "productOrder")
+	@OneToOne(fetch = FetchType.LAZY)
 	private Product product;
 
 	public ProductOrder() {}

@@ -28,8 +28,14 @@ import java.util.Optional;
 public class DBliveryServiceTestCase {
 
     @Autowired
-    DBliveryService service;
+    DBliveryServiceImpl service;
 
+    @Test
+    public void mytest() {
+    	int hola = 1;
+    	assertEquals(1,hola);
+    }
+    
     @Test
     public void testCreateProduct() {
         Supplier s1 = this.service.createSupplier("Burger King", "30710256443", "Av. Corrientes 956", Float.valueOf(-53.45F), Float.valueOf(-60.22F));
@@ -214,4 +220,5 @@ public class DBliveryServiceTestCase {
     	assertEquals(this.service.getProductByName("triple").size(),1);
     	
     }
+    
 }

@@ -8,7 +8,7 @@ import javax.persistence.*;
 public abstract class Status {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	protected Order myOrder;
+	protected Order orden;
 	
 	public Status() {
 	}

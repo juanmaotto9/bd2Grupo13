@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.Date;
 
 @Entity
-@Table(name = "Product")
+@Table(name = "product")
 public class Product {
 
 	@ManyToOne(fetch = FetchType.LAZY)
