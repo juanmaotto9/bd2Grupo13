@@ -1,8 +1,7 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.HashSet;
-import java.util.Set;
-
+import java.util.*;
 import javax.persistence.*;
 
 @Entity
@@ -10,9 +9,10 @@ import javax.persistence.*;
 public class Supplier {
 	
 	@OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
-	private Set<Product> product =new HashSet<Product>();
+	private Set<Product> products =new HashSet<Product>();
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name = "name")
@@ -87,6 +87,40 @@ public class Supplier {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Product product) {
+		this.products.add(product);
+	}
+	
+	public Product getProductById(Long id) {
+		Product productById = new Product();
+		Iterator productIterator = this.products.iterator();
+		while (productIterator.hasNext()){
+			Product aProduct = (Product) productIterator.next();
+			if (aProduct.getId() == id){
+				productById = aProduct;
+			}
+		}
+		return productById;
+	}
+	
+	public Product createProduct(String name, Float weight, Float price) {
+		Product productNew = new Product(name, price, weight, this);
+		this.setProducts(productNew);
+		return productNew;
+	}
+
+	public Product updateProductPrice(Long id, Float price, Date startDate){
+		Product aProduct = this.getProductById(id);
+		if (aProduct.getId() == id ) {
+			aProduct.updateProductPrice(price, startDate);
+		}
+		return aProduct;
 	}
 	
 	

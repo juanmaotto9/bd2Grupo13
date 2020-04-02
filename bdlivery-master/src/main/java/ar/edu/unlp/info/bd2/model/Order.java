@@ -26,6 +26,7 @@ public class Order {
 	private Set<ProductOrder> products =new HashSet<ProductOrder>();
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name="dateOfOrder")

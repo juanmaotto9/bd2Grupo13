@@ -14,6 +14,7 @@ public abstract class Status {
 	}
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 	
 	@Column(name="status")

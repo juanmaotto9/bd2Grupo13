@@ -20,6 +20,7 @@ public class Product {
 	private Set<Price> prices =new HashSet<Price>();
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name = "name")
