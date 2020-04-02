@@ -1,12 +1,23 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="order")
 public class Order {
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private User user;
+	
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	private Set<Status> status =new HashSet<Status>();
+	
+	public Order() {
+	}
 	
 	@Id
 	private Integer id;
@@ -61,6 +72,25 @@ public class Order {
 	}
 	public void setClient(User client) {
 		this.client = client;
+	}
+	
+	public Order(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
+		this.client = client;
+		this.address = address;
+		this.dateOfOrder = dateOfOrder;
+		this.coordX = coordX;
+		this.coordY = coordY;
+		this.status.add(new Pending());
+	}
+	
+	public Order createOrder(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
+		this.client = client;
+		this.address = address;
+		this.dateOfOrder = dateOfOrder;
+		this.coordX = coordX;
+		this.coordY = coordY;
+		this.status.add(new Pending());
+		return this;
 	}
 	
 	

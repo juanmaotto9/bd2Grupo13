@@ -1,11 +1,19 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*; 
 
 @Entity
 @Table(name="user")
 public class User {
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Order> orders =new HashSet<Order>();
+
+    public User() {
+    };
 	
 	@Id
 	private Integer id;
@@ -62,6 +70,40 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
+	public User(String username, String name, String email, String password, Date dateOfBirth) {
+        this.setUsername(username);
+        this.setName(name);
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setDateOfBirth(dateOfBirth);
+    };
 	
+	public User createUser(String username, String name, String email, String password, Date dateOfBirth) {
+        this.setUsername(username);
+        this.setName(name);
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setDateOfBirth(dateOfBirth);
+        return this;
+
+    }
+	
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Order order) {
+        this.orders.add(order);
+    }
+
+    public void addOrder(Order order) {
+        setOrders(order);
+    }
+
+    public Order createOrder(Date dateOfOrder, String address, Float coordX,  Float coordY) {
+        Order newOrder = new Order(dateOfOrder, address, coordX,  coordY, this);
+        addOrder(newOrder);
+        return newOrder;
+    }
 	
 }

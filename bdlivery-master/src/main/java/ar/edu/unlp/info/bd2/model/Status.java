@@ -5,20 +5,31 @@ import javax.persistence.*;
 @Entity
 @DiscriminatorColumn(name="type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Status {
+public abstract class Status {
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	protected Order myOrder;
 	
 	@Id
-	private Integer id;
+	public Integer id;
 	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public abstract void setId(Integer id);
+    public abstract Integer getId();
 	
-	public String myClass() {
-		return this.getClass().toString();
-	}
+    protected Boolean isSent(){
+        return false;
+    }
+
+    protected Boolean isPending(){
+        return false;
+    }
+
+    protected Boolean isCanceled(){
+        return false;
+    }
+
+    protected Boolean isReceived(){
+        return false;
+    }
 
 }
