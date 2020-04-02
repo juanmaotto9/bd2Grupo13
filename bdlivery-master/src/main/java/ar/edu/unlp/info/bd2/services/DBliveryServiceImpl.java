@@ -92,23 +92,22 @@ public class DBliveryServiceImpl implements DBliveryService {
 		try {
 			Order order = this.repository.findOrderById(id);
 			if (order == null) throw new Exception("Orden no encontrada");
-			if (!order.getProducts().isEmpty()) throw new Exception("La orden no puede ser enviada por falta de productos");
+			if (order.getProducts().isEmpty()) throw new Exception("La orden no puede ser enviada por falta de productos");
 			return order.isPending();
 		} catch (Exception e) {
 			return false;
 		}
 	}
 	
-	//acá cambie en el segundo if por isPending(). 
+	//@Override
 	public Order deliverOrder(Long id, User deliveryUser) throws DBliveryException {
-		try {
+		if(this.canDeliver(id)) {
 			Order order = this.repository.findOrderById(id);
-			if (order == null) throw new Exception("Orden no encontrada");
-			if (!order.isPending() ) throw new Exception("La orden no se puede enviar");
-			if (!order.getProducts().isEmpty()) throw new Exception("La orden no puede ser enviada por falta de productos");			;
-			return null;
-
-		} catch (Exception e) { return null; }
+			return this.repository.updateOrder(order.deliverOrder(deliveryUser));
+		}
+		else {			 
+			throw new DBliveryException("DBliveryException");		        
+		}	
 	}
 
 	//acá cambie en el return por isPending(). 
@@ -124,14 +123,14 @@ public class DBliveryServiceImpl implements DBliveryService {
 	
 	
 	//acá cambie en el segundo if por isPending().
-	public Order cancelOrder(Long order) throws DBliveryException {
-		try {
-			Order anOrder = repository.findOrderById(order);
-			if (anOrder == null) throw new Exception("Orden no encontrada");
-			if (!anOrder.isPending()) throw new Exception("La orden no puede ser cancelada");
-			anOrder.changeStateToCanceled();
-			return this.repository.updateOrder(anOrder);
-		} catch (Exception e) { return null; }
+	public Order cancelOrder(Long id) throws DBliveryException {
+		if(this.canCancel(id)) {
+			Order order = this.repository.findOrderById(id);
+			return this.repository.updateOrder(order.changeStateToCanceled());
+		}
+		else {			 
+			throw new DBliveryException("null");		        
+		}
 	}
 	
 	public Status getActualStatus(Long id) {
@@ -144,13 +143,12 @@ public class DBliveryServiceImpl implements DBliveryService {
 	}
 	
 	public Order finishOrder(Long id) throws DBliveryException {
-		try {
+		if(this.canFinish(id)) {
 			Order order = this.repository.findOrderById(id);
-			if (order == null) throw new Exception("Orden no encontrada");
-			if (!order.isCancel()) throw new Exception("La orden no puede finalizarse");
 			return this.repository.updateOrder(order.changeStateToReceived());
-		} catch (Exception e) {
-			return null;
+		}
+		else {			 
+			throw new DBliveryException("DBliveryException");		        
 		}
 	}
 	
@@ -159,7 +157,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		try {
 			Order order = this.repository.findOrderById(id);
 			if (order == null) throw new Exception("Order not found");
-			return !order.isCancel();
+			return !order.isSended();
 		} catch (Exception e) {
 			return false;
 		}

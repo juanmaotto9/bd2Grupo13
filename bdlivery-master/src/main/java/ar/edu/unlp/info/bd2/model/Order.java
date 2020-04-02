@@ -106,7 +106,8 @@ public class Order {
 		this.dateOfOrder = dateOfOrder;
 		this.coordX = coordX;
 		this.coordY = coordY;
-		this.status.add(new Pending());
+		this.myState = new Pending();
+		this.status.add(this.myState);
 	}
 	
 	public Order createOrder(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
@@ -115,7 +116,8 @@ public class Order {
 		this.dateOfOrder = dateOfOrder;
 		this.coordX = coordX;
 		this.coordY = coordY;
-		this.status.add(new Pending());
+		this.myState = new Pending();
+		this.status.add(this.myState);
 		return this;
 	}	
 	
@@ -157,20 +159,20 @@ public class Order {
 	}
 	
 	public Order changeStateToSent() {
-		this.addStatus(getMyState());
 		this.myState = new Sent();
+		this.addStatus(getMyState());
 		return this;
 	}
 
 	public Order changeStateToReceived() {
-		this.addStatus(getMyState());
 		this.myState = new Received();
+		this.addStatus(getMyState());
 		return this;
 	}
 
 	public Order changeStateToCanceled() {
-		this.addStatus(getMyState());
 		this.myState = new Canceled();
+		this.addStatus(getMyState());
 		return this;
 	}
 

@@ -21,4 +21,9 @@ public class Canceled extends Status {
 	public void setStatus() {
 		this.status = "Cancelled";
 	}
+	
+	@Override
+	public String getStatus() {
+		return this.status;
+	}
 }
