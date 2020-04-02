@@ -1,5 +1,7 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 @Entity
@@ -21,4 +23,12 @@ public class Pending extends Status {
 	public void setStatus() {
 		this.status = "Pending";
 	}
+	
+	public Date getStartDate() {
+		return this.startDate;
+	}
+	
+    public void setStartDate(Date startDate) {
+    	this.startDate = startDate;
+    }
 }

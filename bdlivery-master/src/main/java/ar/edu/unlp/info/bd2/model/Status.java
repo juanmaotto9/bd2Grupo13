@@ -1,6 +1,7 @@
 package ar.edu.unlp.info.bd2.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @DiscriminatorColumn(name="type")
@@ -12,6 +13,9 @@ public abstract class Status {
 	
 	public Status() {
 		this.setStatus();
+		
+		//para mi se crea con el dia de hoy a la hora que se creo, pero consultar
+		this.startDate = new Date();
 	}
 	
 	@Id
@@ -20,6 +24,9 @@ public abstract class Status {
 	
 	@Column(name="status")
 	protected String status;
+	
+	@Column(name="start_date")
+	protected Date startDate;
 	
     public abstract void setId(Long id);
     public abstract Long getId();  
@@ -44,5 +51,11 @@ public abstract class Status {
     	return this.status;
     }
     abstract public void setStatus();
+    
+    public Date getStartDate() {
+    	return this.startDate;
+    }
+    
+    abstract public void setStartDate(Date startDate);    
     
 }

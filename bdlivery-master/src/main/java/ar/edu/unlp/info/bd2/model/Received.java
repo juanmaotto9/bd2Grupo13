@@ -1,5 +1,7 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 @Entity
@@ -21,5 +23,13 @@ public class Received extends Status {
 	public void setStatus() {
 		this.status = "Delivered";
 	}
+	
+	public Date getStartDate() {
+		return this.startDate;
+	}
+	
+    public void setStartDate(Date startDate) {
+    	this.startDate = startDate;
+    }
 
 }

@@ -32,7 +32,9 @@ public class Product {
 	@Column(name = "weight")
 	private Float weight;
 	
-		//preguntar sobre el id, se debe generar automaticamente. "@GenerateValue"
+	@Column(name= "creation_date")
+	private Date creationDate;
+	
 	public Product() { super(); }
 	
 	public Product(String name, Float price, Float weight, Supplier supplier) {
@@ -42,6 +44,11 @@ public class Product {
 		this.setWeight(weight);
 		this.setSupplier(supplier);
 		this.setPrices(price);
+		
+		// puede variar, por ahora creo que no es necesario pasarle el dia.
+		//siempre va a ser la fecha de creacion, asi que hasta que sea necesario...
+		//... si es que lo es, queda asi.
+		this.creationDate = new Date();
 	}
 
 	public Long getId() {
@@ -93,6 +100,14 @@ public class Product {
 		this.setPrice(newPrice);
 		return price;
 	}
+	
+	public Date getCreationDate() {
+		return this.creationDate;
+	}
+	
+    public void setcreationDate(Date creationDate) {
+    	this.creationDate = creationDate;
+    }
 
 	
 	

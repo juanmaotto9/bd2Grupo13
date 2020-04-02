@@ -1,5 +1,7 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,4 +28,12 @@ public class Canceled extends Status {
 	public String getStatus() {
 		return this.status;
 	}
+	
+	public Date getStartDate() {
+		return this.startDate;
+	}
+	
+    public void setStartDate(Date startDate) {
+    	this.startDate = startDate;
+    }
 }
