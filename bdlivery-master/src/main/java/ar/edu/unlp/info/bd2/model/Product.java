@@ -1,26 +1,39 @@
 package ar.edu.unlp.info.bd2.model;
 
 import javax.persistence.*;
+import java.util.List;
 
+@Entity
+@Table(name = "Product")
 public class Product {
 	
 	@Id
-	private Integer id;
+	private Long id;
+	
+	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "price")
 	private Float price;
+	
+	@Column(name = "weight")
 	private Float weight;
+	
+	@Column(name = "supplier")
 	private Supplier supplier;
 	
-/*  testCreateProduct() X --> getPrices() 
- * del producto se debe guardar el historial de precios ¿?  
- * updateProductPrice(producto.getId(),Float.valueOf(3000.0F),startDate); 
- */
-	public Integer getId() {
+	@Column(name = "prices")
+	private List <Price> prices;
+	
+	
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	
+	public void setId(Long id) {
 		this.id = id;
 	}
+	
 	public String getName() {
 		return name;
 	}
@@ -45,6 +58,16 @@ public class Product {
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
 	}
+	// getPrices()
+	
+	public List<Price> getPrices(){
+		return prices;
+	}
+	/*
+	public void addPrice(Price newPrice) {
+		prices.add(newPrice);
+	}*/
+
 	
 	
 }

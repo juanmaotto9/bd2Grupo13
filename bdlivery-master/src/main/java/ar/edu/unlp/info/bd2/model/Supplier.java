@@ -2,14 +2,26 @@ package ar.edu.unlp.info.bd2.model;
 
 import javax.persistence.*;
 
+@Entity
+@Table(name = "Supplier")
 public class Supplier {
 	
 	@Id
-	private Integer id;
+	private Long id;
+	
+	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "cuil")
 	private String cuil;
+	
+	@Column(name = "address")
 	private String address;
+	
+	@Column(name = "coord_x")
 	private Float coordX;
+	
+	@Column(name = "coord_y")
 	private Float coordY;
 	
 /*   constructor de la clase   ¿? lo generé automaticamente  */
@@ -62,11 +74,11 @@ public class Supplier {
 		this.coordY = coordY;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
