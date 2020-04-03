@@ -1,5 +1,9 @@
 package ar.edu.unlp.info.bd2.model;
 
-public class Sent extends State {
+import javax.persistence.*;
+
+@Entity
+@DiscriminatorValue(value="sent")
+public class Sent extends Status {
 
 }
