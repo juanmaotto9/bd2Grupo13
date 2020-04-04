@@ -7,6 +7,9 @@ import java.util.Date;
 @Entity
 @Table(name = "Price")
 public class Price {
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Product product;
 	
 	@Id
 	private Long id;
@@ -38,14 +41,13 @@ public class Price {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	
-	public Price(Float price) {
+	public Price(Float price, Date startDate) {
 		super();
 		this.price = price;
-    	Calendar cal = Calendar.getInstance();
-    	Date dob = cal.getTime();
-		this.startDate = dob;
+		this.startDate = startDate;
 	}
+	
+	
 	
 	
 	

@@ -1,10 +1,16 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Supplier")
 public class Supplier {
+	
+	@OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+	private Set<Product> product =new HashSet<Product>();
 	
 	@Id
 	private Long id;
@@ -24,7 +30,8 @@ public class Supplier {
 	@Column(name = "coord_y")
 	private Float coordY;
 	
-/*   constructor de la clase   ¿? lo generé automaticamente  */
+	public Supplier() { super(); }
+	
 	public Supplier(String name, String cuil, String address, Float coordX, Float coordY) {
 		super();
 		this.name = name;

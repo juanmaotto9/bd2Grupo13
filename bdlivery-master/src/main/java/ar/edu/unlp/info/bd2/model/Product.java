@@ -1,11 +1,22 @@
 package ar.edu.unlp.info.bd2.model;
 
 import javax.persistence.*;
-import java.util.List;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Product")
 public class Product {
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Supplier supplier;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Order order;
+	
+	@OneToMany(mappedBy = "price", cascade = CascadeType.ALL)
+	private Set<Price> prices =new HashSet<Price>();
 	
 	@Id
 	private Long id;
@@ -19,13 +30,17 @@ public class Product {
 	@Column(name = "weight")
 	private Float weight;
 	
-	@Column(name = "supplier")
-	private Supplier supplier;
+		//preguntar sobre el id, se debe generar automaticamente. "@GenerateValue"
+	public Product() { super(); }
 	
-	@Column(name = "prices")
-	private List <Price> prices;
-	
-	
+	public Product(String name, Float price, Float weight, Supplier supplier) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.weight = weight;
+		this.supplier = supplier;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -60,7 +75,7 @@ public class Product {
 	}
 	// getPrices()
 	
-	public List<Price> getPrices(){
+	public Set<Price> getPrices(){
 		return prices;
 	}
 	/*

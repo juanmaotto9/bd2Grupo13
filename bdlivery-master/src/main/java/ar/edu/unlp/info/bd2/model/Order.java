@@ -16,6 +16,9 @@ public class Order {
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private Set<Status> status =new HashSet<Status>();
 	
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	private Set<Product> product =new HashSet<Product>();
+	
 	public Order() {
 	}
 	
