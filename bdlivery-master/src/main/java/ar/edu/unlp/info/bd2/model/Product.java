@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Date;
 
 @Entity
 @Table(name = "Product")
@@ -25,7 +26,7 @@ public class Product {
 	private String name;
 	
 	@Column(name = "price")
-	private Float price;
+	private Float actualPrice;
 	
 	@Column(name = "weight")
 	private Float weight;
@@ -36,7 +37,7 @@ public class Product {
 	public Product(String name, Float price, Float weight, Supplier supplier) {
 		super();
 		this.name = name;
-		this.price = price;
+		this.actualPrice = price;
 		this.weight = weight;
 		this.supplier = supplier;
 	}
@@ -56,10 +57,10 @@ public class Product {
 		this.name = name;
 	}
 	public Float getPrice() {
-		return price;
+		return actualPrice;
 	}
 	public void setPrice(Float price) {
-		this.price = price;
+		this.actualPrice = price;
 	}
 	public Float getWeight() {
 		return weight;
@@ -78,10 +79,13 @@ public class Product {
 	public Set<Price> getPrices(){
 		return prices;
 	}
-	/*
-	public void addPrice(Price newPrice) {
-		prices.add(newPrice);
-	}*/
+	/*  nono, no se como encararlo */
+	public Price updateProductPrice(Float newPrice, Date startDate) {
+		Price price= new Price(newPrice, startDate);
+		prices.add(price);
+		this.setPrice(newPrice);
+		return price;
+	}
 
 	
 	
