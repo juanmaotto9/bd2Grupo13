@@ -13,10 +13,9 @@ public class Product {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Supplier supplier;
 	
-	/*
-	 * @ManyToOne(fetch = FetchType.LAZY)
-	private Order order;
-	*/
+	@OneToOne(fetch = FetchType.LAZY)
+	private ProductOrder productOrder;
+	
 	@OneToMany(mappedBy = "price", cascade = CascadeType.ALL)
 	private Set<Price> prices =new HashSet<Price>();
 	
@@ -37,10 +36,11 @@ public class Product {
 	
 	public Product(String name, Float price, Float weight, Supplier supplier) {
 		super();
-		this.name = name;
-		this.actualPrice = price;
-		this.weight = weight;
-		this.supplier = supplier;
+		this.setName(name);
+		this.setPrice(price);
+		this.setWeight(weight);
+		this.setSupplier(supplier);
+		this.setPrices(price);
 	}
 
 	public Long getId() {
@@ -78,12 +78,17 @@ public class Product {
 	// getPrices()
 	
 	public Set<Price> getPrices(){
-		return prices;
+		return this.prices;
+	}
+	
+	public void setPrices(Float price) {
+		Price newPrice = new Price(price);
+		this.prices.add(newPrice);
 	}
 	/*  nono, no se como encararlo */
 	public Price updateProductPrice(Float newPrice, Date startDate) {
 		Price price= new Price(newPrice, startDate);
-		prices.add(price);
+		this.prices.add(price);
 		this.setPrice(newPrice);
 		return price;
 	}

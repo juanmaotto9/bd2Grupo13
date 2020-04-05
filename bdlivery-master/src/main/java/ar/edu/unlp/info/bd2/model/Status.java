@@ -16,9 +16,12 @@ public abstract class Status {
 	@Id
 	protected Long id;
 	
-    public abstract void setId(Long id);
-    public abstract Long getId();
+	@Column(name="status")
+	protected String status;
 	
+    public abstract void setId(Long id);
+    public abstract Long getId();  
+    
     protected Boolean isSent(){
         return false;
     }
@@ -34,5 +37,9 @@ public abstract class Status {
     protected Boolean isReceived(){
         return false;
     }
-
+    
+    public String getStatus() {
+    	return this.status;
+    }
+    
 }

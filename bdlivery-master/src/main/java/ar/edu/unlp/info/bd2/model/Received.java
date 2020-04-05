@@ -17,5 +17,9 @@ public class Received extends Status {
 	public Boolean isReceived(){
         return true;
     }
+	
+	public void setStatus() {
+		this.status = "Delivered";
+	}
 
 }

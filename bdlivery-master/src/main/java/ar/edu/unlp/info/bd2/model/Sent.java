@@ -18,4 +18,7 @@ public class Sent extends Status {
         return true;
     }
 
+	public void setStatus() {
+		this.status = "Sent";
+	}
 }

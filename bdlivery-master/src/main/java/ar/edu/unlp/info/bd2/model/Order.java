@@ -25,9 +25,6 @@ public class Order {
 	@OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
 	private Set<ProductOrder> products =new HashSet<ProductOrder>();
 	
-	public Order() {
-	}
-	
 	@Id
 	private Long id;
 	
@@ -99,6 +96,8 @@ public class Order {
 		this.deliveryUser = deliveryUser;
 	}
 	
+	public Order() {
+	}
 	
 	public Order(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
 		this.client = client;
@@ -108,7 +107,7 @@ public class Order {
 		this.coordY = coordY;
 		this.status.add(new Pending());
 	}
-	
+	/*
 	public Order createOrder(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
 		this.client = client;
 		this.address = address;
@@ -117,7 +116,7 @@ public class Order {
 		this.coordY = coordY;
 		this.status.add(new Pending());
 		return this;
-	}
+	}	*/
 	
 
 	/* Nota: status es la coleccion de estados que tuve, y myState es el estado actual*/

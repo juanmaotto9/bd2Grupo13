@@ -18,4 +18,7 @@ public class Pending extends Status {
         return true;
     }
 
+	public void setStatus() {
+		this.status = "Pending";
+	}
 }

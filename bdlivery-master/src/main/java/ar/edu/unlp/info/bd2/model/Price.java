@@ -1,6 +1,8 @@
 package ar.edu.unlp.info.bd2.model;
 
 import javax.persistence.*;
+
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -46,6 +48,12 @@ public class Price {
 	}
 	
 	public Price() {
+	}
+	//para el primer producto el cual no recibe una startDate
+	public Price(Float price) {
+		this.setPrice(price);
+		Calendar date = Calendar.getInstance();
+		this.setStartDate(date.getTime());
 	}
 	
 	public Price(Float price, Date startDate) {

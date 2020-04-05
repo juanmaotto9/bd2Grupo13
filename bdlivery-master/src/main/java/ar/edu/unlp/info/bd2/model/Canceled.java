@@ -17,5 +17,8 @@ public class Canceled extends Status {
 	public Boolean isCanceled(){
         return true;
     }
-
+	
+	public void setStatus() {
+		this.status = "Cancelled";
+	}
 }
