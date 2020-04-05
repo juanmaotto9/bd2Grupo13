@@ -23,7 +23,7 @@ public class Order {
 	private Set<Status> status =new HashSet<Status>();
 	
 	@OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
-	private Set<Product> products =new HashSet<Product>();
+	private Set<ProductOrder> products =new HashSet<ProductOrder>();
 	
 	public Order() {
 	}
@@ -131,11 +131,15 @@ public class Order {
 	}
 	
 	
-    public Set<Product> getProducts() {
+	public void addProductOrder(Long quantity, Product product) {
+		ProductOrder productOrder = new ProductOrder(quantity, product);
+		this.products.add(productOrder);
+	}
+	
+    public Set<ProductOrder> getProducts() {
 		return products;
     }
     
-
 	public Boolean isSended() {
 		return myState.isSent();
 	}

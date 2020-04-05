@@ -13,9 +13,10 @@ public class Product {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Supplier supplier;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	/*
+	 * @ManyToOne(fetch = FetchType.LAZY)
 	private Order order;
-	
+	*/
 	@OneToMany(mappedBy = "price", cascade = CascadeType.ALL)
 	private Set<Price> prices =new HashSet<Price>();
 	
