@@ -11,6 +11,7 @@ public abstract class Status {
 	protected Order orden;
 	
 	public Status() {
+		this.setStatus();
 	}
 	
 	@Id
@@ -42,5 +43,6 @@ public abstract class Status {
     public String getStatus() {
     	return this.status;
     }
+    abstract public void setStatus();
     
 }

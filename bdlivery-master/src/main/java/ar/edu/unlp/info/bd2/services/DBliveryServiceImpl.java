@@ -99,15 +99,13 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}
 	}
 	
-	//@Override
+	
+	//acá cambie en el segundo if por isPending(). 
 	public Order deliverOrder(Long id, User deliveryUser) throws DBliveryException {
 		if(this.canDeliver(id)) {
 			Order order = this.repository.findOrderById(id);
 			return this.repository.updateOrder(order.deliverOrder(deliveryUser));
-		}
-		else {			 
-			throw new DBliveryException("DBliveryException");		        
-		}	
+		}else throw new DBliveryException("The order can't be delivered");
 	}
 
 	//acá cambie en el return por isPending(). 
@@ -121,16 +119,13 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}
 	}
 	
-	
 	//acá cambie en el segundo if por isPending().
-	public Order cancelOrder(Long id) throws DBliveryException {
-		if(this.canCancel(id)) {
-			Order order = this.repository.findOrderById(id);
-			return this.repository.updateOrder(order.changeStateToCanceled());
-		}
-		else {			 
-			throw new DBliveryException("null");		        
-		}
+	public Order cancelOrder(Long order) throws DBliveryException {
+		if(this.canCancel(order)) {
+			Order anOrder = repository.findOrderById(order);
+			anOrder.changeStateToCanceled();
+			return this.repository.updateOrder(anOrder);
+		}else throw new DBliveryException("The order can't be cancelled");
 	}
 	
 	public Status getActualStatus(Long id) {
@@ -146,18 +141,16 @@ public class DBliveryServiceImpl implements DBliveryService {
 		if(this.canFinish(id)) {
 			Order order = this.repository.findOrderById(id);
 			return this.repository.updateOrder(order.changeStateToReceived());
-		}
-		else {			 
-			throw new DBliveryException("DBliveryException");		        
-		}
+		}else throw new DBliveryException("The order can't be finished");
 	}
 	
-	//Por lo que entendí, si el pedido no está cancelado entonces puede pasar por cualquier state
+	
 	public boolean canFinish(Long id) throws DBliveryException {
 		try {
 			Order order = this.repository.findOrderById(id);
-			if (order == null) throw new Exception("Order not found");
-			return !order.isSended();
+			if (order == null) throw new DBliveryException("Order not found");
+			if (order.getDeliveryUser() == null) throw new DBliveryException("The order can't be finished");
+			return !order.isCancel();
 		} catch (Exception e) {
 			return false;
 		}

@@ -160,19 +160,19 @@ public class Order {
 	
 	public Order changeStateToSent() {
 		this.myState = new Sent();
-		this.addStatus(getMyState());
+		this.addStatus(this.getMyState());
 		return this;
 	}
 
 	public Order changeStateToReceived() {
 		this.myState = new Received();
-		this.addStatus(getMyState());
+		this.addStatus(this.getMyState());
 		return this;
 	}
 
 	public Order changeStateToCanceled() {
 		this.myState = new Canceled();
-		this.addStatus(getMyState());
+		this.addStatus(this.getMyState());
 		return this;
 	}
 
