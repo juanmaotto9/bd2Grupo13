@@ -14,23 +14,27 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public DBliveryServiceImpl(DBliveryRepository repository) {
 		this.repository = repository;
 	}
+	
+	@Override
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
 		Product producto = new Product(name, price, weight, supplier);
 		return this.repository.persistProduct(producto);
 	}
 	
+	@Override
 	public Supplier createSupplier(String name, String cuil, String address, Float coordX, Float coordY) {
 		Supplier supplier = new Supplier(name, cuil, address, coordX, coordY);
 		return this.repository.persistSupplier(supplier);
 	}
 	
+	@Override
 	public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
 		User user = new User(username, name, email, password, dateOfBirth);
 		this.repository.persistUser(user);
 		return user;
 	}
 
-	
+	@Override
 	public Product updateProductPrice(Long id, Float price, Date startDate) throws DBliveryException{
 		try {
 			Product producto = this.repository.findProductById(id);
@@ -44,37 +48,44 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}
 	}
 	
+	@Override
 	public Optional<User> getUserById(Long id){
 		return Optional.ofNullable(this.repository.findUserById(id));
 	}
 	
+	@Override
 	public Optional<User> getUserByEmail(String email){
 		return Optional.ofNullable(this.repository.findUserByEmail(email));
 	}
 	
+	@Override
 	public Optional<User> getUserByUsername(String username){
 		return Optional.ofNullable(this.repository.findUserByUsername(username));
 	}
 	
+	@Override
 	public List <Product> getProductByName(String name) {
 		return this.repository.findProductByName(name);
 	}
 	
+	@Override
 	public Optional<Product> getProductById(Long id){
 		return Optional.ofNullable(this.repository.findProductById(id));
 	}
 	
+	@Override
 	public Optional<Order> getOrderById(Long id){
 		return Optional.ofNullable(this.repository.findOrderById(id));
 	}
 	
+	@Override
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY,User client) {
 		Order orden = new Order(dateOfOrder, address, coordX, coordY, client);
 		this.repository.persistOrder(orden);
 		return orden;
-		
 	}
 	
+	@Override
 	public Order addProduct(Long order,Long quantity, Product product )throws DBliveryException{
 		try {
 			Order orden = this.repository.findOrderById(order);
@@ -88,6 +99,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}	
 	}
 
+	@Override
 	public boolean canDeliver(Long id) throws DBliveryException {
 		try {
 			Order order = this.repository.findOrderById(id);
@@ -99,8 +111,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}
 	}
 	
-	
-	//acá cambie en el segundo if por isPending(). 
+	@Override
 	public Order deliverOrder(Long id, User deliveryUser) throws DBliveryException {
 		if(this.canDeliver(id)) {
 			Order order = this.repository.findOrderById(id);
@@ -108,7 +119,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}else throw new DBliveryException("The order can't be delivered");
 	}
 
-	//acá cambie en el return por isPending(). 
+	@Override
 	public boolean canCancel(Long id) throws DBliveryException {
 		try {
 			Order order = this.repository.findOrderById(id);
@@ -119,7 +130,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}
 	}
 	
-	//acá cambie en el segundo if por isPending().
+	@Override
 	public Order cancelOrder(Long order) throws DBliveryException {
 		if(this.canCancel(order)) {
 			Order anOrder = repository.findOrderById(order);
@@ -128,6 +139,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}else throw new DBliveryException("The order can't be cancelled");
 	}
 	
+	@Override
 	public Status getActualStatus(Long id) {
 		try {
 			Order order = this.repository.findOrderById(id);
@@ -137,6 +149,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}
 	}
 	
+	@Override
 	public Order finishOrder(Long id) throws DBliveryException {
 		if(this.canFinish(id)) {
 			Order order = this.repository.findOrderById(id);
@@ -144,7 +157,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}else throw new DBliveryException("The order can't be finished");
 	}
 	
-	
+	@Override
 	public boolean canFinish(Long id) throws DBliveryException {
 		try {
 			Order order = this.repository.findOrderById(id);
