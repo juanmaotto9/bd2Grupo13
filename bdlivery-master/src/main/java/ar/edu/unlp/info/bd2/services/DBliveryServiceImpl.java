@@ -22,6 +22,12 @@ public class DBliveryServiceImpl implements DBliveryService {
 	}
 	
 	@Override
+	public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date) {
+		Product producto = new Product(name, price, weight, supplier, date);
+		return this.repository.persistProduct(producto);
+	}
+	
+	@Override
 	public Supplier createSupplier(String name, String cuil, String address, Float coordX, Float coordY) {
 		Supplier supplier = new Supplier(name, cuil, address, coordX, coordY);
 		return this.repository.persistSupplier(supplier);
@@ -118,6 +124,14 @@ public class DBliveryServiceImpl implements DBliveryService {
 			return this.repository.updateOrder(order.deliverOrder(deliveryUser));
 		}else throw new DBliveryException("The order can't be delivered");
 	}
+	
+	public Order deliverOrder(Long id, User deliveryUser, Date date) throws DBliveryException{
+		if(this.canDeliver(id)) {
+			Order order = this.repository.findOrderById(id);
+			order.deliverOrder(deliveryUser, date);
+			return this.repository.updateOrder(order);
+		}else throw new DBliveryException("The order can't be delivered");
+	}
 
 	@Override
 	public boolean canCancel(Long id) throws DBliveryException {
@@ -140,6 +154,15 @@ public class DBliveryServiceImpl implements DBliveryService {
 	}
 	
 	@Override
+	public Order cancelOrder(Long order, Date date) throws DBliveryException{
+		if(this.canCancel(order)) {
+			Order anOrder = repository.findOrderById(order);
+			anOrder.changeStateToCanceled(date);
+			return this.repository.updateOrder(anOrder);
+		}else throw new DBliveryException("The order can't be cancelled");
+	}
+	
+	@Override
 	public Status getActualStatus(Long id) {
 		try {
 			Order order = this.repository.findOrderById(id);
@@ -154,6 +177,15 @@ public class DBliveryServiceImpl implements DBliveryService {
 		if(this.canFinish(id)) {
 			Order order = this.repository.findOrderById(id);
 			return this.repository.updateOrder(order.changeStateToReceived());
+		}else throw new DBliveryException("The order can't be finished");
+	}
+	
+	@Override
+	public Order finishOrder(Long id, Date date) throws DBliveryException{
+		if(this.canFinish(id)) {
+			Order order = this.repository.findOrderById(id);
+			order.changeStateToReceived(date);
+			return this.repository.updateOrder(order);
 		}else throw new DBliveryException("The order can't be finished");
 	}
 	

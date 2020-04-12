@@ -163,9 +163,23 @@ public class Order {
 		this.addStatus(this.getMyState());
 		return this;
 	}
+	
+	/*	para la parte2	*/
+	public Order changeStateToSent(Date date) {
+		this.myState = new Sent(date);
+		this.addStatus(this.getMyState());
+		return this;
+	}
 
 	public Order changeStateToReceived() {
 		this.myState = new Received();
+		this.addStatus(this.getMyState());
+		return this;
+	}
+	
+	/*	para la parte 2*/
+	public Order changeStateToReceived(Date date) {
+		this.myState = new Received(date);
 		this.addStatus(this.getMyState());
 		return this;
 	}
@@ -175,10 +189,22 @@ public class Order {
 		this.addStatus(this.getMyState());
 		return this;
 	}
+	
+	/*	para la parte 2	*/
+	public Order changeStateToCanceled(Date date) {
+		this.myState = new Canceled(date);
+		this.addStatus(this.getMyState());
+		return this;
+	}
 
 	public Order deliverOrder(User deliveryUser){
-		setDeliveryUser(deliveryUser);
-		return changeStateToSent();
+		this.setDeliveryUser(deliveryUser);
+		return this.changeStateToSent();
+	}
+	
+	public Order deliverOrder(User deliveryUser, Date date) {
+		this.setDeliveryUser(deliveryUser);
+		this.changeStateToSent(date);
 	}
 	
 	

@@ -8,6 +8,14 @@ import javax.persistence.*;
 @DiscriminatorValue(value="canceled")
 public class Canceled extends Status {
 	
+	public Canceled() {
+		super();
+	}
+	
+	public Canceled(Date date) {
+		super(date);
+	}
+	
 	public Long getId(){
         return id;
     }

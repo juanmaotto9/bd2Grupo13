@@ -8,6 +8,14 @@ import javax.persistence.*;
 @DiscriminatorValue(value="received")
 public class Received extends Status {
 	
+	public Received() {
+		super();
+	}
+	
+	public Received(Date date) {
+		super(date);
+	}
+	
 	public Long getId(){
         return id;
     }

@@ -8,6 +8,14 @@ import javax.persistence.*;
 @DiscriminatorValue(value="sent")
 public class Sent extends Status {
 	
+	public Sent() {
+		super();
+	}
+	
+	public Sent(Date date) {
+		super(date);
+	}
+	
 	public Long getId(){
         return id;
     }

@@ -48,7 +48,12 @@ public class Product {
 		// puede variar, por ahora creo que no es necesario pasarle el dia.
 		//siempre va a ser la fecha de creacion, asi que hasta que sea necesario...
 		//... si es que lo es, queda asi.
-		this.creationDate = new Date();
+		//this.creationDate = new Date();
+	}
+	
+	public Product(String name, Float price, Float weight, Supplier supplier, Date date) {
+		this(name,price,weight,supplier);
+		this.setcreationDate(date);
 	}
 
 	public Long getId() {

@@ -18,6 +18,11 @@ public abstract class Status {
 		this.startDate = new Date();
 	}
 	
+	public Status(Date date) {
+		this.setStatus();
+		this.setStartDate(date);
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
