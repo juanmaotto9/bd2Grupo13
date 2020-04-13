@@ -106,7 +106,7 @@ public class Order {
 		this.dateOfOrder = dateOfOrder;
 		this.coordX = coordX;
 		this.coordY = coordY;
-		this.myState = new Pending();
+		this.myState = new Pending(this);
 		this.status.add(this.myState);
 	}
 	
@@ -116,7 +116,7 @@ public class Order {
 		this.dateOfOrder = dateOfOrder;
 		this.coordX = coordX;
 		this.coordY = coordY;
-		this.myState = new Pending();
+		this.myState = new Pending(this);
 		this.status.add(this.myState);
 		return this;
 	}	
@@ -133,8 +133,8 @@ public class Order {
 	}
 	
 	
-	public void addProductOrder(Long quantity, Product product) {
-		ProductOrder productOrder = new ProductOrder(quantity, product, this);
+	public void addProductOrder(Long quantity, Product myProduct) {
+		ProductOrder productOrder = new ProductOrder(quantity, myProduct, this);
 		this.products.add(productOrder);
 	}
 	
@@ -159,40 +159,40 @@ public class Order {
 	}
 	
 	public Order changeStateToSent() {
-		this.myState = new Sent();
+		this.myState = new Sent(this);
 		this.addStatus(this.getMyState());
 		return this;
 	}
 	
 	/*	para la parte2	*/
 	public Order changeStateToSent(Date date) {
-		this.myState = new Sent(date);
+		this.myState = new Sent(date, this);
 		this.addStatus(this.getMyState());
 		return this;
 	}
 
 	public Order changeStateToReceived() {
-		this.myState = new Received();
+		this.myState = new Received(this);
 		this.addStatus(this.getMyState());
 		return this;
 	}
 	
 	/*	para la parte 2*/
 	public Order changeStateToReceived(Date date) {
-		this.myState = new Received(date);
+		this.myState = new Received(date, this);
 		this.addStatus(this.getMyState());
 		return this;
 	}
 
 	public Order changeStateToCanceled() {
-		this.myState = new Canceled();
+		this.myState = new Canceled(this);
 		this.addStatus(this.getMyState());
 		return this;
 	}
 	
 	/*	para la parte 2	*/
 	public Order changeStateToCanceled(Date date) {
-		this.myState = new Canceled(date);
+		this.myState = new Canceled(date, this);
 		this.addStatus(this.getMyState());
 		return this;
 	}

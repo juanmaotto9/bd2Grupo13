@@ -8,6 +8,22 @@ import javax.persistence.*;
 @DiscriminatorValue(value="pending")
 public class Pending extends Status {
 	
+	public Pending(Order myOrden) {
+		super(myOrden);
+		this.setStatus();
+		
+		//para mi se crea con el dia de hoy a la hora que se creo, pero consultar
+		this.startDate = new Date();
+		this.orden = myOrden;
+	}
+	
+	public Pending(Date date, Order myOrden) {
+		super(date, myOrden);
+		this.setStatus();
+		this.setStartDate(date);
+		this.orden = myOrden;
+	}
+	
 	public Long getId(){
         return id;
     }
@@ -31,4 +47,5 @@ public class Pending extends Status {
     public void setStartDate(Date startDate) {
     	this.startDate = startDate;
     }
+    
 }

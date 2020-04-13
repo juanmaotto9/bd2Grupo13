@@ -51,16 +51,18 @@ public class Price {
 	public Price() {
 	}
 	//para el primer producto el cual no recibe una startDate
-	public Price(Float price) {
+	public Price(Float price, Product myProduct) {
 		this.setPrice(price);
 		Calendar date = Calendar.getInstance();
 		this.setStartDate(date.getTime());
+		this.product = myProduct;
 	}
 	
-	public Price(Float price, Date startDate) {
+	public Price(Float price, Date startDate, Product myProduct) {
 		super();
 		this.price = price;
 		this.startDate = startDate;
+		this.product = myProduct;
 	}
 	
 	

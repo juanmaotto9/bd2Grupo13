@@ -8,12 +8,20 @@ import javax.persistence.*;
 @DiscriminatorValue(value="canceled")
 public class Canceled extends Status {
 	
-	public Canceled() {
-		super();
+	public Canceled(Order myOrden) {
+		super(myOrden);
+		this.setStatus();
+		
+		//para mi se crea con el dia de hoy a la hora que se creo, pero consultar
+		this.startDate = new Date();
+		this.orden = myOrden;
 	}
 	
-	public Canceled(Date date) {
-		super(date);
+	public Canceled(Date date, Order myOrden) {
+		super(date, myOrden);
+		this.setStatus();
+		this.setStartDate(date);
+		this.orden = myOrden;
 	}
 	
 	public Long getId(){

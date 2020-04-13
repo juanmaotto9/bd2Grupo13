@@ -17,15 +17,15 @@ public class ProductOrder {
 	@Column(name= "quantity")
 	private Long quantity;
 	
-	@OneToOne(mappedBy="productOrder", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "productOrder", fetch = FetchType.LAZY)
 	private Product product;
 
 	public ProductOrder() {}
 	
-	public ProductOrder(Long quantity, Product product, Order myOrden) {
+	public ProductOrder(Long quantity, Product myProduct, Order myOrden) {
 		super();
 		this.quantity = quantity;
-		this.product = product;
+		this.product = myProduct;
 		this.orden = myOrden;
 	}
 

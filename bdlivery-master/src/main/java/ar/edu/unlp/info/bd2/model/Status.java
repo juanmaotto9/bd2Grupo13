@@ -11,16 +11,18 @@ public abstract class Status {
 	@ManyToOne(fetch = FetchType.LAZY)
 	protected Order orden;
 	
-	public Status() {
+	public Status(Order myOrden) {
 		this.setStatus();
 		
 		//para mi se crea con el dia de hoy a la hora que se creo, pero consultar
 		this.startDate = new Date();
+		this.orden = myOrden;
 	}
 	
-	public Status(Date date) {
+	public Status(Date date, Order myOrden) {
 		this.setStatus();
 		this.setStartDate(date);
+		this.orden = myOrden;
 	}
 	
 	@Id

@@ -8,12 +8,20 @@ import javax.persistence.*;
 @DiscriminatorValue(value="sent")
 public class Sent extends Status {
 	
-	public Sent() {
-		super();
+	public Sent(Order myOrden) {
+		super(myOrden);
+		this.setStatus();
+		
+		//para mi se crea con el dia de hoy a la hora que se creo, pero consultar
+		this.startDate = new Date();
+		this.orden = myOrden;
 	}
 	
-	public Sent(Date date) {
-		super(date);
+	public Sent(Date date, Order myOrden) {
+		super(date, myOrden);
+		this.setStatus();
+		this.setStartDate(date);
+		this.orden = myOrden;
 	}
 	
 	public Long getId(){
