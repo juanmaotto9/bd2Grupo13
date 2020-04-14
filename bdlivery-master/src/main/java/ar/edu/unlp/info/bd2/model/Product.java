@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Date;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "product")
@@ -110,15 +111,24 @@ public class Product {
 		this.prices.add(newPrice);
 	} */
 	
-	/*  Solucionado y encaradisimo */
+	/*   encaradisimo */
 	public Price updateProductPrice(Float newPrice, Date startDate) {
-		this.priceNow.setEndDate(startDate);
+		Date endDate = this.DateUpdateDay(startDate, -1);
+		this.priceNow.setEndDate(endDate);
 		Price price= new Price(newPrice, startDate, this);
 		this.priceNow = price;
 		this.prices.add(this.priceNow);
 		this.setPrice(newPrice);
 		return priceNow;
 	}
+	
+	public Date DateUpdateDay(Date fecha, int dias){
+
+	      Calendar calendar = Calendar.getInstance();		
+	      calendar.setTime(fecha); // fecha que se recibe
+	      calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
+	      return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+	 }
 	
 	public Date getCreationDate() {
 		return this.creationDate;
