@@ -42,16 +42,12 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Product updateProductPrice(Long id, Float price, Date startDate) throws DBliveryException{
-		try {
-			Product producto = this.repository.findProductById(id);
-			if(producto == null) { 
-				throw new DBliveryException("producto no encontrado");
-			}
-			producto.updateProductPrice(price, startDate);
-			return this.repository.updateProductPrice(producto);
-		}catch(Exception e) {
-			return null;
-		}
+		Optional<Product> optProduct = this.getProductById(id);
+    	if (optProduct.isPresent()) {
+    		Product product = optProduct.get();
+    		product.updateProductPrice(price, startDate); // consultar
+    		return this.repository.updateProductPrice(product);
+		}else throw new DBliveryException("producto no encontrado");		
 	}
 	
 	@Override

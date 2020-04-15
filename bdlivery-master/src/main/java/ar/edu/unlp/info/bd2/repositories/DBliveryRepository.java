@@ -22,8 +22,10 @@ public class DBliveryRepository {
 		String hql = "from User where id = :id ";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("id", id);
-		List<User> users = query.getResultList();
-		return !users.isEmpty() ? users.get(query.getFirstResult()) : null;
+		User user = (User) query.getSingleResult(); // igual decia query.uniqueResult();
+		//List<User> users = query.getResultList();
+		//return !users.isEmpty() ? users.get(query.getFirstResult()) : null;
+		return user;
 	}
 	
 
