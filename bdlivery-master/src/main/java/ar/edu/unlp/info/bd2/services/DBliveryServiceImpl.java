@@ -7,6 +7,8 @@ import java.util.List;
 import ar.edu.unlp.info.bd2.model.*;
 import ar.edu.unlp.info.bd2.repositories.*;
 
+import org.springframework.transaction.annotation.Transactional;
+
 public class DBliveryServiceImpl implements DBliveryService {
 	
 	private DBliveryRepository repository;
@@ -196,5 +198,30 @@ public class DBliveryServiceImpl implements DBliveryService {
 			return false;
 		}
 	}
-	//FIN :)
+	// comienzo de 2da parte:
+	
+//	@Transactional
+	@Override
+	public List<Order> getAllOrdersMadeByUser(String username){
+		Optional<User> user = this.getUserByUsername(username);
+		if ( user.isPresent() ) {
+			User usuario = user.get();
+			List<Order> ordenes = this.repository.findAllOrdersMadeByUser(usuario.getId());
+			return ordenes;
+		}else return null;  //no dice pero deberia manejar excepciones?
+	}
+	
+/**
+ * Obtiene todos los usuarios que han gastando más de <code>amount</code> en alguna orden en la plataforma
+ * @param amount
+ * @return una lista de usuarios que satisfagan la condici{on
+ 
+	@Override
+	public List<User> getUsersSpendingMoreThan(Float amount){
+		List<User> users = this.repository.getUserSpendingMoreThan(amount);
+		
+		return null;
+	}
+	*/
+	
 }

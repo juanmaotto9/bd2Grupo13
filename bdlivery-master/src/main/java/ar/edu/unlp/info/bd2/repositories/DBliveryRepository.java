@@ -110,4 +110,20 @@ public class DBliveryRepository {
         return supplier;
     }
 	
+	//Comienzo 2da parte - consultas -:
+	
+	public List<Order> findAllOrdersMadeByUser( Long id ) {
+		String hql = "from Order where user = :id ";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("user", id);
+		List<Order> orders = query.getResultList();
+		return !orders.isEmpty() ? orders : null;
+	}
+	
+	/*public List<User> getUserSpendingMoreThan(Float amount) {
+		String hql = " ";
+		
+		return null;
+	}*/
+	
 }
