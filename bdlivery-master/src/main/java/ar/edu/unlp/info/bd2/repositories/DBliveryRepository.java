@@ -1,5 +1,7 @@
 package ar.edu.unlp.info.bd2.repositories;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import javax.persistence.Query;
@@ -113,14 +115,18 @@ public class DBliveryRepository {
 	//Comienzo 2da parte - consultas -:
 	
 	public List<Order> findAllOrdersMadeByUser( Long id ) {
-		String hql = "from Order where user = :id ";
+		String hql = "from Order where user.id = :id ";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-		query.setParameter("user", id);
+		query.setParameter("id", id);
 		List<Order> orders = query.getResultList();
 		return !orders.isEmpty() ? orders : null;
 	}
+	/*
+	public List<Order> findCancelledOrdersInPeriod(Date startDate, Date endDate){
+		String hql = "from Orden o where ";
+	}
 	
-	/*public List<User> getUserSpendingMoreThan(Float amount) {
+	public List<User> getUserSpendingMoreThan(Float amount) {
 		String hql = " ";
 		
 		return null;

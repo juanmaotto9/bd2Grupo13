@@ -8,23 +8,6 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Status {
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	protected Order orden;
-	
-	public Status(Order myOrden) {
-		this.setStatus();
-		
-		//para mi se crea con el dia de hoy a la hora que se creo, pero consultar
-		this.startDate = new Date();
-		this.orden = myOrden;
-	}
-	
-	public Status(Date date, Order myOrden) {
-		this.setStatus();
-		this.setStartDate(date);
-		this.orden = myOrden;
-	}
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
@@ -34,10 +17,22 @@ public abstract class Status {
 	
 	@Column(name="start_date")
 	protected Date startDate;
+		
+	@ManyToOne(fetch = FetchType.LAZY)
+	protected Order orden;
 	
-    public abstract void setId(Long id);
-    public abstract Long getId();  
-    
+	public Status() {}
+	
+	public Status(Order myOrden) {
+		this.startDate = new Date();
+		this.setOrden(myOrden);
+	}
+	
+	public Status(Date date, Order myOrden) {
+		this.setStartDate(date);
+		this.orden = myOrden;
+	}
+	    
     protected Boolean isSent(){
         return false;
     }
@@ -54,15 +49,34 @@ public abstract class Status {
         return false;
     }
     
+	public Long getId(){
+        return id;
+    }
+
+    public void setId(Long id){
+        this.id = id;
+    }
+    
     public String getStatus() {
     	return this.status;
     }
-    abstract public void setStatus();
     
     public Date getStartDate() {
     	return this.startDate;
     }
+    	
+    public Order getOrden() {
+		return orden;
+	}
+
+	public void setOrden(Order orden) {
+		this.orden = orden;
+	}
+
+	public void setStartDate(Date startDate) {
+    	this.startDate = startDate;
+    }
     
-    abstract public void setStartDate(Date startDate);    
+    abstract public void setStatus();
     
 }
