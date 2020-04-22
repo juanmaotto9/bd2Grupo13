@@ -39,12 +39,12 @@ public class DBliveryStatisticsTestCase {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-
-/*    @BeforeAll
+    /*
+   @BeforeAll
     public void prepareDB() throws Exception {
         this.initializer.prepareDB();
-    } */
-
+   	}
+   	*/
 
   /*  @Test
     public void testGetAllOrdersMadeByUser() {
@@ -107,11 +107,12 @@ public class DBliveryStatisticsTestCase {
     }	//pasó! 
      */
 
+    /*
     @Test
     public void testGetDeliveredOrdersForUser() {
         List<Order> orders = this.service.getDeliveredOrdersForUser("luzmartnez660");
         assertEquals(3,orders.size());
-    }
+    }//Adeeentro */
 
     @Test
     public void testGetSentMoreOneHour() {
@@ -119,11 +120,12 @@ public class DBliveryStatisticsTestCase {
         assertEquals(123,orders.size());
     }
 
+    /*
     @Test
     public void testGetDeliveredOrdersSameDay() {
         List<Order> orders = this.service.getDeliveredOrdersSameDay();
         assertEquals(8,orders.size());
-    }
+    }Adeeentro */
 
     @Test
     public void testGet5LessDeliveryUsers() {

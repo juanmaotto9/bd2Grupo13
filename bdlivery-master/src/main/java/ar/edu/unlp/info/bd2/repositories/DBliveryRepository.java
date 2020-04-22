@@ -241,4 +241,28 @@ public class DBliveryRepository {
 		return !productos.isEmpty() ? productos : (productos = null); 
 	}
 	
+	public List <Order> findDeliveredOrdersForUser(String username){
+		String hql = "select o from Order o where o.myState.status = 'Delivered' "
+				+ "and o.user.username = :username";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("username", username);
+		List<Order> orders = query.getResultList();
+		return !orders.isEmpty() ? orders : null;
+	}
+	
+	public List <Order> findDeliveredOrdersSameDay(){
+		String hql = "select o from Order o join o.myState as s "
+				+ "where s.status = 'Delivered' "
+				+ "and ( s.startDate BETWEEN o.dateOfOrder AND o.dateOfOrder + 1)";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		List<Order> orders = query.getResultList();
+		return !orders.isEmpty() ? orders : null;
+	}
+	
+	public List <Order> findSentMoreOneHour(){
+		String hql = "select o from Order o join o.myState as s ";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		List<Order> orders = query.getResultList();
+		return !orders.isEmpty() ? orders : null;
+	}
 }
