@@ -122,14 +122,79 @@ public class DBliveryRepository {
 		return !orders.isEmpty() ? orders : null;
 	}
 	
-	public List <Order> findCancelledOrdersInPeriod(Date startDate, Date endDate){
-		String hql = "select o from Order o join o.myState as s where s.status = 'Cancelled' and s.startDate BETWEEN '"+ startDate +"' AND '"+ endDate +"'";
+	public List <Order> findOrdersInPeriod(String state, Date startDate, Date endDate){
+		String hql = "select o from Order o join o.myState as s "
+				+ "where s.status = :state and (s.startDate BETWEEN :startDate AND :endDate)";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-		//query.setParameter("startDate", startDate);
-		//query.setParameter("endDate", endDate);
+		query.setParameter("state", state);
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
 		List<Order> orders = query.getResultList();
-		return !orders.isEmpty() ? orders : null; 
+		return !orders.isEmpty() ? orders : (orders = null); 
 	}
+	
+	public List<Product> findTop9MoreExpensiveProducts(){
+		String hql = "select p from Product p join p.priceNow as pr "
+				+ "ORDER BY pr.price DESC";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(9);
+		List<Product> products = query.getResultList();
+		return !products.isEmpty() ? products : (products = null);
+	}
+	
+	/* Obtiene los 6 usuarios que más cantidad de ordenes han realizado */
+	public List<User> findTop6UsersMoreOrders(){
+		String hql = "select o.user from Order o join o.user u "
+				+ "group by u.id order by count(o) desc";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(6);
+		List<User> users = query.getResultList();
+		return !users.isEmpty() ? users : (users = null);
+	}
+	
+	/* Obtiene el listado de las ordenes pendientes */
+	public List <Order> findPendingOrders(){
+		String hql = "select o from Order o join o.myState s "
+				+ "where s.status = 'Pending'";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		List<Order> orders = query.getResultList();
+		return !orders.isEmpty() ? orders : (orders = null); 
+	}
+	
+/* Obtiene el listado de las ordenes enviadas y no entregadas */
+	public List <Order>  findSentOrders(){
+		String hql = "select s.orden from Status s join s.orden as o "
+				+ "where s.status = 'Sent' and "
+				+ "s.orden not in (select o1 from Status s1 join s1.orden as o1 "
+				+ "where s1.status = 'Delivered')";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		List<Order> orders = query.getResultList();
+		return !orders.isEmpty() ? orders : (orders = null); 
+	}
+	
+	
+	/* Obtiene los N proveedores que más productos tienen en ordenes que están siendo enviadas */
+	public List<Supplier> findTopNSuppliersInSentOrders(int n){
+		String sent = "";
+		String hql ="select s from Product p join p.supplier s "
+					+ "join p.productOrder po "
+					+"join po.orden ord where ord in (select o from Order o join o.myState st"
+														+ " where st.status = 'Sent')"
+				+ " group by s order by count(p) desc";
+		
+		
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(n);
+	
+		List<Supplier> suppliers = query.getResultList();
+		return !suppliers.isEmpty() ? suppliers : (suppliers = null);
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/*
 	public List<Order> findCancelledOrdersInPeriod(Date startDate, Date endDate){

@@ -24,11 +24,11 @@ import java.util.Optional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class}, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(false)
+@Rollback(true)
 public class DBliveryServiceTestCase {
 
     @Autowired
-    DBliveryServiceImpl service;
+    DBliveryService service;
     
     @Test
     public void testCreateProduct() {

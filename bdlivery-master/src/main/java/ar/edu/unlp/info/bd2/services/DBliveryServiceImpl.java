@@ -215,27 +215,57 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}
 	}
 	
-	/**
-	 * Obtiene todas las ordenes canceladas entre dos fechas
-	 * @param startDate
-	 * @param endDate
-	 * @return una lista con las ordenes que satisfagan la condición
-	 */
-	
+	@Transactional
 	@Override
 	public List <Order> getCancelledOrdersInPeriod(Date startDate, Date endDate) {
-		List<Order> ordenes = this.repository.findCancelledOrdersInPeriod(startDate, endDate);
-		return ordenes;
-		
+		return this.repository.findOrdersInPeriod("Cancelled", startDate, endDate);
 	}
 	
-	
-	/*
+	@Transactional
 	@Override
-	public List <Order> getCancelledOrdersInPeriod(Date startDate, Date endDate){
-		List<User> ordenes = this.repository.findCancelledOrdersInPeriod(startDate, endDate);
-		
+	public List <Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate){
+		return this.repository.findOrdersInPeriod("Delivered", startDate, endDate);
 	}
+	
+	@Transactional
+	@Override
+	public List<Product> getTop10MoreExpensiveProducts() {
+		return this.repository.findTop9MoreExpensiveProducts();
+	}
+	
+	@Transactional
+	@Override
+	public List<User> getTop6UsersMoreOrders(){
+		return this.repository.findTop6UsersMoreOrders();
+	}
+
+	@Transactional
+	@Override
+	public List <Order> getPendingOrders(){
+		return this.repository.findPendingOrders();
+	}
+	
+	@Transactional
+	@Override
+	public List <Order>  getSentOrders(){
+		return this.repository.findSentOrders();
+	}
+	
+
+	
+	/**
+	 * Obtiene los <code>n</code> proveedores que más productos tienen en ordenes que están siendo enviadas
+	 * @param n
+	 * @return una lista con los <code>n</code> proveedores que satisfagan la condición
+	 */
+	@Transactional
+	@Override
+	public List<Supplier> getTopNSuppliersInSentOrders(int n) {
+		return this.repository.findTopNSuppliersInSentOrders(n);
+	}
+	
+	
+	
 	
 /**
  * Obtiene todos los usuarios que han gastando más de <code>amount</code> en alguna orden en la plataforma

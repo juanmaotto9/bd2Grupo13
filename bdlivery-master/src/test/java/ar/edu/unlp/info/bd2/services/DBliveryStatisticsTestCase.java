@@ -39,10 +39,10 @@ public class DBliveryStatisticsTestCase {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-    @BeforeAll
+   /* @BeforeAll
     public void prepareDB() throws Exception {
         this.initializer.prepareDB();
-    }
+    }*/
 
     @Test
     public void testGetAllOrdersMadeByUser() {
@@ -68,38 +68,38 @@ public class DBliveryStatisticsTestCase {
         List<Product> products = this.service.getTop10MoreExpensiveProducts();
         assertEquals(9,products.size());
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Sándwich de bondiola de cerdo completo","Lomo al roquefort","Tortilla a la española","Choripán"));
-    }
+    } /* pasó! comentalo despues de probarlo :) */
 
     @Test
     public void testGetTop6UsersMoreOrders() {
         List<User> users = this.service.getTop6UsersMoreOrders();
         assertEquals(6,users.size());
         this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("maravega596","maramuoz97","eduardoalonso677","rubnpastor265","nataliocruz598","luzmartnez660"));
-    }
+    } /* pasó!   */
 
     @Test
     public void testGetCancelledOrdersInPeriod() throws ParseException {
         List<Order> orders = this.service.getCancelledOrdersInPeriod(sdf.parse("1/1/2014"),sdf.parse("31/12/2014"));
         assertEquals(11,orders.size());
-    }
+    }  /* pasó, probalo y comentalo :) */
 
     @Test
     public void testGetPendingOrders() {
         List<Order> orders = this.service.getPendingOrders();
         assertEquals(54,orders.size());
-    }
+    }/*    pasóooooo */
 
     @Test
     public void testGetSentOrders() {
         List<Order> orders = this.service.getSentOrders();
         assertEquals(65,orders.size());
-    }
+    } /* pasoooooo  */
 
     @Test
     public void testGetDeliveredOrdersInPeriod() throws ParseException {
         List<Order> orders = this.service.getDeliveredOrdersInPeriod(sdf.parse("1/1/2013"),sdf.parse("31/12/2013"));
         assertEquals(18,orders.size());
-    }
+    }	/* pasó! comentalo despues de probarlo :) */
 
     @Test
     public void testGetDeliveredOrdersForUser() {
