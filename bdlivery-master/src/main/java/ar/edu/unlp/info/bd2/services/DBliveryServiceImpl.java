@@ -284,4 +284,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return pruductos;
 	}
 	
+	public Supplier getSupplierLessExpensiveProduct() {
+		Supplier sup = this.repository.findSupplierLessExpensiveProduct();
+		return sup;
+	}
+	
 }

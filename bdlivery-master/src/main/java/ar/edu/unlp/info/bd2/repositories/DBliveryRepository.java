@@ -214,4 +214,12 @@ public class DBliveryRepository {
 		return !productos.isEmpty() ? productos : null; 
 	}
 	
+	public Supplier findSupplierLessExpensiveProduct() {
+		String hql = "select p.supplier from Product p where p.priceNow.price = "
+				+ "(select min(s.price) from Price s )";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		Supplier supp = (Supplier) query.getSingleResult();
+		return supp; 
+	}
+	
 }
