@@ -247,5 +247,11 @@ public class DBliveryServiceImpl implements DBliveryService {
 		List<User> users = this.repository.getUserSpendingMoreThan(amount);
 		return null;
 	}*/
+	@Transactional
+	@Override
+	public List<Product> getProductsOnePrice() {
+		List<Product> pruductos = this.repository.findProductsOnePrice();
+		return pruductos;
+	}
 	
 }

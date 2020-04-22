@@ -142,4 +142,11 @@ public class DBliveryRepository {
 		return null;
 	}*/
 	
+	public List <Product> findProductsOnePrice(){
+		String hql = "select p from Product p left join p.priceNow as s group by p.id having count(p.id) = 1 ";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		List<Product> productos = query.getResultList();
+		return !productos.isEmpty() ? productos : null; 
+	}
+	
 }
