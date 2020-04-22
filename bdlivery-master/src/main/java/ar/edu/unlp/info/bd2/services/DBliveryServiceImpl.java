@@ -264,9 +264,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return this.repository.findTopNSuppliersInSentOrders(n);
 	}
 	
-	
-	
-	
 /**
  * Obtiene todos los usuarios que han gastando más de <code>amount</code> en alguna orden en la plataforma
  * @param amount
@@ -287,6 +284,11 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Supplier getSupplierLessExpensiveProduct() {
 		Supplier sup = this.repository.findSupplierLessExpensiveProduct();
 		return sup;
+	}
+	
+	public List <Product> getProductIncreaseMoreThan100(){
+		List<Product> productos = this.repository.findProductIncreaseMoreThan100();
+		return productos;
 	}
 	
 }
