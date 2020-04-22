@@ -220,7 +220,17 @@ public class DBliveryServiceImpl implements DBliveryService {
 	 * @param startDate
 	 * @param endDate
 	 * @return una lista con las ordenes que satisfagan la condición
-	 
+	 */
+	
+	@Override
+	public List <Order> getCancelledOrdersInPeriod(Date startDate, Date endDate) {
+		List<Order> ordenes = this.repository.findCancelledOrdersInPeriod(startDate, endDate);
+		return ordenes;
+		
+	}
+	
+	
+	/*
 	@Override
 	public List <Order> getCancelledOrdersInPeriod(Date startDate, Date endDate){
 		List<User> ordenes = this.repository.findCancelledOrdersInPeriod(startDate, endDate);

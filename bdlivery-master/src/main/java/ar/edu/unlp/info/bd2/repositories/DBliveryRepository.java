@@ -121,6 +121,16 @@ public class DBliveryRepository {
 		List<Order> orders = query.getResultList();
 		return !orders.isEmpty() ? orders : null;
 	}
+	
+	public List <Order> findCancelledOrdersInPeriod(Date startDate, Date endDate){
+		String hql = "select o from Order o join o.myState as s where s.status = 'Cancelled' and s.startDate BETWEEN '"+ startDate +"' AND '"+ endDate +"'";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		//query.setParameter("startDate", startDate);
+		//query.setParameter("endDate", endDate);
+		List<Order> orders = query.getResultList();
+		return !orders.isEmpty() ? orders : null; 
+	}
+	
 	/*
 	public List<Order> findCancelledOrdersInPeriod(Date startDate, Date endDate){
 		String hql = "from Orden o where ";

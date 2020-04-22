@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class, DBInitializerConfig.class }, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(true)
+@Rollback(false)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DBliveryStatisticsTestCase {
 
@@ -200,7 +200,7 @@ public class DBliveryStatisticsTestCase {
 
     @Test
     public void testOrderAmount() {
-        Optional<Order> ord = this.service.getOrderById(Long.getLong("77"));
+        Optional<Order> ord = this.service.getOrderById(Long.valueOf("77").longValue());
         if (ord.isPresent()) {
             Order o = ord.get();
             assertEquals(Float.valueOf("2454"),o.getAmount());
