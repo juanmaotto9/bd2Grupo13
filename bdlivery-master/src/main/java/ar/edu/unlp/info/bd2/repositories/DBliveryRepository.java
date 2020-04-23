@@ -236,4 +236,21 @@ public class DBliveryRepository {
 		return !productos.isEmpty() ? productos : null; 
 	}
 	
+	public Supplier findSupplierLessExpensiveProduct() {
+		String hql = "select p.supplier from Product p where p.priceNow.price = "
+				+ "(select min(s.price) from Price s )";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		Supplier supp = (Supplier) query.getSingleResult();
+		return supp; 
+	}
+	
+	public List <Product> findProductIncreaseMoreThan100() {
+		String hql = "select s.product from Price s where" 
+				+ "(select v.price * 2 from Price v group by v.product having min(v.start_date))"
+				+ " <= (select m.price from Price m group by m.product having max(m.start_date))"; 
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		List<Product> productos = query.getResultList();
+		return !productos.isEmpty() ? productos : (productos = null); 
+	}
+	
 }
