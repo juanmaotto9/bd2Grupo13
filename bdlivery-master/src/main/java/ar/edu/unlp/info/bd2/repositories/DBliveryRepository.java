@@ -187,47 +187,35 @@ public class DBliveryRepository {
 	}
 
 	/*  obtiene la/s orden/es con mayor cantidad de productos ordenados de la fecha dada  */
-	/*
-	public Order findMoreQuantityOfProducts(Date day) {
-		String hql1 = "select po.orden from ProductOrder po join po.orden o "
-				+ "where o.dateOfOrder= :day "
-				+ " group by po.orden having count(po) "
-				+ "order by count(po) desc";
-		Query query = this.sessionFactory.getCurrentSession().createQuery(hql1).setMaxResults(1);
-		query.setParameter("day", day);
-		Order cant = new Order();query.getSingleResult();
-		return cant== null ? cant : null;
-	}
-	
 	public List <Order> findOrderWithMoreQuantityOfProducts(Date day){
-		String hql = "select distinct po.orden from ProductOrder po join po.orden o "
-						+ "where o.dateOfOrder = :day "
-						+ "GROUP BY po.orden "
-						+ "having count(po) = :maxCant";
+		String hql1 = "select po.orden from ProductOrder po join po.orden o"
+				+ " where o.dateOfOrder= :day group by po.orden order by count(po) desc";
+		Query queryy = this.sessionFactory.getCurrentSession().createQuery(hql1);
+		queryy.setParameter("day", day);
+		List<Order> orders = queryy.getResultList();  //hasta acá solo consigo las ordenes del dia :day
+		Order aOrder = orders.get(0);
+		
+		String hql = "select po.orden from ProductOrder po "
+			+ "where po.orden.dateOfOrder=:day "
+			+ "GROUP BY po.orden "
+			+ "having count(po) = (select count(po1) from ProductOrder po1 "
+									+ "where po1.orden = :orden)";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("day", day);
-		query.setParameter("maxCant",this.findMoreQuantityOfProducts(day));
-		List<Order> orders = query.getResultList();
-		return !orders.isEmpty() ? orders : (orders = null);
+		query.setParameter("orden", aOrder);
+		List<Order> orders1 = query.getResultList();
+		return !orders1.isEmpty() ? orders1 : (orders1 = null);
 	}
 	
-	*/
 	
-	
-	
-	
-	
-	
-	/*
-	public List<Order> findCancelledOrdersInPeriod(Date startDate, Date endDate){
-		String hql = "from Orden o where ";
+/*Obtiene todos los usuarios que han gastando más de amount en alguna orden en la plataforma*/
+	public List<User> findUserSpendingMoreThan(Float amount) {
+		String hql = "select o.user from Order o where o.amount > :amount ";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("amount", amount);
+		List<User> users = query.getResultList();
+		return !users.isEmpty() ? users : (users = null);
 	}
-	
-	public List<User> getUserSpendingMoreThan(Float amount) {
-		String hql = " ";
-		
-		return null;
-	}*/
 	
 	public List <Product> findProductsOnePrice(){
 		String hql = "select s.product from Price s group by s.product having count(s) = 1 ";

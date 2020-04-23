@@ -262,18 +262,18 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public List <Order> getOrderWithMoreQuantityOfProducts(Date day){
 		return this.repository.findOrderWithMoreQuantityOfProducts(day);
 	}
-
-	
-/**
- * Obtiene todos los usuarios que han gastando más de <code>amount</code> en alguna orden en la plataforma
- * @param amount
- * @return una lista de usuarios que satisfagan la condici{on
- 
+	@Transactional
 	@Override
 	public List<User> getUsersSpendingMoreThan(Float amount){
-		List<User> users = this.repository.getUserSpendingMoreThan(amount);
-		return null;
-	}*/
+		return this.repository.findUserSpendingMoreThan(amount);
+	}
+/**
+ *
+ *
+ *
+ *
+ 
+	*/
 	@Transactional
 	@Override
 	public List<Product> getProductsOnePrice() {

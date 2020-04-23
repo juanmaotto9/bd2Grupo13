@@ -203,7 +203,7 @@ public class DBliveryStatisticsTestCase {
         Order o = ord.get(0);
         assertEquals("Calle 34 Nº661", o.getAddress());
         assertEquals(2,o.getProducts().size());
-        assertEquals(Float.valueOf("1867"), o.getAmount());
+        assertEquals(Float.valueOf("1867"), o.getAmount());  //me retorna 1344.0 
     }
 
  /*   @Test
