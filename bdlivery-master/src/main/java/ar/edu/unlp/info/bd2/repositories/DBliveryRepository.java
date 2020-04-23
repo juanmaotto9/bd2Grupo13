@@ -173,23 +173,45 @@ public class DBliveryRepository {
 	
 	/* Obtiene los N proveedores que más productos tienen en ordenes que están siendo enviadas */
 	public List<Supplier> findTopNSuppliersInSentOrders(int n){
-		String sent = "";
-		String hql ="select s from Product p join p.supplier s "
-					+ "join p.productOrder po "
-					+"join po.orden ord where ord in (select o from Order o join o.myState st"
-														+ " where st.status = 'Sent')"
-				+ " group by s order by count(p) desc";
+		//String sent = "(select o from Order o join o.myState st where st.status = 'Sent')";
+		
+		String hql ="select p.supplier from Product p "
+				//+ "join p.supplier s "join p.productOrder po 
+			//	+ "where po.orden in (select o from Order o join o.myState st where st.status = 'Sent') "
+				+ " group by p.supplier order by count(p) asc";
 		
 		
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(n);
-	
 		List<Supplier> suppliers = query.getResultList();
 		return !suppliers.isEmpty() ? suppliers : (suppliers = null);
 	}
 
+	/*  obtiene la/s orden/es con mayor cantidad de productos ordenados de la fecha dada  */
+	/*
+	public Order findMoreQuantityOfProducts(Date day) {
+		String hql1 = "select po.orden from ProductOrder po join po.orden o "
+				+ "where o.dateOfOrder= :day "
+				+ " group by po.orden having count(po) "
+				+ "order by count(po) desc";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql1).setMaxResults(1);
+		query.setParameter("day", day);
+		Order cant = new Order();query.getSingleResult();
+		return cant== null ? cant : null;
+	}
 	
+	public List <Order> findOrderWithMoreQuantityOfProducts(Date day){
+		String hql = "select distinct po.orden from ProductOrder po join po.orden o "
+						+ "where o.dateOfOrder = :day "
+						+ "GROUP BY po.orden "
+						+ "having count(po) = :maxCant";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("day", day);
+		query.setParameter("maxCant",this.findMoreQuantityOfProducts(day));
+		List<Order> orders = query.getResultList();
+		return !orders.isEmpty() ? orders : (orders = null);
+	}
 	
-	
+	*/
 	
 	
 	
@@ -208,7 +230,7 @@ public class DBliveryRepository {
 	}*/
 	
 	public List <Product> findProductsOnePrice(){
-		String hql = "select p from Product p left join p.priceNow as s group by p.id having count(p.id) = 1 ";
+		String hql = "select s.product from Price s group by s.product having count(s) = 1 ";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		List<Product> productos = query.getResultList();
 		return !productos.isEmpty() ? productos : null; 

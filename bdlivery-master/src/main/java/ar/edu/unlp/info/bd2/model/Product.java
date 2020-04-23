@@ -14,7 +14,7 @@ public class Product {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Supplier supplier;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private ProductOrder productOrder;
 		
 	@OneToOne(fetch = FetchType.LAZY)

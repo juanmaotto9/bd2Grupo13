@@ -251,20 +251,17 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return this.repository.findSentOrders();
 	}
 	
-
-	
-	/**
-	 * Obtiene los <code>n</code> proveedores que más productos tienen en ordenes que están siendo enviadas
-	 * @param n
-	 * @return una lista con los <code>n</code> proveedores que satisfagan la condición
-	 */
 	@Transactional
 	@Override
 	public List<Supplier> getTopNSuppliersInSentOrders(int n) {
 		return this.repository.findTopNSuppliersInSentOrders(n);
 	}
-	
-	
+
+	@Transactional
+	@Override
+	public List <Order> getOrderWithMoreQuantityOfProducts(Date day){
+		return this.repository.findOrderWithMoreQuantityOfProducts(day);
+	}
 	
 	
 /**
