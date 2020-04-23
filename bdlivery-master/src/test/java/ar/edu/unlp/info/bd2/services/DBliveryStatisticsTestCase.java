@@ -46,10 +46,10 @@ public class DBliveryStatisticsTestCase {
     } */
 
 
-    @Test
+  /*  @Test
     public void testGetAllOrdersMadeByUser() {
         assertEquals(5,this.service.getAllOrdersMadeByUser("rubnpastor265").size());
-    }
+    } */
 
     @Test
     public void testGetUsersSpendingMoreThan() {
@@ -72,36 +72,40 @@ public class DBliveryStatisticsTestCase {
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Sándwich de bondiola de cerdo completo","Lomo al roquefort","Tortilla a la española","Choripán"));
     } /* pasó! comentalo despues de probarlo :) */
 
-    @Test
+/*    @Test
     public void testGetTop6UsersMoreOrders() {
         List<User> users = this.service.getTop6UsersMoreOrders();
         assertEquals(6,users.size());
         this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("maravega596","maramuoz97","eduardoalonso677","rubnpastor265","nataliocruz598","luzmartnez660"));
-    } /* pasó!   */
+    } // pasó!  
+    */
 
-    @Test
+  /*  @Test
     public void testGetCancelledOrdersInPeriod() throws ParseException {
         List<Order> orders = this.service.getCancelledOrdersInPeriod(sdf.parse("1/1/2014"),sdf.parse("31/12/2014"));
         assertEquals(11,orders.size());
-    }  /* pasó, probalo y comentalo :) */
+    }   */
 
-    @Test
+ /*   @Test
     public void testGetPendingOrders() {
         List<Order> orders = this.service.getPendingOrders();
         assertEquals(54,orders.size());
-    }/*    pasóooooo */
+    }//   pasóooooo 
+    */
 
-    @Test
+/*    @Test
     public void testGetSentOrders() {
         List<Order> orders = this.service.getSentOrders();
         assertEquals(65,orders.size());
-    } /* pasoooooo  */
+    } // pasoooooo  
+    */
 
-    @Test
+ /*   @Test
     public void testGetDeliveredOrdersInPeriod() throws ParseException {
         List<Order> orders = this.service.getDeliveredOrdersInPeriod(sdf.parse("1/1/2013"),sdf.parse("31/12/2013"));
         assertEquals(18,orders.size());
-    }	/* pasó! comentalo despues de probarlo :) */
+    }	//pasó! 
+     */
 
     @Test
     public void testGetDeliveredOrdersForUser() {
@@ -147,7 +151,7 @@ public class DBliveryStatisticsTestCase {
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Sorrentinos de jamón y queso mozzarella","Sándwich de bondiola de cerdo, lechuga y tomate","Papas fritas con cheddar y panceta","Bondiola de cerdo a la riojana","Tabla fritas y fiambre","Ravioles de verdura"));
     }
 
-    /*
+  /*  
     @Test
     public void testGetSupplierLessExpensiveProduct() {
         assertEquals("Pancho Crazy", this.service.getSupplierLessExpensiveProduct().getName());
@@ -202,7 +206,7 @@ public class DBliveryStatisticsTestCase {
         assertEquals(Float.valueOf("1867"), o.getAmount());
     }
 
-    @Test
+ /*   @Test
     public void testOrderAmount() {
         Optional<Order> ord = this.service.getOrderById(Long.valueOf("77").longValue());
         if (ord.isPresent()) {
@@ -210,6 +214,7 @@ public class DBliveryStatisticsTestCase {
             assertEquals(Float.valueOf("2454"),o.getAmount());
         }
     }
+    */
 
 
 
