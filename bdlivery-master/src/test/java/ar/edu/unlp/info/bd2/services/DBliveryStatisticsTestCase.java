@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class, DBInitializerConfig.class }, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(true)
+@Rollback(false)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DBliveryStatisticsTestCase {
 
@@ -38,7 +38,7 @@ public class DBliveryStatisticsTestCase {
     DBliveryService service;
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
+/*
     @BeforeAll
     public void prepareDB() throws Exception {
         this.initializer.prepareDB();
@@ -56,20 +56,20 @@ public class DBliveryStatisticsTestCase {
         assertEquals(7,users.size());
         this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("alfredomartnez114","paulasez791","eduardomartin114","carlabentez531","nataliocastro278","florenciacastillo698","nataliomartnez928"));
     }   // pasó
-
+*/
     @Test
     public void testGetTopNSuppliers() {
         List<Supplier> suppliers = this.service.getTopNSuppliersInSentOrders(4);
         assertEquals(4,suppliers.size());
         this.assertListEquality(suppliers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("La Trattoria", "Olivia Pizzas & Empanadas", "El Ladrillo", "Pizza Nova"));
     }
-
+/*
     @Test
     public void testGetTop10MoreExpensiveProducts() {
         List<Product> products = this.service.getTop10MoreExpensiveProducts();
         assertEquals(9,products.size());
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Maxi hamburguesa completa","Milanesa napolitana","Ensalada César","Ensalada waldorf","Milanesa de pollo napolitana sola","Sándwich de bondiola de cerdo completo","Lomo al roquefort","Tortilla a la española","Choripán"));
-    } /* pasó! comentalo despues de probarlo :) */
+    } //pasooo 
 
     @Test
     public void testGetTop6UsersMoreOrders() {
@@ -112,14 +112,14 @@ public class DBliveryStatisticsTestCase {
         List<Order> orders = this.service.getDeliveredOrdersForUser("luzmartnez660");
         assertEquals(3,orders.size());
     }//Adeeentro 
-
+*/
     @Test
     public void testGetSentMoreOneHour() {
         List<Order> orders = this.service.getSentMoreOneHour();
         assertEquals(123,orders.size());
     }
 
-    
+  /*  
     @Test
     public void testGetDeliveredOrdersSameDay() {
         List<Order> orders = this.service.getDeliveredOrdersSameDay();
@@ -131,20 +131,20 @@ public class DBliveryStatisticsTestCase {
         List<User> users = this.service.get5LessDeliveryUsers();
         assertEquals(5,users.size());
         this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("luzpascual621","carlasantana949","juantorres331","rubnpastor499","mariorubio577"));
-    }
-
+    } // pasoooo
+*/
     @Test
     public void testGetBestSellingProduct() {
         Product product = this.service.getBestSellingProduct();
         assertEquals("Pizza napolitana",product.getName());
-    }
-
+    }	//pasooooo     -- Consultar si tengo que calcular las veces que se pidio x quantity, supongo que sip
+/*
     @Test
     public void testGetProductsOnePrice() {
         List<Product> products = this.service.getProductsOnePrice();
         assertEquals(27, products.size());
     }  //pasó
-
+*/
     @Test
     public void testGetProductIncreaseMoreThan100() {
         List<Product> products = this.service.getProductIncreaseMoreThan100();
@@ -152,13 +152,13 @@ public class DBliveryStatisticsTestCase {
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Sorrentinos de jamón y queso mozzarella","Sándwich de bondiola de cerdo, lechuga y tomate","Papas fritas con cheddar y panceta","Bondiola de cerdo a la riojana","Tabla fritas y fiambre","Ravioles de verdura"));
     }
 
-    
+ /*   
     @Test
     public void testGetSupplierLessExpensiveProduct() {
         assertEquals("Pancho Crazy", this.service.getSupplierLessExpensiveProduct().getName());
     }// Andaaandoooo 
   
-
+*/
     @Test
     public void testGetSuppliersDoNotSellOn() throws ParseException {
         List<Supplier> suppliers = this.service.getSuppliersDoNotSellOn(sdf.parse("28/2/2010"));
@@ -172,11 +172,11 @@ public class DBliveryStatisticsTestCase {
         assertEquals(4, products.size());
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Filet de merluza a la romana","Bife de chorizo grillado","Milanesa americana","Ensalada de hojas verdes y queso"));
     }
-
+/*
     @Test
     public void testGetOrdersCompleteMorethanOneDay() {
         assertEquals(99, this.service.getOrdersCompleteMorethanOneDay().size());
-    }
+    }		//pasooooo
 
     @Test
     public void testGetProductsWithPriceAt() throws ParseException {
@@ -189,14 +189,14 @@ public class DBliveryStatisticsTestCase {
         assertEquals("Lomo a las cuatro pimientas", ((Product)prices.get(98)[0]).getName());
         assertEquals(227.0F, prices.get(98)[1]);
     } //pasooooo
-
+*/
     @Test
     public void testGetProductsNotSold() {
         List<Product> products = this.service.getProductsNotSold();
         assertEquals(5,products.size());
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Bastoncitos de mozzarella a la milanesa","Milanesa Suiza","Sándwich de lomo completo","Tarta de pollo (2 porc.)","Lomo a la mostaza con papas noisette"));
     }
-
+/*
     @Test
     public void testGetOrderWithMoreQuantityOfProducts() throws ParseException {
         List<Order> ord = this.service.getOrderWithMoreQuantityOfProducts(sdf.parse("23/6/2014"));
@@ -216,7 +216,7 @@ public class DBliveryStatisticsTestCase {
         }  
     }    //pasó
   
-
+*/
 
 
     private <T> void assertListEquality(List<T> list1, List<T> list2) {

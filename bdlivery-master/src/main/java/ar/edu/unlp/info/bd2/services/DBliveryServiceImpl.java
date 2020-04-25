@@ -276,6 +276,24 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return this.repository.findProductsWithPriceAt(day);
 		
 	}
+
+	@Transactional
+	@Override
+	public List <User> get5LessDeliveryUsers(){
+		return this.repository.find5LessDeliveryUsers();
+	}
+	@Transactional
+	@Override
+	public Product getBestSellingProduct() {
+		return this.repository.findBestSellingProduct();
+	}
+	
+	@Transactional
+	@Override
+	public List<Order> getOrdersCompleteMorethanOneDay(){
+		return this.repository.findOrdersCompleteMoreThanOneDay();
+	}
+	
 /**
  *
  *

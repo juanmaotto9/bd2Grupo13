@@ -171,20 +171,23 @@ public class DBliveryRepository {
 	}
 	
 	
-	/* Obtiene los N proveedores que más productos tienen en ordenes que están siendo enviadas */
+	/*
+	 * 
+	 *  Obtiene los N proveedores que más productos tienen en ordenes que están siendo enviadas */
 	public List<Supplier> findTopNSuppliersInSentOrders(int n){
-		//String sent = "(select o from Order o join o.myState st where st.status = 'Sent')";
+		//String sent = "(select o from Order o where o.myState.status ='Sent')";
 		
-		String hql ="select p.supplier from Product p "
-				//+ "join p.supplier s "join p.productOrder po 
-			//	+ "where po.orden in (select o from Order o join o.myState st where st.status = 'Sent') "
-				+ " group by p.supplier order by count(p) asc";
-		
-		
+		String hql ="select po.product.supplier from ProductOrder po "
+					+ "where po.orden in (select o from Order o where o.myState.status ='Sent') "
+					+ " group by po.product.supplier order by (po) desc ";				
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(n);
 		List<Supplier> suppliers = query.getResultList();
-		return suppliers;
+		return suppliers;  // no me sale :(
 	}
+	/*
+	 * 
+	*
+	*/
 
 	/*  obtiene la/s orden/es con mayor cantidad de productos ordenados de la fecha dada  */
 	public List <Order> findOrderWithMoreQuantityOfProducts(Date day){
@@ -235,15 +238,41 @@ public class DBliveryRepository {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(precio);
 		query.setParameter("product", product);
 		query.setParameter("day", day);
-		List<Float> price = query.getResultList();  // ¿Cómo usar uniqueResult() ?
-		return price.get(query.getFirstResult());	// buscar método para poder retornar el unico elemento de una consulta. 		
+		List<Float> price = query.getResultList();
+		return price.get(query.getFirstResult());	 		
+	}
+	/* Obtiene los 5 repartidores que menos ordenes tuvieron asignadas (tanto sent como delivered)  */
+	public List <User> find5LessDeliveryUsers(){
+		String hql = "select o.deliveryUser from Order o "
+						+ "where o in (select distinct st.orden from Status st "
+											+ "where (st.status='Sent' OR st.status='Delivered') )"
+						+ "group by o.deliveryUser order by count(o) asc ";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(5);
+		List<User> users= query.getResultList();
+		return users;
+	}
+	/* Obtiene el producto con más demanda  */
+	public Product findBestSellingProduct() {
+		String hql = "select p.product from ProductOrder p "
+				+ "group by p.product order by count(p) desc ";
+		Product product =(Product) this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(1).getSingleResult();
+		 return product;	
+	}
+	
+/* obtiene las ordenes que fueron entregadas en m{as de un día desde que fueron iniciadas(status pending) */
+	public List<Order> findOrdersCompleteMoreThanOneDay(){
+		String hql = "select s.orden from Status s "
+				+ "where s.status='Delivered' and s.startDate > s.orden.dateOfOrder";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		List<Order> orders = query.getResultList();
+		return orders;
 	}
 	
 	/*
+	 * select o.* from orden o inner join Status s ON s.orden_id=o.id 
+	 *  where s.status='Delivered' and s.start_date > o.dateOfOrder;
 	 * 
-	 * 
-	 * 
-	 * */
+	 */
 	
 	
 	public List <Product> findProductsOnePrice(){
