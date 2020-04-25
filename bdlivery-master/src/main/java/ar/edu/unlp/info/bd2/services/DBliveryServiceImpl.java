@@ -290,14 +290,39 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return pruductos;
 	}
 	
+	@Transactional
+	@Override
 	public Supplier getSupplierLessExpensiveProduct() {
 		Supplier sup = this.repository.findSupplierLessExpensiveProduct();
 		return sup;
 	}
 	
+	@Transactional
+	@Override
 	public List <Product> getProductIncreaseMoreThan100(){
 		List<Product> productos = this.repository.findProductIncreaseMoreThan100();
 		return productos;
+	}
+	
+	@Transactional
+	@Override
+	public List <Order> getDeliveredOrdersForUser(String username){
+		List <Order> ordenes = this.repository.findDeliveredOrdersForUser(username);
+		return ordenes;
+	}
+	
+	@Transactional
+	@Override
+	public List <Order> getDeliveredOrdersSameDay(){
+		List <Order> ordenes = this.repository.findDeliveredOrdersSameDay();
+		return ordenes;
+	}
+	
+	@Transactional
+	@Override
+	public List <Order> getSentMoreOneHour(){
+		List <Order> ordenes = this.repository.findSentMoreOneHour();
+		return ordenes;
 	}
 	
 }
