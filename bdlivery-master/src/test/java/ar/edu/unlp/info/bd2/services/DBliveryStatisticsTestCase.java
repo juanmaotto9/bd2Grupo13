@@ -38,32 +38,39 @@ public class DBliveryStatisticsTestCase {
     DBliveryService service;
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
 /*
+
     @BeforeAll
     public void prepareDB() throws Exception {
         this.initializer.prepareDB();
     } 
 
-
+    
     @Test
     public void testGetAllOrdersMadeByUser() {
         assertEquals(5,this.service.getAllOrdersMadeByUser("rubnpastor265").size());
     } //pasó
 
+    
     @Test
     public void testGetUsersSpendingMoreThan() {
         List<User> users = this.service.getUsersSpendingMoreThan(6000F);
         assertEquals(7,users.size());
         this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("alfredomartnez114","paulasez791","eduardomartin114","carlabentez531","nataliocastro278","florenciacastillo698","nataliomartnez928"));
+
     }   // pasó
 */
+
     @Test
     public void testGetTopNSuppliers() {
         List<Supplier> suppliers = this.service.getTopNSuppliersInSentOrders(4);
         assertEquals(4,suppliers.size());
         this.assertListEquality(suppliers.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("La Trattoria", "Olivia Pizzas & Empanadas", "El Ladrillo", "Pizza Nova"));
     }
+
 /*
+
     @Test
     public void testGetTop10MoreExpensiveProducts() {
         List<Product> products = this.service.getTop10MoreExpensiveProducts();
@@ -76,50 +83,47 @@ public class DBliveryStatisticsTestCase {
         List<User> users = this.service.getTop6UsersMoreOrders();
         assertEquals(6,users.size());
         this.assertListEquality(users.stream().map(property -> property.getUsername()).collect(Collectors.toList()),Arrays.asList("maravega596","maramuoz97","eduardoalonso677","rubnpastor265","nataliocruz598","luzmartnez660"));
-    } // pasó!  
-    
-
+    } // pasó!
+     
     @Test
     public void testGetCancelledOrdersInPeriod() throws ParseException {
         List<Order> orders = this.service.getCancelledOrdersInPeriod(sdf.parse("1/1/2014"),sdf.parse("31/12/2014"));
         assertEquals(11,orders.size());
-    }   //pasó
+    }   //pasó 
 
     @Test
     public void testGetPendingOrders() {
         List<Order> orders = this.service.getPendingOrders();
         assertEquals(54,orders.size());
-    }//   pasóooooo 
+    }//   pasóooooo
   
-
+ 
     @Test
     public void testGetSentOrders() {
         List<Order> orders = this.service.getSentOrders();
         assertEquals(65,orders.size());
-    } // pasoooooo  
+    } // pasoooooo 
     
-
+ 
     @Test
     public void testGetDeliveredOrdersInPeriod() throws ParseException {
         List<Order> orders = this.service.getDeliveredOrdersInPeriod(sdf.parse("1/1/2013"),sdf.parse("31/12/2013"));
         assertEquals(18,orders.size());
-    }	//pasó! 
+    }	//pasó!
   
-
-   
     @Test
     public void testGetDeliveredOrdersForUser() {
         List<Order> orders = this.service.getDeliveredOrdersForUser("luzmartnez660");
         assertEquals(3,orders.size());
     }//Adeeentro 
-*/
+
+
     @Test
     public void testGetSentMoreOneHour() {
         List<Order> orders = this.service.getSentMoreOneHour();
         assertEquals(123,orders.size());
-    }
+    } //atrodeen 
 
-  /*  
     @Test
     public void testGetDeliveredOrdersSameDay() {
         List<Order> orders = this.service.getDeliveredOrdersSameDay();
@@ -137,26 +141,26 @@ public class DBliveryStatisticsTestCase {
     public void testGetBestSellingProduct() {
         Product product = this.service.getBestSellingProduct();
         assertEquals("Pizza napolitana",product.getName());
-    }	//pasooooo     -- Consultar si tengo que calcular las veces que se pidio x quantity, supongo que sip
-/*
+    }	//     -- tengo que calcular las veces que se pidio x quantity, supongo que sip
+
+    /*
     @Test
     public void testGetProductsOnePrice() {
         List<Product> products = this.service.getProductsOnePrice();
         assertEquals(27, products.size());
     }  //pasó
-*/
+
     @Test
     public void testGetProductIncreaseMoreThan100() {
         List<Product> products = this.service.getProductIncreaseMoreThan100();
         assertEquals(6, products.size());
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Sorrentinos de jamón y queso mozzarella","Sándwich de bondiola de cerdo, lechuga y tomate","Papas fritas con cheddar y panceta","Bondiola de cerdo a la riojana","Tabla fritas y fiambre","Ravioles de verdura"));
-    }
+    } //vos sos el que mas adentro la tiene 
 
- /*   
     @Test
     public void testGetSupplierLessExpensiveProduct() {
         assertEquals("Pancho Crazy", this.service.getSupplierLessExpensiveProduct().getName());
-    }// Andaaandoooo 
+    }// Andaaandoooo
   
 */
     @Test
@@ -172,6 +176,7 @@ public class DBliveryStatisticsTestCase {
         assertEquals(4, products.size());
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Filet de merluza a la romana","Bife de chorizo grillado","Milanesa americana","Ensalada de hojas verdes y queso"));
     }
+
 /*
     @Test
     public void testGetOrdersCompleteMorethanOneDay() {
@@ -214,8 +219,7 @@ public class DBliveryStatisticsTestCase {
             Order o = ord.get();
             assertEquals(Float.valueOf("2454"),o.getAmount());
         }  
-    }    //pasó
-  
+    }    //pasó  
 */
 
 

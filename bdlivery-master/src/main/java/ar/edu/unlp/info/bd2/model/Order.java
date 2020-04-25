@@ -114,7 +114,7 @@ public class Order {
 		this.amount = 0F;
 		this.coordX = coordX;
 		this.coordY = coordY;
-		this.myState = new Pending(this);
+		this.myState = new Pending(dateOfOrder, this);
 		this.status.add(this.myState);
 	}
 	
