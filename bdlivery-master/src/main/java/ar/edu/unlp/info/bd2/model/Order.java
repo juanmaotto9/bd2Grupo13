@@ -13,7 +13,7 @@ public class Order {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User deliveryUser;
 	
 	@OneToOne(fetch = FetchType.LAZY)
@@ -105,32 +105,19 @@ public class Order {
 	public void setAmount(Float amount) {
 		this.amount = amount;
 	}
-	public Order() {
-	}
+	public Order() {}
 	
 	public Order(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
 		this.user = client;
 		this.address = address;
 		this.dateOfOrder = dateOfOrder;
-		this.setAmount(0F);
+		this.amount = 0F;
 		this.coordX = coordX;
 		this.coordY = coordY;
 		this.myState = new Pending(this);
 		this.status.add(this.myState);
 	}
 	
-/*	public Order createOrder(Date dateOfOrder, String address, Float coordX,  Float coordY, User client) {
-		this.user = client;
-		this.address = address;
-		this.dateOfOrder = dateOfOrder;
-		this.coordX = coordX;
-		this.coordY = coordY;
-		this.myState = new Pending(this);
-		this.status.add(this.myState);
-		return this;
-	}	*/
-	
-
 	/* Nota: status es la coleccion de estados que tuve, y myState es el estado actual*/
 	
 	public Set<Status> getStatus() {
@@ -141,14 +128,12 @@ public class Order {
 		this.status.add(myState);
 	}
 	
-	public Float addAmountProduct(Float amountP) {
-		return (this.getAmount() + amountP);
+	public void addAmountProduct(Float price, Long quantity) {
+		 this.setAmount(this.getAmount() + (price * quantity) );	
 	}
 	
 	public void addProductOrder(Long quantity, Product myProduct) {
 		ProductOrder productOrder = new ProductOrder(quantity, myProduct, this);
-		Float montoProd = myProduct.getPrice() * quantity;
-		this.setAmount(this.addAmountProduct(montoProd));
 		this.products.add(productOrder);
 	}
 	

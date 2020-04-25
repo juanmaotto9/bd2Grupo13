@@ -14,9 +14,9 @@ public class Product {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Supplier supplier;
 	
-	@OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private ProductOrder productOrder;
-		
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private Set<ProductOrder> productOrder =new HashSet<ProductOrder>();
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	private Price priceNow;
 	
@@ -48,16 +48,12 @@ public class Product {
 		this.setWeight(weight);
 		this.setSupplier(supplier);
 		this.setPrices(price);
-		
-		// puede variar, por ahora creo que no es necesario pasarle el dia.
-		//siempre va a ser la fecha de creacion, asi que hasta que sea necesario...
-		//... si es que lo es, queda asi.
-		//this.creationDate = new Date();
 	}
 	
 	public Product(String name, Float price, Float weight, Supplier supplier, Date date) {
 		this(name,price,weight,supplier);
 		this.setcreationDate(date);
+		this.updateDayPrice(date);
 	}
 
 	public Long getId() {
@@ -92,8 +88,38 @@ public class Product {
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
 	}
-	// getPrices()
-	
+	public Set<ProductOrder> getProductOrder() {
+		return productOrder;
+	}
+
+	public void setProductOrder(Set<ProductOrder> productOrder) {
+		this.productOrder = productOrder;
+	}
+
+	public Price getPriceNow() {
+		return priceNow;
+	}
+
+	public void setPriceNow(Price priceNow) {
+		this.priceNow = priceNow;
+	}
+
+	public Float getActualPrice() {
+		return actualPrice;
+	}
+
+	public void setActualPrice(Float actualPrice) {
+		this.actualPrice = actualPrice;
+	}
+
+	public void setPrices(Set<Price> prices) {
+		this.prices = prices;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
 	public Set<Price> getPrices(){
 		return this.prices;
 	}
@@ -104,12 +130,9 @@ public class Product {
 		this.prices.add(this.priceNow);
 	}
 	
-	/*
-	public void setPrices(Float price, Date startDate) {
-		Price newPrice= new Price(price, startDate);
-		this.priceNow = newPrice;
-		this.prices.add(newPrice);
-	} */
+	public void updateDayPrice(Date day) {
+		this.getPriceNow().setStartDate(day);
+	}
 	
 	/*   encaradisimo */
 	public Price updateProductPrice(Float newPrice, Date startDate) {

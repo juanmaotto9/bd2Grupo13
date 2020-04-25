@@ -98,6 +98,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 				throw new DBliveryException("Orden no encontrada");
 			}
 			orden.addProductOrder(quantity, product); 
+			orden.addAmountProduct(this.repository.findPriceAt(product,orden.getDateOfOrder() ), quantity);
 			return this.repository.updateOrder(orden);
 		}catch(Exception e) {
 			return null;
@@ -186,7 +187,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 			Order order = this.repository.findOrderById(id);
 			order.changeStateToReceived(date);
 			return this.repository.updateOrder(order);
-		}else throw new DBliveryException("The order can't be finished");
+		}else throw new DBliveryException("The order can't be finished- order not found");
 	}
 	@Transactional
 	@Override
@@ -194,7 +195,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		try {
 			Order order = this.repository.findOrderById(id);
 			if (order == null) throw new DBliveryException("Order not found");
-			if (order.getDeliveryUser() == null) throw new DBliveryException("The order can't be finished");
+			if (order.getDeliveryUser() == null) throw new DBliveryException("The order can't be finished-user");
 			return !order.isCancel();
 		} catch (Exception e) {
 			return false;
@@ -266,6 +267,14 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	public List<User> getUsersSpendingMoreThan(Float amount){
 		return this.repository.findUserSpendingMoreThan(amount);
+	}
+	
+
+	@Transactional
+	@Override
+	public List <Object[]> getProductsWithPriceAt(Date day){
+		return this.repository.findProductsWithPriceAt(day);
+		
 	}
 /**
  *

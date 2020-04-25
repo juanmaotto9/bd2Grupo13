@@ -17,7 +17,8 @@ public class ProductOrder {
 	@Column(name= "quantity")
 	private Long quantity;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	//@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Product product;
 
 	public ProductOrder() {}

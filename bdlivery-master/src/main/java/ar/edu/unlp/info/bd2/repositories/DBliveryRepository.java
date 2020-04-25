@@ -36,7 +36,7 @@ public class DBliveryRepository {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("username", username);
 		List<User> users = query.getResultList();
-		return !users.isEmpty() ? users.get(query.getFirstResult()) : null;
+		return users.get(query.getFirstResult()); //!users.isEmpty() ? users.get(query.getFirstResult()) : null;
 	}
 	
 	
@@ -45,7 +45,7 @@ public class DBliveryRepository {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("email", email);
 		List<User> users = query.getResultList();
-		return !users.isEmpty() ? users.get(query.getFirstResult()) : null;
+		return  users.get(query.getFirstResult());  //!users.isEmpty() ? users.get(query.getFirstResult()) : null;
 	}
 
 
@@ -61,7 +61,7 @@ public class DBliveryRepository {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("id", id);
 		List<Order> orders = query.getResultList();
-		return !orders.isEmpty() ? orders.get(query.getFirstResult()) : null;
+		return orders.get(query.getFirstResult());  //!orders.isEmpty() ? orders.get(query.getFirstResult()) : null;
 	}
 
 	public Order persistOrder(Order order){
@@ -83,7 +83,7 @@ public class DBliveryRepository {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("id", id);
 		List<Product> products = query.getResultList();
-		return !products.isEmpty() ? products.get(query.getFirstResult()) : null;
+		return products.get(query.getFirstResult());//!products.isEmpty() ? products.get(query.getFirstResult()) : null;
 	}
 
 	public Product persistProduct(Product product){
@@ -97,7 +97,7 @@ public class DBliveryRepository {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("name", name);
 		List<Product> products = query.getResultList();
-		return !products.isEmpty() ? products : null;
+		return products; //!products.isEmpty() ? products : null;
 	}
 
 	public Product updateProductPrice(Product product) {
@@ -119,7 +119,7 @@ public class DBliveryRepository {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("id", id);
 		List<Order> orders = query.getResultList();
-		return !orders.isEmpty() ? orders : null;
+		return orders;
 	}
 	
 	public List <Order> findOrdersInPeriod(String state, Date startDate, Date endDate){
@@ -130,7 +130,7 @@ public class DBliveryRepository {
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
 		List<Order> orders = query.getResultList();
-		return !orders.isEmpty() ? orders : (orders = null); 
+		return orders; 
 	}
 	
 	public List<Product> findTop9MoreExpensiveProducts(){
@@ -138,7 +138,7 @@ public class DBliveryRepository {
 				+ "ORDER BY pr.price DESC";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(9);
 		List<Product> products = query.getResultList();
-		return !products.isEmpty() ? products : (products = null);
+		return products;
 	}
 	
 	/* Obtiene los 6 usuarios que más cantidad de ordenes han realizado */
@@ -147,7 +147,7 @@ public class DBliveryRepository {
 				+ "group by u.id order by count(o) desc";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(6);
 		List<User> users = query.getResultList();
-		return !users.isEmpty() ? users : (users = null);
+		return users;
 	}
 	
 	/* Obtiene el listado de las ordenes pendientes */
@@ -156,7 +156,7 @@ public class DBliveryRepository {
 				+ "where s.status = 'Pending'";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		List<Order> orders = query.getResultList();
-		return !orders.isEmpty() ? orders : (orders = null); 
+		return orders; 
 	}
 	
 /* Obtiene el listado de las ordenes enviadas y no entregadas */
@@ -167,7 +167,7 @@ public class DBliveryRepository {
 				+ "where s1.status = 'Delivered')";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		List<Order> orders = query.getResultList();
-		return !orders.isEmpty() ? orders : (orders = null); 
+		return orders; 
 	}
 	
 	
@@ -183,7 +183,7 @@ public class DBliveryRepository {
 		
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(n);
 		List<Supplier> suppliers = query.getResultList();
-		return !suppliers.isEmpty() ? suppliers : (suppliers = null);
+		return suppliers;
 	}
 
 	/*  obtiene la/s orden/es con mayor cantidad de productos ordenados de la fecha dada  */
@@ -204,7 +204,7 @@ public class DBliveryRepository {
 		query.setParameter("day", day);
 		query.setParameter("orden", aOrder);
 		List<Order> orders1 = query.getResultList();
-		return !orders1.isEmpty() ? orders1 : (orders1 = null);
+		return orders1;
 	}
 	
 	
@@ -214,8 +214,37 @@ public class DBliveryRepository {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("amount", amount);
 		List<User> users = query.getResultList();
-		return !users.isEmpty() ? users : (users = null);
+		return users;
 	}
+	
+	/* obtiene el listado de productos con su precio a una fecha dada */
+	public List <Object[]> findProductsWithPriceAt(Date day){
+		String hql = "select pr, p.price from Price p join p.product pr "
+				+ "where ( p.startDate <= :day) and ((:day <= p.endDate) OR (p.endDate = null))";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("day", day);
+		List<Object[]> listObjects = query.getResultList();
+		return listObjects;
+	}
+	
+	/*  busca el precio del producto vigente a la fecha de creación de la orden  */
+	public Float findPriceAt(Product product, Date day) {
+		String precio = "select p.price from Price p "
+				+ "where (p.product = :product) and "
+					+ "((p.startDate <= :day) and (:day <= p.endDate OR p.endDate = null))";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(precio);
+		query.setParameter("product", product);
+		query.setParameter("day", day);
+		List<Float> price = query.getResultList();  // ¿Cómo usar uniqueResult() ?
+		return price.get(query.getFirstResult());	// buscar método para poder retornar el unico elemento de una consulta. 		
+	}
+	
+	/*
+	 * 
+	 * 
+	 * 
+	 * */
+	
 	
 	public List <Product> findProductsOnePrice(){
 		String hql = "select s.product from Price s group by s.product having count(s) = 1 ";

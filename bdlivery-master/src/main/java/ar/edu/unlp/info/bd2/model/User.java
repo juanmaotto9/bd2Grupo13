@@ -34,6 +34,9 @@ public class User {
 	@Column(name="dateOfBirth")
 	private Date dateOfBirth;
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Order> orders =new HashSet<Order>();
+	
 	public Long getId() {
 		return id;
 	}
