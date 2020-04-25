@@ -233,9 +233,10 @@ public class DBliveryRepository {
 	}
 	
 	public List <Product> findProductIncreaseMoreThan100() {
-		String hql = "select s.product from Price s where" 
-				+ "(select v.price * 2 from Price v group by v.product having min(v.start_date))"
-				+ " <= (select m.price from Price m group by m.product having max(m.start_date))"; 
+		String hql = "select p from Product p join p.prices s" //62 
+				+ " where p.actualPrice > (s.price*2)";
+				//+ "(select v.price * 2 from Price v group by v.product having min(v.start_date))"
+				//+ " <= (select m.price from Price m group by m.product having max(m.start_date))"; 
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		List<Product> productos = query.getResultList();
 		return !productos.isEmpty() ? productos : (productos = null); 
