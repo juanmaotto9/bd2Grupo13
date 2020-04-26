@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class, DBInitializerConfig.class }, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(true)
+@Rollback(false)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DBliveryStatisticsTestCase {
 
@@ -40,11 +40,11 @@ public class DBliveryStatisticsTestCase {
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 
-
+/*
     @BeforeAll
     public void prepareDB() throws Exception {
         this.initializer.prepareDB();
-    } 
+    } */
 
   
     @Test

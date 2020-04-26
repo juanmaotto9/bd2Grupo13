@@ -317,9 +317,12 @@ public class DBliveryRepository {
 		return supp; 
 	}
 	
+	
+	
 	public List <Product> findProductIncreaseMoreThan100() {
-		String hql = "select s.product from Price s" 
-				+ " where s.product.actualPrice >= (2*s.price)";
+		String hql = "select s.product from Price s " 
+				+ " where exists (select s2.price from Price s2 where"
+				+ " s.product = s2.product and s2.price >= 2*s.price)";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		List<Product> productos = query.getResultList();
 		return !productos.isEmpty() ? productos : (productos = null); 
@@ -337,7 +340,7 @@ public class DBliveryRepository {
 	public List <Order> findDeliveredOrdersSameDay(){
 		String hql = "select o from Order o join o.myState as s "
 				+ "where s.status = 'Delivered' "
-				+ "and ( s.startDate BETWEEN o.dateOfOrder AND o.dateOfOrder + 1)";
+				+ "and s.startDate = o.dateOfOrder ";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		List<Order> orders = query.getResultList();
 		return !orders.isEmpty() ? orders : null;
