@@ -254,7 +254,7 @@ public class DBliveryRepository {
 	/* Obtiene el producto con más demanda  */
 	public Product findBestSellingProduct() {
 		String hql = "select p.product from ProductOrder p "
-				+ "group by p.product order by count(p) desc ";
+				+ "group by p.product order by sum(p.quantity) desc ";
 		Product product =(Product) this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(1).getSingleResult();
 		 return product;	
 	}
@@ -267,10 +267,28 @@ public class DBliveryRepository {
 		List<Order> orders = query.getResultList();
 		return orders;
 	}
+	/*  obtiene la lista de productos que no se han vendido  */
+	public List <Product> findProductsNotSold(){
+		String hql = "Select p from Product p "
+				+ "where p not in (select distinct po.product from ProductOrder po )";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		List<Product> products = query.getResultList();
+		return products;
+	}
+	/**
+	 * Obtiene los proveedores que no vendieron productos en un day	 */
+	public List <Supplier> findSuppliersDoNotSellOn(Date day){
+		String hql = "select distinct s from Supplier s "
+				+ "where s not in (select p.supplier from ProductOrder po join po.orden o join po.product p "
+									+ " where o.dateOfOrder=:day)";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("day", day);
+		List<Supplier> suppliers = query.getResultList();
+		return suppliers;
+	}
 	
 	/*
-	 * select o.* from orden o inner join Status s ON s.orden_id=o.id 
-	 *  where s.status='Delivered' and s.start_date > o.dateOfOrder;
+	 *
 	 * 
 	 */
 	

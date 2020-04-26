@@ -294,6 +294,17 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return this.repository.findOrdersCompleteMoreThanOneDay();
 	}
 	
+	@Transactional
+	@Override
+	public List <Product> getProductsNotSold(){
+		return this.repository.findProductsNotSold();
+	}
+	
+	@Transactional
+	@Override
+	public List <Supplier> getSuppliersDoNotSellOn(Date day){
+		return this.repository.findSuppliersDoNotSellOn(day);
+	}
 /**
  *
  *

@@ -24,7 +24,6 @@ public class ProductOrder {
 	public ProductOrder() {}
 	
 	public ProductOrder(Long quantity, Product myProduct, Order myOrden) {
-		super();
 		this.quantity = quantity;
 		this.product = myProduct;
 		this.orden = myOrden;
