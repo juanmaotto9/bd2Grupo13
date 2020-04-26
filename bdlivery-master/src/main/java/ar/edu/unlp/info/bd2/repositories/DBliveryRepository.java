@@ -174,15 +174,13 @@ public class DBliveryRepository {
 	/*
 	 * 
 	 *  Obtiene los N proveedores que más productos tienen en ordenes que están siendo enviadas */
-	public List<Supplier> findTopNSuppliersInSentOrders(int n){
-		//String sent = "(select o from Order o where o.myState.status ='Sent')";
-		
-		String hql ="select po.product.supplier from ProductOrder po "
-					+ "where po.orden in (select o from Order o where o.myState.status ='Sent') "
-					+ " group by po.product.supplier order by (po) desc ";				
+	public List<Supplier> findTopNSuppliersInSentOrders(int n){		
+		String hql ="select s from Order o join o.products as p"
+				+ " join p.product.supplier as s where o.myState.status = 'Sent' " 
+				+ " group by s.id order by SUM(p.quantity) DESC";		
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(n);
 		List<Supplier> suppliers = query.getResultList();
-		return suppliers;  // no me sale :(
+		return suppliers;
 	}
 	/*
 	 * 
@@ -293,8 +291,6 @@ public class DBliveryRepository {
 	public List <Product> findProductIncreaseMoreThan100() {
 		String hql = "select s.product from Price s" 
 				+ " where s.product.actualPrice >= (2*s.price)";
-				//+ "(select v.price * 2 from Price v group by v.product having min(v.start_date))"
-				//+ " <= (select m.price from Price m group by m.product having max(m.start_date))"; 
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		List<Product> productos = query.getResultList();
 		return !productos.isEmpty() ? productos : (productos = null); 
@@ -325,5 +321,16 @@ public class DBliveryRepository {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		List<Order> orders = query.getResultList();
 		return !orders.isEmpty() ? orders : null;
+	}
+	
+	public List <Product> findSoldProductsOn(Date day){
+		String hql = "select p from Product p where p in"
+				+ " (select distinct po.product from ProductOrder po join"
+				+ " po.orden as o where o.dateOfOrder = :day)";
+				//+ " ((p.startDate <= :day) and (:day <= p.endDate OR p.endDate = null))";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("day", day);
+		List<Product> productos = query.getResultList();
+		return !productos.isEmpty() ? productos : (productos = null);
 	}
 }
