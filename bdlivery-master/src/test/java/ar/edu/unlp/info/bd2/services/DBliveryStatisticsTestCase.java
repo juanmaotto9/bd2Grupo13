@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class, DBInitializerConfig.class }, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(false)
+@Rollback(true)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DBliveryStatisticsTestCase {
 

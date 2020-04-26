@@ -63,10 +63,11 @@ public class DBliveryRepository {
 		String hql = "from Order where id = :id ";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("id", id);
-		Order order = (Order) query.getSingleResult();
-		return order;
-		//List<Order> orders = query.getResultList();
-		//return orders.get(query.getFirstResult());  //!orders.isEmpty() ? orders.get(query.getFirstResult()) : null;
+		//Order order = (Order) query.getSingleResult();
+		//return order;
+		List<Order> orders = query.getResultList();
+		return orders.get(query.getFirstResult()); 
+		//!orders.isEmpty() ? orders.get(query.getFirstResult()) : null;
 	}
 
 	public Order persistOrder(Order order){
