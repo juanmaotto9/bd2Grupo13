@@ -354,4 +354,11 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return ordenes;
 	}
 	
+	@Transactional
+	@Override
+	public List <Product> getSoldProductsOn(Date day){
+		List<Product> productos = this.repository.findSoldProductsOn(day);
+		return productos;
+	}
+	
 }
