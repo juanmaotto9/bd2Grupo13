@@ -3,6 +3,7 @@ package ar.edu.unlp.info.bd2.model;
 import javax.persistence.*;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.Date;
 import java.util.Calendar;
@@ -160,7 +161,20 @@ public class Product {
     public void setcreationDate(Date creationDate) {
     	this.creationDate = creationDate;
     }
-
+    
+    public Float findPriceAtPeriod(Date dateOfOrder) {
+    	Iterator setprices = this.prices.iterator();
+    	boolean found=false;
+    	Float precio=0F;
+    	while (!found && setprices.hasNext() ) {
+    		Price p = (Price) setprices.next();
+    		if ((p.getEndDate()==(null) || dateOfOrder.after(p.getEndDate()) ) && p.getStartDate().before(dateOfOrder) ) {
+    			precio =(Float) p.getPrice();
+    			found = true;
+    		}
+    	}
+    	return precio;
+    }
 	
 	
 }

@@ -2,6 +2,7 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -100,6 +101,14 @@ public class Order {
 	}
 		
 	public Float getAmount() {
+    	/*Iterator setprod = this.products.iterator();
+    	boolean found=false;
+    	Float precio=0F;
+    	while (!found && setprod.hasNext() ) {
+    		ProductOrder p = (ProductOrder) setprod.next();
+    		precio= p.getProduct().findPriceAtPeriod(this.dateOfOrder);
+    		this.addAmountProduct(precio, p.getQuantity());
+    	}*/   //esto lo hice para ver si se solucionaba los errores de la orden con respecto al precio del producto
 		return amount;
 	}
 	public void setAmount(Float amount) {
@@ -129,11 +138,12 @@ public class Order {
 	}
 	
 	public void addAmountProduct(Float price, Long quantity) {
-		 this.setAmount(this.getAmount() + (price * quantity) );	
+		 this.setAmount((price * quantity) + this.getAmount());	
 	}
 	
 	public void addProductOrder(Long quantity, Product myProduct) {
 		ProductOrder productOrder = new ProductOrder(quantity, myProduct, this);
+		//this.addAmountProduct(myProduct.findPriceAtPeriod(this.dateOfOrder), quantity);
 		this.products.add(productOrder);
 	}
 	

@@ -35,8 +35,10 @@ public class DBliveryRepository {
 		String hql = "from User where username = :username ";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("username", username);
-		List<User> users = query.getResultList();
-		return users.get(query.getFirstResult()); //!users.isEmpty() ? users.get(query.getFirstResult()) : null;
+		User user = (User) query.getSingleResult();
+		return user;
+		//List<User> users = query.getResultList();
+		//return users.get(query.getFirstResult()); //!users.isEmpty() ? users.get(query.getFirstResult()) : null;
 	}
 	
 	
@@ -44,10 +46,11 @@ public class DBliveryRepository {
 		String hql = "from User where email = :email ";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("email", email);
-		List<User> users = query.getResultList();
-		return  users.get(query.getFirstResult());  //!users.isEmpty() ? users.get(query.getFirstResult()) : null;
+		User user = (User) query.getSingleResult();
+		return user;
+		//List<User> users = query.getResultList();
+		//return  users.get(query.getFirstResult());  //!users.isEmpty() ? users.get(query.getFirstResult()) : null;
 	}
-
 
 	public User persistUser(User user){
 		this.sessionFactory.getCurrentSession().save(user);
@@ -60,8 +63,10 @@ public class DBliveryRepository {
 		String hql = "from Order where id = :id ";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("id", id);
-		List<Order> orders = query.getResultList();
-		return orders.get(query.getFirstResult());  //!orders.isEmpty() ? orders.get(query.getFirstResult()) : null;
+		Order order = (Order) query.getSingleResult();
+		return order;
+		//List<Order> orders = query.getResultList();
+		//return orders.get(query.getFirstResult());  //!orders.isEmpty() ? orders.get(query.getFirstResult()) : null;
 	}
 
 	public Order persistOrder(Order order){
@@ -71,7 +76,7 @@ public class DBliveryRepository {
 	}
 
 	public Order updateOrder(Order order) {
-		this.sessionFactory.getCurrentSession().update(order);
+		this.sessionFactory.getCurrentSession().saveOrUpdate(order);
 		return this.findOrderById(order.getId());
 	}
 	
@@ -82,8 +87,10 @@ public class DBliveryRepository {
 		String hql = "from Product where id = :id ";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("id", id);
-		List<Product> products = query.getResultList();
-		return products.get(query.getFirstResult());//!products.isEmpty() ? products.get(query.getFirstResult()) : null;
+		Product product = (Product) query.getSingleResult();
+		return product;
+		//List<Product> products = query.getResultList();
+		//return products.get(query.getFirstResult());//!products.isEmpty() ? products.get(query.getFirstResult()) : null;
 	}
 
 	public Product persistProduct(Product product){
@@ -101,7 +108,7 @@ public class DBliveryRepository {
 	}
 
 	public Product updateProductPrice(Product product) {
-		this.sessionFactory.getCurrentSession().save(product);
+		this.sessionFactory.getCurrentSession().update(product);
 		return this.findProductById(product.getId());
 	}
 	
@@ -236,8 +243,11 @@ public class DBliveryRepository {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(precio);
 		query.setParameter("product", product);
 		query.setParameter("day", day);
+		//Float price = (Float) query.getSingleResult();
 		List<Float> price = query.getResultList();
-		return price.get(query.getFirstResult());	 		
+		//return price;
+		return !price.isEmpty() ? price.get(query.getFirstResult()) : (0F);
+		//return price.get(query.getFirstResult());	 		
 	}
 	/* Obtiene los 5 repartidores que menos ordenes tuvieron asignadas (tanto sent como delivered)  */
 	public List <User> find5LessDeliveryUsers(){

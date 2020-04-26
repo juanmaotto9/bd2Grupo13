@@ -92,17 +92,13 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Transactional
 	@Override
 	public Order addProduct(Long order,Long quantity, Product product )throws DBliveryException{
-		try {
-			Order orden = this.repository.findOrderById(order);
-			if(orden == null) {
-				throw new DBliveryException("Orden no encontrada");
-			}
-			orden.addProductOrder(quantity, product); 
-			orden.addAmountProduct(this.repository.findPriceAt(product,orden.getDateOfOrder() ), quantity);
-			return this.repository.updateOrder(orden);
-		}catch(Exception e) {
-			return null;
-		}	
+			Optional<Order> orden = this.getOrderById(order);
+	    	if (orden.isPresent()) {
+	    		Order ord= orden.get();
+	    		ord.addProductOrder(quantity, product); 
+	    		ord.addAmountProduct(this.repository.findPriceAt(product,ord.getDateOfOrder() ), quantity);
+	    		return this.repository.updateOrder(ord);
+	    	}else throw new DBliveryException("Orden no encontrada");
 	}
 	@Transactional
 	@Override
@@ -305,13 +301,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public List <Supplier> getSuppliersDoNotSellOn(Date day){
 		return this.repository.findSuppliersDoNotSellOn(day);
 	}
-/**
- *
- *
- *
- *
- 
-	*/
+
 	@Transactional
 	@Override
 	public List<Product> getProductsOnePrice() {
