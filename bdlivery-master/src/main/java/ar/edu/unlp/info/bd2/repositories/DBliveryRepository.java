@@ -310,9 +310,8 @@ public class DBliveryRepository {
 	}
 	
 	public Supplier findSupplierLessExpensiveProduct() {
-		String hql = "select p.supplier from Product p where p.priceNow.price = "
-				+ "(select min(s.price) from Price s )";
-		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+		String hql = "select pr.product.supplier from Price pr order by pr.price ASC";
+		Query query = this.sessionFactory.getCurrentSession().createQuery(hql).setMaxResults(1);
 		Supplier supp = (Supplier) query.getSingleResult();
 		return supp; 
 	}
