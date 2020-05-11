@@ -40,11 +40,11 @@ public class DBliveryStatisticsTestCase {
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 
-/*
+
     @BeforeAll
     public void prepareDB() throws Exception {
         this.initializer.prepareDB();
-    } */
+    } 
 
   
     @Test

@@ -190,30 +190,20 @@ public class DBliveryRepository {
 		List<Supplier> suppliers = query.getResultList();
 		return suppliers;
 	}
-	/*
-	 * 
-	*
-	*/
 
 	/*  obtiene la/s orden/es con mayor cantidad de productos ordenados de la fecha dada  */
 	public List <Order> findOrderWithMoreQuantityOfProducts(Date day){
-		String hql1 = "select po.orden from ProductOrder po join po.orden o"
-				+ " where o.dateOfOrder= :day group by po.orden order by count(po) desc";
-		Query queryy = this.sessionFactory.getCurrentSession().createQuery(hql1);
-		queryy.setParameter("day", day);
-		List<Order> orders = queryy.getResultList();  //hasta acá solo consigo las ordenes del dia :day
-		Order aOrder = orders.get(0);
-		
-		String hql = "select po.orden from ProductOrder po "
-			+ "where po.orden.dateOfOrder=:day "
-			+ "GROUP BY po.orden "
-			+ "having count(po) = (select count(po1) from ProductOrder po1 "
-									+ "where po1.orden = :orden)";
+		String hql = "select distinct po.orden from ProductOrder po join po.orden o"
+				+ " where (o.dateOfOrder = :day) and not exists "
+						+ "( select po1.orden from ProductOrder po1 join po1.orden o1 "
+							+ " where po1.orden.dateOfOrder=:day "
+							+ "GROUP BY po1.orden "
+							+ "having sum(po1.quantity) > sum(po.quantity) )"
+				+ "group by po.orden";
 		Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
 		query.setParameter("day", day);
-		query.setParameter("orden", aOrder);
-		List<Order> orders1 = query.getResultList();
-		return orders1;
+		List<Order> orders = query.getResultList();
+		return orders;
 	}
 	
 	
