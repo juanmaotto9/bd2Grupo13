@@ -1,0 +1,211 @@
+﻿Ottone, Juan Manuel     Nro: 13615/8
+Portal, Maria de los Angeles    Nro: 13196/1
+
+Bases de Datos 2 2020 -TP2
+Bases de Datos NoSQL / Práctica con MongoDB
+
+Parte 2: Primeros pasos con MongoDB
+
+5. Cree una nueva base de datos llamada airbdb, y una colección llamada apartments. En esa
+colección inserte un nuevo documento (un departamento) con los siguientes atributos:
+	{name:’Apartment with 2 bedrooms’, capacity:4}
+recupere la información del departamento usando el comando db.apartments.find() (puede
+agregar la función .pretty() al final de la expresión para ver los datos indentados). Notará
+que no se encuentran exactamente los atributos que insertó. ¿Cuál es la diferencia?
+
+creo la base de datos 'airbdb' ingresando: use airbdb
+creo una colección llamada apartments: db.createCollection('apartments')
+insertar en la colección un nuevo documento:
+	db.apartments.insertOne({"name":"Apartment with 2 bedrooms", "capacity":4})
+
+> db.apartments.find().pretty()
+{
+	"_id" : ObjectId("5eb85a04114719b9a86e212f"),
+	"name" : "Apartment with 2 bedrooms",
+	"capacity" : 4
+}
+
+La diferencia entre los datos insertados y los que se muestran utilizando db.apartments.find().pretty() es que se nos muestra el campo _id que mongo lo genera automáticamente para identificar unívocamente cada documento dentro de cada colección.
+
+
+6. Agregue los siguientes documentos a la colección de departamentos:
+
+db.apartments.insertMany([{name:'New Apartment', capacity:3, services: ['wifi', 'ac']}, 
+{name:'Nice apt for 6', capacity:6, services: ['parking']}, 
+{name:'1950s Apartment', capacity:3}, 
+{name:'Duplex Floor', capacity:4, services: ['wifi', 'breakfast', 'laundry']}])
+
+Y busque los departamentos:
+- con capacidad para 3 personas 		-->	db.apartments.find({"capacity":3})
+- con capacidad para 4 personas o más		-->	db.apartments.find({"capacity":{$gt:3}})  //Esto trae capacidad > 3
+- con wifi					-->	db.apartments.find({"services":{ $in:["wifi"]}})
+- que incluyan la palabra ‘Apartment’ en su nombre	-->	db.apartments.find({ "name": { $regex: /Apartment/}})
+- con la palabra ‘Apartment’ en su nombre y capacidad para más de 3 personas
+			-->	db.apartments.find({ "name": { $regex: /Apartment/}, "capacity":{$gt:3}})
+- sin servicios (es decir, que el atributo esté ausente)	-->	db.apartments.find({"services":null}) 
+	//también podría preguntarse por			-->	db.apartments.find({services:{$exists:false}})
+
+vuelva a realizar la última consulta pero proyecte sólo el nombre del departamento en los
+resultados, omitiendo incluso el atributo _id de la proyección.
+	-->	db.apartments.find({"services":null}, {"name":1})
+
+
+7. Actualice el “Duplex Floor” asignándole capacidad 5.
+-->	db.apartments.updateOne({"name":"Duplex Floor"}, {$set:{"capacity":5}})
+
+
+8. Agregue “laundry” al listado de services del “Nice apt for 6”.
+-->	db.apartments.updateOne({"name":"Nice apt for 6"}, {$push:{"services":"laundry"}})
+
+
+9. Agregue una persona más de capacidad a todos los departamentos con wifi.
+-->	db.apartments.updateMany({"services":"wifi"}, {$inc:{"capacity":1}} { multi: true })
+
+
+Parte 3: Índices
+
+Elimine todos los departamentos de la colección. Guarde en un archivo llamado ‘generador.js’ el siguiente código JavaScript y ejecútelo con: load(). 
+
+Para borrar todos departamentos de la colección hacemos:	-->	db.apartments.remove({})
+para cargar los nuevos: 		-->	load("/ruta/generador.js")
+
+10. Busque en la colección de departamentos si existe algún índice definido.
+> db.apartments.getIndexes()
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "airbdb.apartments"
+	}
+]
+Existe un indice definido para el campo "_id".
+
+
+11. Cree un índice para el campo name. Busque los departamentos que tengan en su nombre el
+string “11” y utilice el método explain("executionStats") al final de la consulta, para
+comparar la cantidad de documentos examinados y el tiempo en milisegundos de la
+consulta con y sin índice.
+> db.apartments.createIndex({"name":1})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+
+Realizo la busqueda con:	--> db.apartments.find({"name":{$regex: /11/}}).explain("executionStats")
+con índice:
+"executionStats" : {...
+		"executionTimeMillis" : 96,
+		"totalDocsExamined" : 2291
+		...}
+
+sin índice:
+"executionStats" : {...
+		"executionTimeMillis" : 49,
+		"totalDocsExamined" : 50000
+		...}
+
+
+
+12. Busque los departamentos dentro de la ciudad de Londres. Para esto, puede definir una
+variable en la terminal y asignarle como valor el polígono del archivo provisto
+greaterlondon.geojson (copiando y pegando directamente). Cree un índice geoespacial de
+tipo 2dsphere para el campo location de la colección apartments y, de la misma forma que
+en el punto 11, compare la performance de la consulta con y sin dicho índice.
+load("ruta/greaterlondon.geojson")	//al archivo le agregamos "var london ="{contenido} 
+creamos el indice:
+> db.apartments.createIndex({"location":"2dsphere"})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+
+Consulta realizada:
+> db.apartments.find({"location":{$geoWithin: {$geometry:london} } }).explain("executionStats")
+A la consulta anterior le agregamos .count() para conocer la cantidad de elementos que retorna la consulta: 12240
+
+Comparación de la performance:
+
+Con índice:
+"executionStats" : {...
+		"executionTimeMillis" : 300,
+		"totalDocsExamined" : 18341,
+		...}
+
+Sin índice:
+	"executionStats" : {...
+		"executionTimeMillis" : 397,
+		"totalDocsExamined" : 50000,
+		...}
+
+
+
+Parte 4: Aggregation Framework
+
+Al igual que en la parte 3, guarde en un archivo llamado ‘generadorReservas.js’ el siguiente
+código JavaScript y ejecútelo con la función load():
+
+Para cargar la informacion nueva: load(“/ruta/generadorReservas.js”)
+
+13. Obtenga 5 departamentos aleatorios de la colección.
+
+> db.reservations.aggregate([{$sample: {size: 5}}])
+
+
+14. Usando el framework de agregación, obtenga los departamentos que estén a 15km (o menos)
+del centro de la ciudad de Londres ([-0.127718, 51.507451]) y guárdelos en una nueva
+colección.
+
+db.apartments.aggregate([
+{$match:
+	{location:
+		{$geoWithin:{
+			$centerSphere:[ [-0.127718, 51.507451], 15 / 6378.1] }}}}, 
+{$out:"apartmentsNear"}
+])
+
+
+15. Para los departamentos hallados en el punto anterior, obtener una colección con cada
+departamento agregando un atributo reservas que contenga un array con todas sus reservas.
+Note que sólo es posible ligarlas por el nombre del departamento.
+
+db.apartmentsNear.aggregate([
+{$lookup:{
+	from:"reservations", 
+	localField:"name", 
+	foreignField:"apartmentName", 
+	as:"reservations"}}, 
+{$project:{
+	"reservations._id":0, 
+	"reservations.apartmentName":0}}, 
+{$out:"apartmentsWithReservations"}
+])
+
+
+
+16. Usando la colección del punto anterior, obtenga el promedio de precio pagado por reserva
+(precio completo, no dividir por la cantidad de noches) de cada departamento.
+
+db.apartmentsWithReservations.aggregate([
+{$unwind:{
+	path: "$reservations", 
+	preserveNullAndEmptyArrays: false}}, 
+{$group:{ 
+	_id:"$name", 
+	avgAmount: { $avg: "$reservations.amount"}}}])
+
+
+
+
+
+
+
+
+
+
