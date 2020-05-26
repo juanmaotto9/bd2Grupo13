@@ -27,7 +27,7 @@ public class DBliveryMongoRepository {
     }
 
     public MongoDatabase getDb() {
-        return this.client.getDatabase("dblivery");
+        return this.client.getDatabase("bd2_grupo13");
     }
 
     public <T extends PersistentObject> List<T> getAssociatedObjects(
