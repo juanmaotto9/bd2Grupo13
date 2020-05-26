@@ -162,12 +162,13 @@ Para cargar la informacion nueva: load(“/ruta/generadorReservas.js”)
 del centro de la ciudad de Londres ([-0.127718, 51.507451]) y guárdelos en una nueva
 colección.
 
-db.apartments.aggregate([
-{$match:
-	{location:
-		{$geoWithin:{
-			$centerSphere:[ [-0.127718, 51.507451], 15 / 6378.1] }}}}, 
-{$out:"apartmentsNear"}
+db.apartments.aggregate([{
+    $geoNear: {
+        near: { type: "Point", coordinates: [-0.127718, 51.507451] },
+        distanceField: "distance",
+        maxDistance: 15000,
+        spherical: true}},
+   {$out: "apartmentsNear"}
 ])
 
 
