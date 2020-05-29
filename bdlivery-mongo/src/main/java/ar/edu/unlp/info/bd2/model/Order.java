@@ -2,6 +2,8 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.*;
 
+import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
+
 public class Order extends GeneralPersistentObject {
 	
 	private User user;	

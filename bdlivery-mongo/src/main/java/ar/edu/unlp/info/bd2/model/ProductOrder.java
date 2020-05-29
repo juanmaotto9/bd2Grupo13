@@ -1,5 +1,7 @@
 package ar.edu.unlp.info.bd2.model;
 
+import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
+
 public class ProductOrder extends GeneralPersistentObject {
 
 	private Order orden; //por el momento queda

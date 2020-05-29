@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
+
 public class User extends GeneralPersistentObject {
 
 	private Set<Order> ordens =new HashSet<Order>();

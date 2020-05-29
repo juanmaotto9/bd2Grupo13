@@ -1,7 +1,0 @@
-/target/
-
-.classpath
-.settings/
-
-/bin/
-src/main/java/ar/edu/unlp/info/bd2/config/HibernateConfiguration.java

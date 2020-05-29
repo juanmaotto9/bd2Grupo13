@@ -2,6 +2,8 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
+
 
 //@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //dejo el comentario porq hay que saber como manejamos la herencia para cada estado

@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Calendar;
 import org.bson.types.ObjectId;
 
+import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
+
 public class Product extends GeneralPersistentObject {
 
 	private ObjectId supplier;

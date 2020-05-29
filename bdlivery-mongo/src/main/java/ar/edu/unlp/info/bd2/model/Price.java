@@ -3,6 +3,8 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.Calendar;
 import java.util.Date;
 
+import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
+
 public class Price extends GeneralPersistentObject{
 
 	private Product product; //por las dudas, por ahora, no lo elimino.

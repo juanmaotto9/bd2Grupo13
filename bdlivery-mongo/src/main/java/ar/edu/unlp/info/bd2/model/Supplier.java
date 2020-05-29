@@ -3,6 +3,8 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.*;
 import org.bson.types.ObjectId;
 
+import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
+
 public class Supplier extends GeneralPersistentObject {
 	
 	private Set<Product> products =new HashSet<Product>();
