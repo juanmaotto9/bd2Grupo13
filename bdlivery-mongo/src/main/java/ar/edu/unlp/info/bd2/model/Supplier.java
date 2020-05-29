@@ -1,33 +1,15 @@
 package ar.edu.unlp.info.bd2.model;
 
-import java.util.HashSet;
 import java.util.*;
-import javax.persistence.*;
+import org.bson.types.ObjectId;
 
-@Entity
-@Table(name = "supplier")
-public class Supplier {
+public class Supplier extends GeneralPersistentObject {
 	
-	@OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
 	private Set<Product> products =new HashSet<Product>();
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(name = "name")
 	private String name;
-	
-	@Column(name = "cuil")
 	private String cuil;
-	
-	@Column(name = "address")
 	private String address;
-	
-	@Column(name = "coord_x")
 	private Float coordX;
-	
-	@Column(name = "coord_y")
 	private Float coordY;
 	
 	public Supplier() { super(); }
@@ -80,14 +62,6 @@ public class Supplier {
 	public void setCoordY(Float coordY) {
 		this.coordY = coordY;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
 	public Set<Product> getProducts() {
 		return products;
@@ -97,12 +71,12 @@ public class Supplier {
 		this.products.add(product);
 	}
 	
-	public Product getProductById(Long id) {
+	public Product getProductById(ObjectId id) {
 		Product productById = new Product();
 		Iterator productIterator = this.products.iterator();
 		while (productIterator.hasNext()){
 			Product aProduct = (Product) productIterator.next();
-			if (aProduct.getId() == id){
+			if (aProduct.getObjectId() == id){
 				productById = aProduct;
 			}
 		}
@@ -110,16 +84,16 @@ public class Supplier {
 	}
 	
 	public Product createProduct(String name, Float weight, Float price) {
-		Product productNew = new Product(name, price, weight, this);
+		Product productNew = new Product(name, price, weight, this.getObjectId());
 		this.setProducts(productNew);
 		return productNew;
 	}
 
-	public Product updateProductPrice(Long id, Float price, Date startDate){
+	public Product updateProductPrice(ObjectId id, Float price, Date startDate){
 		Product aProduct = this.getProductById(id);
-		if (aProduct.getId() == id ) {
+		if (aProduct.getObjectId() == id ) {
 			aProduct.updateProductPrice(price, startDate);
-		}
+		} aProduct.updateProductPrice(price, startDate);
 		return aProduct;
 	}
 	

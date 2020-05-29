@@ -1,48 +1,26 @@
 package ar.edu.unlp.info.bd2.model;
 
-import javax.persistence.*;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Date;
 import java.util.Calendar;
+import org.bson.types.ObjectId;
 
-@Entity
-@Table(name = "product")
-public class Product {
+public class Product extends GeneralPersistentObject {
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Supplier supplier;
-	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private ObjectId supplier;
 	private Set<ProductOrder> productOrder =new HashSet<ProductOrder>();
-	
-	@OneToOne(fetch = FetchType.LAZY)
 	private Price priceNow;
-	
-	@OneToMany(mappedBy = "price", cascade = CascadeType.ALL)
 	private Set<Price> prices =new HashSet<Price>();
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(name = "name")
 	private String name;
-	
-	@Column(name = "price")
 	private Float actualPrice;
-	
-	@Column(name = "weight")
 	private Float weight;
-	
-	@Column(name= "creation_date")
 	private Date creationDate;
 	
 	public Product() { super(); }
 	
-	public Product(String name, Float price, Float weight, Supplier supplier) {
+	public Product(String name, Float price, Float weight, ObjectId supplier) {
 		super();
 		this.setName(name);
 		this.setPrice(price);
@@ -51,18 +29,10 @@ public class Product {
 		this.setPrices(price);
 	}
 	
-	public Product(String name, Float price, Float weight, Supplier supplier, Date date) {
+	public Product(String name, Float price, Float weight, ObjectId supplier, Date date) {
 		this(name,price,weight,supplier);
 		this.setcreationDate(date);
 		this.updateDayPrice(date);
-	}
-
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
 	}
 	
 	public String getName() {
@@ -83,10 +53,10 @@ public class Product {
 	public void setWeight(Float weight) {
 		this.weight = weight;
 	}
-	public Supplier getSupplier() {
+	public ObjectId getSupplier() {
 		return supplier;
 	}
-	public void setSupplier(Supplier supplier) {
+	public void setSupplier(ObjectId supplier) {
 		this.supplier = supplier;
 	}
 	public Set<ProductOrder> getProductOrder() {

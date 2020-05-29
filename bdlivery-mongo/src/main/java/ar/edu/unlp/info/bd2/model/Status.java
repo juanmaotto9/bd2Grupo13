@@ -1,24 +1,15 @@
 package ar.edu.unlp.info.bd2.model;
 
-import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@DiscriminatorColumn(name="type")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class Status {
+
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//dejo el comentario porq hay que saber como manejamos la herencia para cada estado
+public abstract class Status extends GeneralPersistentObject {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected Long id;
-	
-	@Column(name="status")
+
 	protected String status;
-	
-	@Column(name="start_date")
 	protected Date startDate;
-		
-	@ManyToOne(fetch = FetchType.LAZY)
 	protected Order orden;
 	
 	public Status() {}
@@ -47,14 +38,6 @@ public abstract class Status {
 
     protected Boolean isReceived(){
         return false;
-    }
-    
-	public Long getId(){
-        return id;
-    }
-
-    public void setId(Long id){
-        this.id = id;
     }
     
     public String getStatus() {

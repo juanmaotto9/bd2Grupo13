@@ -1,56 +1,21 @@
 package ar.edu.unlp.info.bd2.model;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name="orden")
-public class Order {
+public class Order extends GeneralPersistentObject {
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private User user;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private User deliveryUser;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	private Status myState;
-	
-	@OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
+	private User user;	
+	private User deliveryUser;	
+	private Status myState;	
 	private Set<Status> status =new HashSet<Status>();
-	
-	@OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
 	private Set<ProductOrder> products =new HashSet<ProductOrder>();
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(name="dateOfOrder")
 	private Date dateOfOrder;
-	
-	@Column(name="address")
 	private String address;
-	
-	@Column(name="coordX")
 	private Float coordX;
-	
-	@Column(name="coordY")
 	private Float coordY;
-	
-	@Column(name="amount")
 	private Float amount;
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 	public Date getDateOfOrder() {
 		return dateOfOrder;
 	}
@@ -101,14 +66,6 @@ public class Order {
 	}
 		
 	public Float getAmount() {
-    	/*Iterator setprod = this.products.iterator();
-    	boolean found=false;
-    	Float precio=0F;
-    	while (!found && setprod.hasNext() ) {
-    		ProductOrder p = (ProductOrder) setprod.next();
-    		precio= p.getProduct().findPriceAtPeriod(this.dateOfOrder);
-    		this.addAmountProduct(precio, p.getQuantity());
-    	}*/   //esto lo hice para ver si se solucionaba los errores de la orden con respecto al precio del producto
 		return amount;
 	}
 	public void setAmount(Float amount) {

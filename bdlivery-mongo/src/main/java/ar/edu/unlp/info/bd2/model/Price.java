@@ -1,28 +1,13 @@
 package ar.edu.unlp.info.bd2.model;
 
-import javax.persistence.*;
-
 import java.util.Calendar;
 import java.util.Date;
 
-@Entity
-@Table(name = "price")
-public class Price {
+public class Price extends GeneralPersistentObject{
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Product product;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(name = "price")
+	private Product product; //por las dudas, por ahora, no lo elimino.
 	private Float price;
-	
-	@Column(name = "start_date")
 	private Date startDate;
-	
-	@Column(name = "end_date")
 	private Date endDate;
 	
 	public Float getPrice() {

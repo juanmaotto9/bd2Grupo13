@@ -3,46 +3,20 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*; 
 
-@Entity
-@Table(name="user")
-public class User {
-	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+public class User extends GeneralPersistentObject {
+
 	private Set<Order> ordens =new HashSet<Order>();
-
+	private String email;
+	private String password;
+	private String username;
+	private String name;
+	private Date dateOfBirth;
+	private Set<Order> orders =new HashSet<Order>(); //Por ahora lo dejo, lo eliminamos mas adelante
+	
     public User() {
     };
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column(name="email")
-	private String email;
-	
-	@Column(name="password")
-	private String password;
-	
-	@Column(name="username")
-	private String username;
-	
-	@Column(name="name")
-	private String name;
-	
-	@Column(name="dateOfBirth")
-	private Date dateOfBirth;
-	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Set<Order> orders =new HashSet<Order>();
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 	public String getEmail() {
 		return email;
 	}

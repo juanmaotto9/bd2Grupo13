@@ -1,24 +1,9 @@
 package ar.edu.unlp.info.bd2.model;
 
-import javax.persistence.*;
+public class ProductOrder extends GeneralPersistentObject {
 
-
-@Entity
-@Table(name="productOrder")
-public class ProductOrder {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Order orden;
-	
-	@Column(name= "quantity")
+	private Order orden; //por el momento queda
 	private Long quantity;
-	
-	//@OneToOne(fetch = FetchType.LAZY)
-	@ManyToOne(fetch = FetchType.LAZY)
 	private Product product;
 
 	public ProductOrder() {}
