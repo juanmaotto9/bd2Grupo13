@@ -10,10 +10,12 @@ public abstract class GeneralPersistentObject implements PersistentObject {
 	@BsonId
     private ObjectId objectId;
 	
+	@Override
 	public ObjectId getObjectId() {
         return objectId;
     }
 	
+	@Override
     public void setObjectId(ObjectId objectId) {
         this.objectId = objectId;
     }

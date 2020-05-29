@@ -46,5 +46,15 @@ public class DBliveryMongoRepository {
         return stream.collect(Collectors.toList());
     }
 
+  /*  public void createUser(User usuario) {
+    	MongoCollection<User> collection = this.getDb().getCollection("user", User.class).ge;
+        collection.insertOne(usuario);
+    }
+    
+    public void createProduct(Product product) {
+    	MongoCollection<Product> collection = this.getDb().getCollection("products", Product.class);
+    	collection.insertOne(product);
+    }
+    */
 
 }
