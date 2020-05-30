@@ -68,9 +68,9 @@ public class DBliveryMongoTestCase {
         Product p1 = this.service.createProduct("Combo Stacker ATR", Float.valueOf(2521.2F), Float.valueOf(2.5F),s1);
         assertNotNull(p1.getObjectId());
         assertEquals(1,p1.getPrices().size());
-        Product p2 = this.service.updateProductPrice(p1.getObjectId(),Float.valueOf(3000.0F)/*,startDate,p1*/);
+        Product p2 = this.service.updateProductPrice(p1.getObjectId(),Float.valueOf(3000.0F),startDate);
         assertEquals(Float.valueOf(3000.0F),p2.getPrice());
-        //assertEquals(2,p2.getPrices().size());
+        assertEquals(2,p2.getPrices().size());
     }//casi :C
 
     @Test
@@ -227,6 +227,5 @@ public class DBliveryMongoTestCase {
         assertEquals(this.service.getProductsByName("Combo Stacker ATR").size(),2);
         assertEquals(this.service.getProductsByName("Combo Tostado de Campo").size(),1);
         assertEquals(this.service.getProductsByName("triple").size(),1);
-
-    }
+    }//andaaaaa
 }

@@ -13,6 +13,8 @@ public class Price extends GeneralPersistentObject{
 	private Date startDate;
 	private Date endDate;
 	
+	public Price() {}
+	
 	public Float getPrice() {
 		return price;
 	}

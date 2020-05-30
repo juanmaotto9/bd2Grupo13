@@ -101,14 +101,20 @@ public class DBliveryMongoRepository {
     
     public void UpdateProductPrice(ObjectId product, Price newPrice) {
     	MongoCollection<Supplier> collection = this.getDb().getCollection("Product", Supplier.class);
-    	collection.updateOne(eq("_id", product), Updates.addToSet("prices", newPrice));
-    	BasicDBObject updateQuery = new BasicDBObject(); updateQuery.append("$set", new BasicDBObject().append("price", newPrice.getPrice()));
+    	collection.updateOne(eq("_id", product), Updates.addToSet("actualPrice", newPrice.getPrice()));
+    	BasicDBObject updateQuery = new BasicDBObject();
+    	updateQuery.append("$set", new BasicDBObject().append("prices", newPrice));
     	collection.updateOne(eq("_id", product), updateQuery);
     }
 
 
     public Optional getUserById(ObjectId id){
     	MongoCollection collection = this.getDb().getCollection("user", User.class);
+    	return Optional.ofNullable(collection.find(eq("_id",id)).first());
+    }
+    
+    public Optional getProductById(ObjectId id){
+    	MongoCollection collection = this.getDb().getCollection("Product", Product.class);
     	return Optional.ofNullable(collection.find(eq("_id",id)).first());
     }
     
@@ -125,6 +131,12 @@ public class DBliveryMongoRepository {
     /* ------------------------ */
     
     public List<Product> getProductsByName(String name){
-    	return null;
+        MongoCollection<Product> collection = this.getDb().getCollection("Product", Product.class);
+        ArrayList<Product> list = new ArrayList<Product>();
+        for (Product dbObject : collection.find(regex("name", name)))
+        {
+            list.add(dbObject);
+        }
+        return list;
     }
 }

@@ -33,10 +33,16 @@ public class DBliveryServiceImpl implements DBliveryService {
 	}
 	
 	@Override
-	public Product updateProductPrice(ObjectId id, Float price, Date startDate, Product p1) throws DBliveryException{
+	public Product updateProductPrice(ObjectId id, Float price, Date startDate) throws DBliveryException{
         Price newPrice= new Price(price, startDate, id);
-    	repository.UpdateProductPrice(id, newPrice);
-    	return p1;  //esto no anda porq no se devolver el p2 pero la consulta esta bien creo
+        Optional<Product> optProd = repository.getProductById(id);
+        if (optProd.isPresent()){
+        	Product prod = optProd.get();
+        	repository.UpdateProductPrice(prod.getObjectId(), newPrice);
+        	return prod;
+        } else {
+        	return null;
+        }
 	}
 
 	

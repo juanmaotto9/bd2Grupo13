@@ -16,20 +16,20 @@ public class Product extends GeneralPersistentObject {
 	private Price priceNow;
 	private List<Price> prices =new ArrayList<Price>();
 	private String name;
-	private Float price;
+	private Float actualPrice;
 	private Float weight;
 	private Date creationDate;
 	
 	public Product() { super(); }
 	
 	
-	public Product(String name, Float price, Float weight, ObjectId supplier) {
+	public Product(String name, Float priceNew, Float weight, ObjectId supplier) {
 		super();
 		this.setName(name);
-		this.setPrice(price);
+		this.setPrice(priceNew);
 		this.setWeight(weight);
 		this.setSupplier(supplier);
-		this.addPrices(price);
+		this.addPrices(priceNew);
 	}
 	
 	
@@ -54,14 +54,6 @@ public class Product extends GeneralPersistentObject {
 		this.productOrder = productOrder;
 	}
 	
-	public Price getPriceNow() {
-		return priceNow;
-	}
-
-	public void setPriceNow(Price priceNow) {
-		this.priceNow = priceNow;
-	}
-	
 	public void setPrices(List<Price> prices) {
 		this.prices = prices;
 	}
@@ -73,16 +65,9 @@ public class Product extends GeneralPersistentObject {
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public Float getPrice() {
-		return price;
-	}
-	
-	public void setPrice(Float price) {
-		this.price = price;
 	}
 	
 	public Float getWeight() {
@@ -102,9 +87,30 @@ public class Product extends GeneralPersistentObject {
 		return this.creationDate;
 	}
 	
-    public void setcreationDate(Date creationDate) {
+    public void setCreationDate(Date creationDate) {
     	this.creationDate = creationDate;
     }
+    
+	public Float getPrice() {
+		return actualPrice;
+	}
+	
+	public void setPrice(Float priceNew) {
+		this.actualPrice = priceNew;
+	}
+    
+    
+  // ---------- hacen lo mismo pero fue para ver si pasaba el codec-----
+	public Price getPriceNow() {
+		return priceNow;
+	}
+
+	public void setPriceNow(Price priceNow) {
+		this.priceNow = priceNow;
+	}
+	//-------------------------------------------------------------------
+	
+	
 	
 	
 	/*
