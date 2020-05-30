@@ -65,46 +65,18 @@ public class DBliveryMongoRepository {
     }
 
     public void persistProduct(Product product){
-        MongoCollection<Product> collection = this.getDb().getCollection("Product", Product.class);
-        BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("name", product.getName());
-        FindIterable<Product> docsIterable = collection.find(whereQuery); 
-        //no dar bola al try lo encontre en google pero no es necesario despues lo saco y fue
-        try (MongoCursor<Product> iterator = docsIterable.iterator()){
-        int count = 0;
-        while (iterator.hasNext()) {
-        iterator.next();
-        count++;
-        }
-        if( count == 0){
-        	collection.insertOne(product);
-        }
-        }
-    }
+    	MongoCollection<Product> collection = this.getDb().getCollection("Product", Product.class);
+        collection.insertOne(product);
+    }  
     
-    public void persistSupplier(Supplier supplier){
-        MongoCollection<Supplier> collection = this.getDb().getCollection("Supplier", Supplier.class);
-        BasicDBObject query = new BasicDBObject();
-        query.put("cuil", supplier.getCuil());
-        FindIterable<Supplier> docs = collection.find(query); 
-        try (MongoCursor<Supplier> iterator = docs.iterator()){
-        int count = 0;
-        while (iterator.hasNext()) {
-        iterator.next();
-        count++;
-        }
-        if( count == 0){
-        	collection.insertOne(supplier);
-        }
-        }
-    }
-    
-    public void UpdateProductPrice(ObjectId product, Price newPrice) {
-    	MongoCollection<Supplier> collection = this.getDb().getCollection("Product", Supplier.class);
-    	collection.updateOne(eq("_id", product), Updates.addToSet("actualPrice", newPrice.getPrice()));
-    	BasicDBObject updateQuery = new BasicDBObject();
-    	updateQuery.append("$set", new BasicDBObject().append("prices", newPrice));
-    	collection.updateOne(eq("_id", product), updateQuery);
+	public void persistSupplier(Supplier supplier){
+		MongoCollection<Supplier> collection = this.getDb().getCollection("Supplier", Supplier.class);
+        collection.insertOne(supplier);
+    }	
+
+    public void persistOrder(Order orden){
+        MongoCollection<Order> collection = this.getDb().getCollection("Order", Order.class);
+        collection.insertOne(orden);
     }
 
 
@@ -138,5 +110,10 @@ public class DBliveryMongoRepository {
             list.add(dbObject);
         }
         return list;
+    }
+    
+    public void updateProduct(Product product){
+        MongoCollection<Product> collection = this.getDb().getCollection("Product", Product.class);
+        collection.replaceOne(eq("_id", product.getObjectId()), product);
     }
 }

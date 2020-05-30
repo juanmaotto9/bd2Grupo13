@@ -46,9 +46,19 @@ public abstract class Status extends GeneralPersistentObject {
     	return this.status;
     }
     
+    public void setStatus(String aString) {
+    	this.status = aString;
+    }
+    
+
     public Date getStartDate() {
     	return this.startDate;
     }
+    
+	public void setStartDate(Date startDate) {
+    	this.startDate = startDate;
+    }
+    
     	
     public Order getOrden() {
 		return orden;
@@ -57,10 +67,6 @@ public abstract class Status extends GeneralPersistentObject {
 	public void setOrden(Order orden) {
 		this.orden = orden;
 	}
-
-	public void setStartDate(Date startDate) {
-    	this.startDate = startDate;
-    }
     
     abstract public void setStatus();
     

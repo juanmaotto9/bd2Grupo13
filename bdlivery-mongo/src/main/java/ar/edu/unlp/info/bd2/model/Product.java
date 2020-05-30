@@ -99,8 +99,6 @@ public class Product extends GeneralPersistentObject {
 		this.actualPrice = priceNew;
 	}
     
-    
-  // ---------- hacen lo mismo pero fue para ver si pasaba el codec-----
 	public Price getPriceNow() {
 		return priceNow;
 	}
@@ -108,8 +106,35 @@ public class Product extends GeneralPersistentObject {
 	public void setPriceNow(Price priceNow) {
 		this.priceNow = priceNow;
 	}
-	//-------------------------------------------------------------------
 	
+	
+	public Price updateProductPrice(Float newPrice, Date startDate) {
+		Date endDate = this.DateUpdateDay(startDate, -1);
+		this.priceNow.setEndDate(endDate);
+		Price price= new Price(newPrice, startDate, this.getObjectId());
+		this.priceNow = price;
+		this.prices.add(this.priceNow);
+		this.setPrice(newPrice);
+		return priceNow;
+	}
+	
+	public Product updateProductPriceProd(Float newPrice, Date startDate) {
+		Date endDate = this.DateUpdateDay(startDate, -1);
+		this.priceNow.setEndDate(endDate);
+		Price price= new Price(newPrice, startDate, this.getObjectId());
+		this.priceNow = price;
+		this.prices.add(this.priceNow);
+		this.setPrice(newPrice);
+		return this;
+	}
+	
+	public Date DateUpdateDay(Date fecha, int dias){
+
+	      Calendar calendar = Calendar.getInstance();		
+	      calendar.setTime(fecha); // fecha que se recibe
+	      calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
+	      return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+	 }
 	
 	
 	
@@ -142,17 +167,9 @@ public class Product extends GeneralPersistentObject {
 		Price price= new Price(newPrice, startDate, this.getObjectId());
 		this.priceNow = price;
 		this.prices.add(this.priceNow);
-		this.addPrice(newPrice);
+		this.setPrice(newPrice);
 		return priceNow;
 	}
-	
-	public Date DateUpdateDay(Date fecha, int dias){
-
-	      Calendar calendar = Calendar.getInstance();		
-	      calendar.setTime(fecha); // fecha que se recibe
-	      calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
-	      return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
-	 }
 	
     
     public Float findPriceAtPeriod(Date dateOfOrder) {

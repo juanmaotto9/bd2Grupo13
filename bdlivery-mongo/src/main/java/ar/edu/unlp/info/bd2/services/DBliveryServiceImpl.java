@@ -34,14 +34,13 @@ public class DBliveryServiceImpl implements DBliveryService {
 	
 	@Override
 	public Product updateProductPrice(ObjectId id, Float price, Date startDate) throws DBliveryException{
-        Price newPrice= new Price(price, startDate, id);
         Optional<Product> optProd = repository.getProductById(id);
         if (optProd.isPresent()){
         	Product prod = optProd.get();
-        	repository.UpdateProductPrice(prod.getObjectId(), newPrice);
+        	repository.updateProduct(prod.updateProductPriceProd(price, startDate));
         	return prod;
         } else {
-        	return null;
+        	throw new DBliveryException("The product don't exist");
         }
 	}
 
@@ -76,18 +75,19 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return this.repository.getProductsByName(name);
 	}
 	
+	@Override
+	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY,User client) {
+    	Order orden = new Order(dateOfOrder, address, coordX, coordY, client);
+        this.repository.persistOrder(orden);
+        return orden;
+	}
+	
 /*
 
 
 	@Override
 	public Optional<Order> getOrderById(ObjectId id){
 		return this.repository.getOrderById(id);
-	}
-	
-
-	@Override
-	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY,User client) {
-		return null;
 	}
 
 	
