@@ -18,7 +18,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		this.repository = repository;
 	}
 	
-	/*@Override
+@Override
 	public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
 		User usuario = new User(username, name, email, password, dateOfBirth);
 		this.repository.createUser(usuario);
@@ -32,7 +32,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return producto; //tengo que devolverlo con objectId seteado
 		
 	}
-	
+	/*
 	@Override
 	Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date) {
 		return null;

@@ -46,8 +46,8 @@ public class DBliveryMongoRepository {
         return stream.collect(Collectors.toList());
     }
 
-  /*  public void createUser(User usuario) {
-    	MongoCollection<User> collection = this.getDb().getCollection("user", User.class).ge;
+    public void createUser(User usuario) {
+    	MongoCollection<User> collection = this.getDb().getCollection("user", User.class);
         collection.insertOne(usuario);
     }
     
@@ -55,6 +55,6 @@ public class DBliveryMongoRepository {
     	MongoCollection<Product> collection = this.getDb().getCollection("products", Product.class);
     	collection.insertOne(product);
     }
-    */
+    
 
 }
