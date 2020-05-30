@@ -1,13 +1,14 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.Calendar;
+import org.bson.types.ObjectId;
 import java.util.Date;
 
 import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
 
 public class Price extends GeneralPersistentObject{
 
-	private Product product; //por las dudas, por ahora, no lo elimino.
+	private ObjectId product; //por las dudas, por ahora, no lo elimino.
 	private Float price;
 	private Date startDate;
 	private Date endDate;
@@ -19,6 +20,7 @@ public class Price extends GeneralPersistentObject{
 	public void setPrice(Float price) {
 		this.price = price;
 	}
+	
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -35,25 +37,28 @@ public class Price extends GeneralPersistentObject{
 		this.endDate = endDate;
 	}
 	
-	public Price() {
+	public ObjectId getProduct() {
+		return product;
 	}
+	
+	public void setProduct(ObjectId prod) {
+		this.product = prod;
+	}
+	
+	
 	//para el primer producto el cual no recibe una startDate
-	public Price(Float price, Product myProduct) {
+	public Price(Float price, ObjectId myProduct) {
 		this.setPrice(price);
 		Calendar date = Calendar.getInstance();
 		this.setStartDate(date.getTime());
 		this.product = myProduct;
 	}
 	
-	public Price(Float price, Date startDate, Product myProduct) {
+	public Price(Float price, Date startDate, ObjectId myProduct) {
 		super();
 		this.price = price;
 		this.startDate = startDate;
 		this.product = myProduct;
 	}
-	
-	
-	
-	
 	
 }

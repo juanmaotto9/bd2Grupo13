@@ -18,6 +18,28 @@ public class DBliveryServiceImpl implements DBliveryService {
 		this.repository = repository;
 	}
 	
+	@Override
+	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
+		Product producto = new Product(name, price, weight, supplier.getObjectId());
+		this.repository.persistProduct(producto);
+		return producto;		
+	}
+	
+	@Override
+	public Supplier createSupplier(String name, String cuil, String address, Float coordX, Float coordY) {
+		Supplier supplier = new Supplier(name, cuil, address, coordX, coordY);
+        repository.persistSupplier(supplier);
+        return supplier;
+	}
+	
+	@Override
+	public Product updateProductPrice(ObjectId id, Float price, Date startDate, Product p1) throws DBliveryException{
+        Price newPrice= new Price(price, startDate, id);
+    	repository.UpdateProductPrice(id, newPrice);
+    	return p1;  //esto no anda porq no se devolver el p2 pero la consulta esta bien creo
+	}
+
+	
 	/*@Override
 	public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
 		User usuario = new User(username, name, email, password, dateOfBirth);
@@ -25,13 +47,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return usuario;
 	}
 
-	@Override
-	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
-		Product producto = new Product(name, price, weight, supplier.getObjectId());
-		this.repository.createProduct(producto);
-		return producto; //tengo que devolverlo con objectId seteado
-		
-	}
 	
 	@Override
 	Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date) {
@@ -39,15 +54,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 	}
 	
 
-	@Override
-	public Supplier createSupplier(String name, String cuil, String address, Float coordX, Float coordY) {
-		return null;
-	}
-
-	@Override
-	public Product updateProductPrice(ObjectId id, Float price, Date startDate) throws DBliveryException{
-		return null;
-	}
 
 
 	@Override

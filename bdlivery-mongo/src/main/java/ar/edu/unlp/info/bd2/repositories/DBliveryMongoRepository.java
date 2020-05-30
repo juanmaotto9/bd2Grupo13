@@ -6,13 +6,25 @@ import static com.mongodb.client.model.Filters.regex;
 
 import ar.edu.unlp.info.bd2.model.*;
 import ar.edu.unlp.info.bd2.mongo.*;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.Block;
 import com.mongodb.client.*;
+import com.mongodb.client.model.Updates;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.bson.BsonDocument;
+import org.bson.Document;
+import org.bson.json.JsonParseException;
+import org.bson.json.JsonWriter;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+
+
 
 public class DBliveryMongoRepository {
 
@@ -52,9 +64,49 @@ public class DBliveryMongoRepository {
     }
     
     public void createProduct(Product product) {
-    	MongoCollection<Product> collection = this.getDb().getCollection("products", Product.class);
-    	collection.insertOne(product);
+    	ESTE METODO ES PERSISTPRODUCT !!!
     }
     */
+    public void persistProduct(Product product){
+        MongoCollection<Product> collection = this.getDb().getCollection("Product", Product.class);
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("name", product.getName());
+        FindIterable<Product> docsIterable = collection.find(whereQuery); 
+        //no dar bola al try lo encontre en google pero no es necesario despues lo saco y fue
+        try (MongoCursor<Product> iterator = docsIterable.iterator()){
+        int count = 0;
+        while (iterator.hasNext()) {
+        iterator.next();
+        count++;
+        }
+        if( count == 0){
+        	collection.insertOne(product);
+        }
+        }
+    }
+    
+    public void persistSupplier(Supplier supplier){
+        MongoCollection<Supplier> collection = this.getDb().getCollection("Supplier", Supplier.class);
+        BasicDBObject query = new BasicDBObject();
+        query.put("cuil", supplier.getCuil());
+        FindIterable<Supplier> docs = collection.find(query); 
+        try (MongoCursor<Supplier> iterator = docs.iterator()){
+        int count = 0;
+        while (iterator.hasNext()) {
+        iterator.next();
+        count++;
+        }
+        if( count == 0){
+        	collection.insertOne(supplier);
+        }
+        }
+    }
+    
+    public void UpdateProductPrice(ObjectId product, Price newPrice) {
+    	MongoCollection<Supplier> collection = this.getDb().getCollection("Product", Supplier.class);
+    	collection.updateOne(eq("_id", product), Updates.addToSet("prices", newPrice));
+    	BasicDBObject updateQuery = new BasicDBObject(); updateQuery.append("$set", new BasicDBObject().append("price", newPrice.getPrice()));
+    	collection.updateOne(eq("_id", product), updateQuery);
+    }
 
 }
