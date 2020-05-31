@@ -51,7 +51,7 @@ public interface DBliveryService {
 	 * @return el producto modificado
 	 * @throws DBliveryException en caso de que no exista el producto para el id dado
 	 */
-	Product updateProductPrice(ObjectId id, Float price, Date startDate) throws DBliveryException;
+	Product updateProductPrice(ObjectId id, Float price, Date startDate, Product p1) throws DBliveryException;
 
 	/**
 	 * Obtiene el usuario por id

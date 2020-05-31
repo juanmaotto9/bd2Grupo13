@@ -1,8 +1,8 @@
 package ar.edu.unlp.info.bd2.model;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 import java.util.Date;
 import java.util.Calendar;
 import org.bson.types.ObjectId;
@@ -12,15 +12,16 @@ import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
 public class Product extends GeneralPersistentObject {
 
 	private ObjectId supplier;
-	private Set<ProductOrder> productOrder =new HashSet<ProductOrder>();
+	private List<ProductOrder> productOrder =new ArrayList<ProductOrder>();
 	private Price priceNow;
-	private Set<Price> prices =new HashSet<Price>();
+	private List<Price> prices =new ArrayList<Price>();
 	private String name;
-	private Float actualPrice;
+	private Float price;
 	private Float weight;
 	private Date creationDate;
 	
 	public Product() { super(); }
+	
 	
 	public Product(String name, Float price, Float weight, ObjectId supplier) {
 		super();
@@ -28,13 +29,45 @@ public class Product extends GeneralPersistentObject {
 		this.setPrice(price);
 		this.setWeight(weight);
 		this.setSupplier(supplier);
-		this.setPrices(price);
+		this.addPrices(price);
 	}
 	
-	public Product(String name, Float price, Float weight, ObjectId supplier, Date date) {
-		this(name,price,weight,supplier);
-		this.setcreationDate(date);
-		this.updateDayPrice(date);
+	
+
+	
+	
+	// -------------------------- set y get --------------
+	  
+	public ObjectId getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(ObjectId supplier) {
+		this.supplier = supplier;
+	}
+	
+	public List<ProductOrder> getProductOrder() {
+		return productOrder;
+	}
+
+	public void setProductOrder(List<ProductOrder> productOrder) {
+		this.productOrder = productOrder;
+	}
+	
+	public Price getPriceNow() {
+		return priceNow;
+	}
+
+	public void setPriceNow(Price priceNow) {
+		this.priceNow = priceNow;
+	}
+	
+	public void setPrices(List<Price> prices) {
+		this.prices = prices;
+	}
+	
+	public List<Price> getPrices(){
+		return this.prices;
 	}
 	
 	public String getName() {
@@ -43,78 +76,67 @@ public class Product extends GeneralPersistentObject {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public Float getPrice() {
-		return actualPrice;
+		return price;
 	}
+	
 	public void setPrice(Float price) {
-		this.actualPrice = price;
+		this.price = price;
 	}
+	
 	public Float getWeight() {
 		return weight;
 	}
 	public void setWeight(Float weight) {
 		this.weight = weight;
 	}
-	public ObjectId getSupplier() {
-		return supplier;
+	
+	public void addPrices(Float price) {
+		Price newPrice = new Price(price, this.getObjectId());
+		this.priceNow = newPrice;
+		this.prices.add(this.priceNow);
 	}
-	public void setSupplier(ObjectId supplier) {
-		this.supplier = supplier;
+	
+	public Date getCreationDate() {
+		return this.creationDate;
 	}
-	public Set<ProductOrder> getProductOrder() {
-		return productOrder;
-	}
-
-	public void setProductOrder(Set<ProductOrder> productOrder) {
-		this.productOrder = productOrder;
-	}
-
-	public Price getPriceNow() {
-		return priceNow;
-	}
-
-	public void setPriceNow(Price priceNow) {
-		this.priceNow = priceNow;
-	}
-
-	public Float getActualPrice() {
-		return actualPrice;
+	
+    public void setcreationDate(Date creationDate) {
+    	this.creationDate = creationDate;
+    }
+	
+	
+	/*
+	public Product(String name, Float price, Float weight, ObjectId supplier, Date date) {
+		this(name,price,weight,supplier);
+		this.setcreationDate(date);
+		this.updateDayPrice(date);
 	}
 
-	public void setActualPrice(Float actualPrice) {
-		this.actualPrice = actualPrice;
-	}
-
-	public void setPrices(Set<Price> prices) {
-		this.prices = prices;
-	}
+	
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-
-	public Set<Price> getPrices(){
-		return this.prices;
-	}
 	
-	public void setPrices(Float price) {
-		Price newPrice = new Price(price, this);
-		this.priceNow = newPrice;
-		this.prices.add(this.priceNow);
-	}
+	
+	
+	
+	//-------------------------- end set y get --------------
 	
 	public void updateDayPrice(Date day) {
 		this.getPriceNow().setStartDate(day);
 	}
 	
-	/*   encaradisimo */
+	   //encaradisimo 
 	public Price updateProductPrice(Float newPrice, Date startDate) {
 		Date endDate = this.DateUpdateDay(startDate, -1);
 		this.priceNow.setEndDate(endDate);
-		Price price= new Price(newPrice, startDate, this);
+		Price price= new Price(newPrice, startDate, this.getObjectId());
 		this.priceNow = price;
 		this.prices.add(this.priceNow);
-		this.setPrice(newPrice);
+		this.addPrice(newPrice);
 		return priceNow;
 	}
 	
@@ -126,13 +148,6 @@ public class Product extends GeneralPersistentObject {
 	      return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
 	 }
 	
-	public Date getCreationDate() {
-		return this.creationDate;
-	}
-	
-    public void setcreationDate(Date creationDate) {
-    	this.creationDate = creationDate;
-    }
     
     public Float findPriceAtPeriod(Date dateOfOrder) {
     	Iterator setprices = this.prices.iterator();
@@ -146,7 +161,5 @@ public class Product extends GeneralPersistentObject {
     		}
     	}
     	return precio;
-    }
-	
-	
+    }*/
 }

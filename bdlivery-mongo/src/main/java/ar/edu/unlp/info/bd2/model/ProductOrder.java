@@ -31,5 +31,14 @@ public class ProductOrder extends GeneralPersistentObject {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	
+	public Order getOrden() {
+		return orden;
+	}
+
+	public void setOrden(Order orden) {
+		this.orden = orden;
+	}
+	
 
 }
