@@ -8,13 +8,14 @@ import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
 
 public class User extends GeneralPersistentObject {
 
-	private Set<Order> ordens =new HashSet<Order>();
+	
 	private String email;
 	private String password;
 	private String username;
 	private String name;
 	private Date dateOfBirth;
-	private Set<Order> orders =new HashSet<Order>(); //Por ahora lo dejo, lo eliminamos mas adelante
+	//private Set<Order> ordens =new HashSet<Order>();
+	//private Set<Order> orders =new HashSet<Order>(); //Por ahora lo dejo, lo eliminamos mas adelante
 	
     public User() {
     };
@@ -68,7 +69,7 @@ public class User extends GeneralPersistentObject {
 
     }
 	
-    public Set<Order> getOrders() {
+  /*  public Set<Order> getOrders() {
         return ordens;
     }
 
@@ -84,6 +85,6 @@ public class User extends GeneralPersistentObject {
         Order newOrder = new Order(dateOfOrder, address, coordX,  coordY, this);
         addOrder(newOrder);
         return newOrder;
-    }
+    }*/
 	
 }

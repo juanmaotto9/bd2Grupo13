@@ -58,15 +58,12 @@ public class DBliveryMongoRepository {
         return stream.collect(Collectors.toList());
     }
 
- /*   public void createUser(User usuario) {
+    
+    public void createUser(User usuario) {
     	MongoCollection<User> collection = this.getDb().getCollection("user", User.class);
         collection.insertOne(usuario);
     }
-    
-    public void createProduct(Product product) {
-    	ESTE METODO ES PERSISTPRODUCT !!!
-    }
-    */
+
     public void persistProduct(Product product){
         MongoCollection<Product> collection = this.getDb().getCollection("Product", Product.class);
         BasicDBObject whereQuery = new BasicDBObject();

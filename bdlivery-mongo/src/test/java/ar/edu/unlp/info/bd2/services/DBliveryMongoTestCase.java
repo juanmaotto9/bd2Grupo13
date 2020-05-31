@@ -71,7 +71,7 @@ public class DBliveryMongoTestCase {
         Product p2 = this.service.updateProductPrice(p1.getObjectId(),Float.valueOf(3000.0F)/*,startDate,p1*/);
         assertEquals(Float.valueOf(3000.0F),p2.getPrice());
         //assertEquals(2,p2.getPrices().size());
-    }casi :C
+    }//casi :C
 
     @Test
     public void testCreateOrder() throws DBliveryException {

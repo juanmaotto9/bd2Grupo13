@@ -40,14 +40,14 @@ public class DBliveryServiceImpl implements DBliveryService {
 	}
 
 	
-	/*@Override
+	@Override
 	public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
 		User usuario = new User(username, name, email, password, dateOfBirth);
 		this.repository.createUser(usuario);
 		return usuario;
 	}
 
-	
+	/*
 	@Override
 	Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date) {
 		return null;
