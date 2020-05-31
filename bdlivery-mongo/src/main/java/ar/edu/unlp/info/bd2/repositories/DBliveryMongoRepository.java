@@ -106,4 +106,25 @@ public class DBliveryMongoRepository {
     	collection.updateOne(eq("_id", product), updateQuery);
     }
 
+
+    public Optional getUserById(ObjectId id){
+    	MongoCollection collection = this.getDb().getCollection("user", User.class);
+    	return Optional.ofNullable(collection.find(eq("_id",id)).first());
+    }
+    
+    public Optional getUserByEmail(String email){
+    	MongoCollection collection = this.getDb().getCollection("user", User.class);
+    	return Optional.ofNullable(collection.find(eq("email",email)).first());
+    }
+    
+    public Optional getUserByUsername(String username) {
+    	MongoCollection collection = this.getDb().getCollection("user", User.class);
+    	return Optional.ofNullable(collection.find(eq("username",username)).first());
+    }
+    
+    /* ------------------------ */
+    
+    public List<Product> getProductsByName(String name){
+    	return null;
+    }
 }

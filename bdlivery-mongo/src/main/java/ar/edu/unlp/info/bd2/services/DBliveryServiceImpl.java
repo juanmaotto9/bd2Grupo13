@@ -47,34 +47,37 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return usuario;
 	}
 
-	/*
-	@Override
-	Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date) {
-		return null;
-	}
-	
-
-
-
 	@Override
 	public Optional<User> getUserById(ObjectId id){
-		return null;
+		return this.repository.getUserById(id);
 	}
 
 	@Override
 	public Optional<User> getUserByEmail(String email){
-		return null;
+		return this.repository.getUserByEmail(email);
 	}
 
 	@Override
 	public Optional<User> getUserByUsername(String username){
-		return null;
+		return this.repository.getUserByUsername(username);
 	}
+	
+	/* --------------------- */
+	
+
+	@Override
+	public List<Product> getProductsByName(String name){
+		return this.repository.getProductsByName(name);
+	}
+	
+/*
+
 
 	@Override
 	public Optional<Order> getOrderById(ObjectId id){
-		return null;
+		return this.repository.getOrderById(id);
 	}
+	
 
 	@Override
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY,User client) {
@@ -138,12 +141,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 
 	@Override
 	public Status getActualStatus(ObjectId order) {
-		return null;
-	}
-
-
-	@Override
-	public List<Product> getProductsByName(String name){
 		return null;
 	}
 	*/
