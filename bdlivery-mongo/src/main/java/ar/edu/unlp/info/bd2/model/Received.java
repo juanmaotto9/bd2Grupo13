@@ -4,7 +4,10 @@ import java.util.Date;
 
 public class Received extends Status {
 	
-	public Received(){}
+	public Received(){
+		this.startDate = new Date();
+		this.setStatus();
+	}
 	
 	public Received(Date date) { 
 		this.setStartDate(date);

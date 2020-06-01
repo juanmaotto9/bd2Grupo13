@@ -4,17 +4,17 @@ import java.util.Date;
 
 public class Sent extends Status {
 	
-	public Sent() {}
+	//public Sent() {}
 	
 	public Sent(Date date) { 
 		this.setStartDate(date);
 		this.setStatus();
 	}
-	/*public Sent(Order myOrden) {
-		super(myOrden);
+	public Sent() {
+		this.startDate = new Date();
 		this.setStatus();
 	}
-	
+	/*
 	public Sent(Date date, Order myOrden) {
 		super(date, myOrden);
 		this.setStatus();

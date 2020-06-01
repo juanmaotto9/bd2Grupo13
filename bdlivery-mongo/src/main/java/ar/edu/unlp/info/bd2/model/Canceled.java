@@ -4,7 +4,10 @@ import java.util.Date;
 
 public class Canceled extends Status {
 	
-	public Canceled() {}
+	public Canceled() {
+		this.startDate = new Date();
+		this.setStatus();
+	}
 	
 	public Canceled(Date date) { 
 		this.setStartDate(date);

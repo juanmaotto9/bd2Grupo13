@@ -133,12 +133,22 @@ public class Order extends GeneralPersistentObject {
 		this.products.add(productOrder);
 	}
 	
+	
+	public Order changeStateToSent() {
+		this.myState = new Sent();
+		this.status.add(this.myState);
+		return this;
+	}
+	
+	public Order deliverOrder(User deliveryUser){
+		this.setDeliveryUser(deliveryUser);
+		return this.changeStateToSent();
+	}
+	
+	
 	/* Nota: status es la coleccion de estados que tuve, y myState es el estado actual*/
 	/* entrega de hibernate no usados
 	
-
-	 
-
 	public void addStatus(Status myState) {
 		this.status.add(myState);
 	}
@@ -152,7 +162,7 @@ public class Order extends GeneralPersistentObject {
 	public Boolean isFinish() {
 		return myState.isReceived();
 	}
-
+*/
 	public Boolean isCancel() {
 		return myState.isCanceled();
 	}
@@ -160,26 +170,21 @@ public class Order extends GeneralPersistentObject {
 	public Boolean isPending() {
 		return myState.isPending();
 	}
-	
-	public Order changeStateToSent() {
-		this.myState = new Sent(this);
-		this.addStatus(this.getMyState());
-		return this;
-	}
-	
+	/*
+
 	//	para la parte2	
 	public Order changeStateToSent(Date date) {
 		this.myState = new Sent(date, this);
 		this.addStatus(this.getMyState());
 		return this;
 	}
-
+*/
 	public Order changeStateToReceived() {
-		this.myState = new Received(this);
-		this.addStatus(this.getMyState());
+		this.myState = new Received();
+		this.status.add(this.myState);
 		return this;
 	}
-	
+	/*
 	//	para la parte 
 	public Order changeStateToReceived(Date date) {
 		this.myState = new Received(date, this);
@@ -199,12 +204,9 @@ public class Order extends GeneralPersistentObject {
 		this.addStatus(this.getMyState());
 		return this;
 	}
+*/
 
-	public Order deliverOrder(User deliveryUser){
-		this.setDeliveryUser(deliveryUser);
-		return this.changeStateToSent();
-	}
-	
+	/*
 	public Order deliverOrder(User deliveryUser, Date date) {
 		this.setDeliveryUser(deliveryUser);
 		this.changeStateToSent(date);

@@ -4,7 +4,10 @@ import java.util.Date;
 
 public class Pending extends Status {
 	
-	public Pending(){}
+	public Pending(){
+		this.startDate = new Date();
+		this.setStatus();
+	}
 	
 	public Pending(Date date) { 
 		this.setStartDate(date);

@@ -100,16 +100,78 @@ public class DBliveryServiceImpl implements DBliveryService {
 		
 		}
 	
-/*
-
-
+	@Override
+	public boolean canFinish(ObjectId id) throws DBliveryException{
+		try {
+			Optional<Order> order = this.getOrderById(id);
+			if (order.isPresent()) {
+	    		Order ord= order.get();
+				if (ord.getDeliveryUser() == null) throw new DBliveryException("The order can't be finished--DeliveryUser");
+				return !ord.isCancel();
+			}else  throw new DBliveryException("Order not found");
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 
 	@Override
+	public Order finishOrder(ObjectId order) throws DBliveryException{
+		if(this.canFinish(order)) {
+			Optional<Order> o = this.getOrderById(order);
+			//if (o.isPresent()) {
+	    		Order orden= o.get();
+	    		this.repository.updateOrder(orden.changeStateToReceived());
+			return orden;
+			//}else throw new DBliveryException("The order can't be finished"); //no me gusta repetir esta linea :C
+		}else throw new DBliveryException("The order can't be finished");
+	}
+	
+	@Override
+	public boolean canDeliver(ObjectId order) throws DBliveryException{
+		try {
+			Optional<Order> o = this.getOrderById(order); 
+			if (o.isPresent()) {
+	    		Order orden= o.get();
+				if (orden.getProducts().isEmpty()) throw new Exception("Order without products");
+				return orden.isPending();
+			}else  throw new DBliveryException("Order not found"); 
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	@Override
 	public Order deliverOrder(ObjectId order, User deliveryUser) throws DBliveryException{
+		if(this.canDeliver(order)) {
+			Optional<Order> o = this.repository.getOrderById(order);
+			Order orden= o.get();
+			this.repository.updateOrder(orden.deliverOrder(deliveryUser));
+			return orden;
+		}else throw new DBliveryException("The order can't be delivered");
+	}
+	
+	@Override
+	public Status getActualStatus(ObjectId order) {
+		try {
+			Optional <Order> o = this.getOrderById(order);
+			if(o.isPresent()) {
+				Order orden = o.get();
+				return orden.getMyState();
+			}else throw new DBliveryException("The order can't be delivered");
+		}catch (Exception e) {
+			return null;
+		}
+	}
+	
+	
+/*
+ 	@Override
+	public Order finishOrder(ObjectId order, Date date) throws DBliveryException{
 		return null;
 	}
 	
+
 	@Override
 	public Order deliverOrder(ObjectId order, User deliveryUser, Date date) throws DBliveryException{
 		return null;
@@ -125,38 +187,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return null;
 	}
 
-	
-	@Override
-	public Order finishOrder(ObjectId order) throws DBliveryException{
-		return null;
-	}
-	@Override
-	public Order finishOrder(ObjectId order, Date date) throws DBliveryException{
-		return null;
-	}
-
-
 	@Override
 	public boolean canCancel(ObjectId order) throws DBliveryException{
 		return false;
-	}
-
-
-	@Override
-	public boolean canFinish(ObjectId id) throws DBliveryException{
-		return false;
-	}
-
-
-	@Override
-	public boolean canDeliver(ObjectId order) throws DBliveryException{
-		return false;
-	}
-
-
-	@Override
-	public Status getActualStatus(ObjectId order) {
-		return null;
 	}
 	*/
 }

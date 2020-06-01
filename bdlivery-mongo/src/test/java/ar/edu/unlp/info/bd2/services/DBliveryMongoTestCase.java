@@ -47,7 +47,7 @@ public class DBliveryMongoTestCase {
         Date dob = cal.getTime();
         User u1 = this.service.createUser("hugo.gamarra@testmail.com", "123456", "hgamarra", "Hugo Gamarra", dob);
         assertNotNull(u1.getObjectId());
-    }
+    }//anda :)
 
     @Test
     public void testCreateProduct() {
@@ -71,7 +71,7 @@ public class DBliveryMongoTestCase {
         Product p2 = this.service.updateProductPrice(p1.getObjectId(),Float.valueOf(3000.0F),startDate);
         assertEquals(Float.valueOf(3000.0F),p2.getPrice());
         assertEquals(2,p2.getPrices().size());
-    }//casi :C
+    }//anda
 
     @Test
     public void testCreateOrder() throws DBliveryException {
@@ -96,7 +96,7 @@ public class DBliveryMongoTestCase {
         assertEquals(1,ord.getStatus().size());
         assertEquals(u1.getObjectId(),ord.getClient().getObjectId());
         assertEquals(1,ord.getProducts().size());
-    }
+    }//anda :)
 
     @Test
     public void testDeliverOrder() throws DBliveryException {
@@ -214,7 +214,7 @@ public class DBliveryMongoTestCase {
             assertEquals("hugo.gamarra@testmail.com", u7.getEmail());
             assertEquals(u7.getObjectId(), u1.getObjectId());
         }
-    }
+    }//anda :)
 
     @Test
     public void testGetProduct() {

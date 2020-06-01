@@ -172,6 +172,7 @@ public class Product extends GeneralPersistentObject {
 	}
 	
     */
+	/*---  creo que acá falla. no se actualizan el monto de la orden  ---*/
     public Float findPriceAtPeriod(Date dateOfOrder) {
     	Iterator setprices = this.prices.iterator();
     	boolean found=false;
