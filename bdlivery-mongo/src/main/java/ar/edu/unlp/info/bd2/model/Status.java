@@ -16,24 +16,9 @@ public abstract class Status extends GeneralPersistentObject {
 	
 	public Status() {}
 	
-	/*public Status(Order myOrden) {
-		this.startDate = new Date();
-		this.setOrden(myOrden);
-	}
-	
-	public Status(Date date, Order myOrden) {
+	public Status(Date date) {
 		this.setStartDate(date);
-		this.orden = myOrden;
 	}
-	    	
-    public Order getOrden() {
-		return orden;
-	}
-
-	public void setOrden(Order orden) {
-		this.orden = orden;
-	}
-	*/
 	    
     protected Boolean isSent(){
         return false;

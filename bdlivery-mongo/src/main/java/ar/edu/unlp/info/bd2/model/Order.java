@@ -145,6 +145,18 @@ public class Order extends GeneralPersistentObject {
 		return this.changeStateToSent();
 	}
 	
+	public Order deliverOrder(User deliveryUser, Date date) {
+		this.setDeliveryUser(deliveryUser);
+		this.changeStateToSent(date);
+		return this;
+	} 
+	
+	public Order changeStateToSent(Date date) {
+		this.myState = new Sent(date);
+		this.status.add(this.myState);
+		return this;
+	}
+	
 	
 	/* Nota: status es la coleccion de estados que tuve, y myState es el estado actual*/
 	/* entrega de hibernate no usados
@@ -170,50 +182,36 @@ public class Order extends GeneralPersistentObject {
 	public Boolean isPending() {
 		return myState.isPending();
 	}
-	/*
+	
 
-	//	para la parte2	
-	public Order changeStateToSent(Date date) {
-		this.myState = new Sent(date, this);
-		this.addStatus(this.getMyState());
-		return this;
-	}
-*/
+	
+
 	public Order changeStateToReceived() {
 		this.myState = new Received();
 		this.status.add(this.myState);
 		return this;
 	}
-	/*
-	//	para la parte 
+	
 	public Order changeStateToReceived(Date date) {
-		this.myState = new Received(date, this);
-		this.addStatus(this.getMyState());
+		this.myState = new Received(date);
+		this.status.add(this.myState);
 		return this;
 	}
-*/
+
 	public Order changeStateToCanceled() {
 		this.myState = new Canceled();
 		this.status.add(this.myState);
 		return this;
 	}
-	/*
-	//	para la parte 2	
+
+
 	public Order changeStateToCanceled(Date date) {
-		this.myState = new Canceled(date, this);
-		this.addStatus(this.getMyState());
+		this.myState = new Canceled(date);
+		this.status.add(this.myState);
 		return this;
 	}
 
 
-	
-	public Order deliverOrder(User deliveryUser, Date date) {
-		this.setDeliveryUser(deliveryUser);
-		this.changeStateToSent(date);
-		return this;
-	} 
-	
-	*/
 	
 	
 }

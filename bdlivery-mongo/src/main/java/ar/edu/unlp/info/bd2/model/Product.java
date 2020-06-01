@@ -32,6 +32,12 @@ public class Product extends GeneralPersistentObject {
 		this.addPrices(priceNew);
 	}
 	
+	public Product(String name, Float price, Float weight, ObjectId supplier, Date date) {
+		this(name,price,weight,supplier);
+		this.setCreationDate(date);
+		this.updateDayPrice(date);
+	}
+	
 	
 
 	
@@ -108,6 +114,14 @@ public class Product extends GeneralPersistentObject {
 	}
 	
 	
+	
+	
+	//------------------------_End set y get---------
+	
+	public void updateDayPrice(Date day) {
+		this.getPriceNow().setStartDate(day);
+	}
+	
 	public Price updateProductPrice(Float newPrice, Date startDate) {
 		Date endDate = this.DateUpdateDay(startDate, -1);
 		this.priceNow.setEndDate(endDate);
@@ -139,26 +153,14 @@ public class Product extends GeneralPersistentObject {
 	
 	
 	/*
-	public Product(String name, Float price, Float weight, ObjectId supplier, Date date) {
-		this(name,price,weight,supplier);
-		this.setcreationDate(date);
-		this.updateDayPrice(date);
-	}
 
-	
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
 	
 	
 	
 	
 	//-------------------------- end set y get --------------
 	
-	public void updateDayPrice(Date day) {
-		this.getPriceNow().setStartDate(day);
-	}
 	
 	   //encaradisimo 
 	public Price updateProductPrice(Float newPrice, Date startDate) {

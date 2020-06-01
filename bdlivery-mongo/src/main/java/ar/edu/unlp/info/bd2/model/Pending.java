@@ -13,15 +13,6 @@ public class Pending extends Status {
 		this.setStartDate(date);
 		this.setStatus();
 	}
-/*	public Pending(Order myOrden) {
-		super(myOrden);
-		this.setStatus();
-	}
-	
-	public Pending(Date date, Order myOrden) {
-		super(date, myOrden);
-		this.setStatus();
-	}*/
 	
 	public Boolean isPending(){
         return true;

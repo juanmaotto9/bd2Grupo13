@@ -25,6 +25,13 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return producto;		
 	}
 	
+ 	@Override
+ 	public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date){
+		Product producto = new Product(name, price, weight, supplier.getObjectId(), date);
+		this.repository.persistProduct(producto);
+		return producto;
+ 	}
+	
 	@Override
 	public Supplier createSupplier(String name, String cuil, String address, Float coordX, Float coordY) {
 		Supplier supplier = new Supplier(name, cuil, address, coordX, coordY);
@@ -119,11 +126,23 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Order finishOrder(ObjectId order) throws DBliveryException{
 		if(this.canFinish(order)) {
 			Optional<Order> o = this.getOrderById(order);
-			//if (o.isPresent()) {
+			if (o.isPresent()) {
 	    		Order orden= o.get();
 	    		this.repository.updateOrder(orden.changeStateToReceived());
 			return orden;
-			//}else throw new DBliveryException("The order can't be finished"); //no me gusta repetir esta linea :C
+			}else throw new DBliveryException("The order can't be finished");
+		}else throw new DBliveryException("The order can't be finished");
+	}
+	
+ 	@Override
+	public Order finishOrder(ObjectId order, Date date) throws DBliveryException{
+		if(this.canFinish(order)) {
+			Optional<Order> o = this.getOrderById(order);
+			if (o.isPresent()) {
+	    		Order orden= o.get();
+	    		this.repository.updateOrder(orden.changeStateToReceived(date));
+	    		return orden;
+			}else throw new DBliveryException("The order can't be finished");
 		}else throw new DBliveryException("The order can't be finished");
 	}
 	
@@ -145,9 +164,23 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Order deliverOrder(ObjectId order, User deliveryUser) throws DBliveryException{
 		if(this.canDeliver(order)) {
 			Optional<Order> o = this.repository.getOrderById(order);
-			Order orden= o.get();
-			this.repository.updateOrder(orden.deliverOrder(deliveryUser));
-			return orden;
+			if (o.isPresent()) {
+				Order orden= o.get();
+				this.repository.updateOrder(orden.deliverOrder(deliveryUser));
+				return orden;
+			}else throw new DBliveryException("The order can't be delivered");
+		}else throw new DBliveryException("The order can't be delivered");
+	}
+	
+	@Override
+	public Order deliverOrder(ObjectId order, User deliveryUser, Date date) throws DBliveryException{
+		if(this.canDeliver(order)) {
+			Optional<Order> o = this.repository.getOrderById(order);
+			if (o.isPresent()) {
+				Order orden= o.get();
+				this.repository.updateOrder(orden.deliverOrder(deliveryUser, date));
+				return orden;
+			}else throw new DBliveryException("The order can't be delivered");
 		}else throw new DBliveryException("The order can't be delivered");
 	}
 	
@@ -182,34 +215,27 @@ public class DBliveryServiceImpl implements DBliveryService {
 	public Order cancelOrder(ObjectId order) throws DBliveryException{
 		if(this.canCancel(order)) {
 			Optional<Order> o = this.getOrderById(order);
-			Order orden = o.get();
-			orden.changeStateToCanceled();
-			this.repository.updateOrder(orden);
-			return orden;
+			if (o.isPresent()) {
+				Order orden = o.get();
+				orden.changeStateToCanceled();
+				this.repository.updateOrder(orden);
+				return orden;
+			}else throw new DBliveryException("The order can't be cancelled");
 		}else throw new DBliveryException("The order can't be cancelled");
 	}
 	
-/*
- 	@Override
- 	public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date){
- 		return null;
- 	}
- 	
- 	@Override
-	public Order finishOrder(ObjectId order, Date date) throws DBliveryException{
-		return null;
-	}
-	
-
-	@Override
-	public Order deliverOrder(ObjectId order, User deliveryUser, Date date) throws DBliveryException{
-		return null;
-	}
-
-	
 	@Override
 	public Order cancelOrder(ObjectId order, Date date) throws DBliveryException{
-		return null;
+		if(this.canCancel(order)) {
+			Optional<Order> o = this.getOrderById(order);
+			if (o.isPresent()) {
+				Order orden = o.get();
+				orden.changeStateToCanceled(date);
+				this.repository.updateOrder(orden);
+				return orden;
+			}else throw new DBliveryException("The order can't be cancelled");
+		}else throw new DBliveryException("The order can't be cancelled");
 	}
-	*/
+
+
 }
