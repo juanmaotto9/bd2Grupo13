@@ -191,22 +191,22 @@ public class Order extends GeneralPersistentObject {
 		this.addStatus(this.getMyState());
 		return this;
 	}
-
+*/
 	public Order changeStateToCanceled() {
-		this.myState = new Canceled(this);
-		this.addStatus(this.getMyState());
+		this.myState = new Canceled();
+		this.status.add(this.myState);
 		return this;
 	}
-	
+	/*
 	//	para la parte 2	
 	public Order changeStateToCanceled(Date date) {
 		this.myState = new Canceled(date, this);
 		this.addStatus(this.getMyState());
 		return this;
 	}
-*/
 
-	/*
+
+	
 	public Order deliverOrder(User deliveryUser, Date date) {
 		this.setDeliveryUser(deliveryUser);
 		this.changeStateToSent(date);

@@ -164,8 +164,37 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}
 	}
 	
+
+	@Override
+	public boolean canCancel(ObjectId order) throws DBliveryException{
+		try {
+			Optional<Order> o = this.getOrderById(order); 
+			if (o.isPresent()) {
+	    		Order orden= o.get();
+	    		return orden.isPending();
+			}else  throw new DBliveryException("Order not found");
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	@Override
+	public Order cancelOrder(ObjectId order) throws DBliveryException{
+		if(this.canCancel(order)) {
+			Optional<Order> o = this.getOrderById(order);
+			Order orden = o.get();
+			orden.changeStateToCanceled();
+			this.repository.updateOrder(orden);
+			return orden;
+		}else throw new DBliveryException("The order can't be cancelled");
+	}
 	
 /*
+ 	@Override
+ 	public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date){
+ 		return null;
+ 	}
+ 	
  	@Override
 	public Order finishOrder(ObjectId order, Date date) throws DBliveryException{
 		return null;
@@ -177,19 +206,10 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return null;
 	}
 
-	@Override
-	public Order cancelOrder(ObjectId order) throws DBliveryException{
-		return null;
-	}
 	
 	@Override
 	public Order cancelOrder(ObjectId order, Date date) throws DBliveryException{
 		return null;
-	}
-
-	@Override
-	public boolean canCancel(ObjectId order) throws DBliveryException{
-		return false;
 	}
 	*/
 }
