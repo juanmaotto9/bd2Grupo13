@@ -6,7 +6,11 @@ public class Received extends Status {
 	
 	public Received(){}
 	
-	public Received(Order myOrden) {
+	public Received(Date date) { 
+		this.setStartDate(date);
+		this.setStatus();
+	}
+	/*public Received(Order myOrden) {
 		super(myOrden);
 		this.setStatus();
 	}
@@ -14,7 +18,7 @@ public class Received extends Status {
 	public Received(Date date, Order myOrden) {
 		super(date, myOrden);
 		this.setStatus();
-	}
+	}*/
 	
 	public Boolean isReceived(){
         return true;

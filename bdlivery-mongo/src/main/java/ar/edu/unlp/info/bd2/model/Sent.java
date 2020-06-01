@@ -6,7 +6,11 @@ public class Sent extends Status {
 	
 	public Sent() {}
 	
-	public Sent(Order myOrden) {
+	public Sent(Date date) { 
+		this.setStartDate(date);
+		this.setStatus();
+	}
+	/*public Sent(Order myOrden) {
 		super(myOrden);
 		this.setStatus();
 	}
@@ -14,7 +18,7 @@ public class Sent extends Status {
 	public Sent(Date date, Order myOrden) {
 		super(date, myOrden);
 		this.setStatus();
-	}
+	}*/
 		
 	public Boolean isSent(){
         return true;

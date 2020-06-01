@@ -6,7 +6,11 @@ public class Canceled extends Status {
 	
 	public Canceled() {}
 	
-	public Canceled(Order myOrden) {
+	public Canceled(Date date) { 
+		this.setStartDate(date);
+		this.setStatus();
+	}
+	/*public Canceled(Order myOrden) {
 		super(myOrden);
 		this.setStatus();
 	}
@@ -14,7 +18,7 @@ public class Canceled extends Status {
 	public Canceled(Date date, Order myOrden) {
 		super(date, myOrden);
 		this.setStatus();
-	}
+	}*/
 	
 	public Boolean isCanceled(){
         return true;

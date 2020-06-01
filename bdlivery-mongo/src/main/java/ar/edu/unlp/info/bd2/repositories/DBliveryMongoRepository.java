@@ -100,6 +100,11 @@ public class DBliveryMongoRepository {
     	return Optional.ofNullable(collection.find(eq("username",username)).first());
     }
     
+    public Optional getOrderById(ObjectId id){
+    	MongoCollection collection = this.getDb().getCollection("Order", Order.class);
+    	return Optional.ofNullable(collection.find(eq("_id",id)).first());
+    }
+    
     /* ------------------------ */
     
     public List<Product> getProductsByName(String name){
@@ -116,4 +121,12 @@ public class DBliveryMongoRepository {
         MongoCollection<Product> collection = this.getDb().getCollection("Product", Product.class);
         collection.replaceOne(eq("_id", product.getObjectId()), product);
     }
+    
+    public void updateOrder(Order order) {
+    	MongoCollection<Order> collection = this.getDb().getCollection("Order", Order.class);
+    	collection.replaceOne(eq("_id", order.getObjectId()), order);
+    }
+    
+    
+    
 }

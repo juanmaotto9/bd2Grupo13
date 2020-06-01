@@ -12,7 +12,7 @@ import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
 public class Product extends GeneralPersistentObject {
 
 	private ObjectId supplier;
-	private List<ProductOrder> productOrder =new ArrayList<ProductOrder>();
+	//private List<ProductOrder> productOrder =new ArrayList<ProductOrder>();
 	private Price priceNow;
 	private List<Price> prices =new ArrayList<Price>();
 	private String name;
@@ -46,13 +46,13 @@ public class Product extends GeneralPersistentObject {
 		this.supplier = supplier;
 	}
 	
-	public List<ProductOrder> getProductOrder() {
+/*	public List<ProductOrder> getProductOrder() {
 		return productOrder;
 	}
 
 	public void setProductOrder(List<ProductOrder> productOrder) {
 		this.productOrder = productOrder;
-	}
+	}*/
 	
 	public void setPrices(List<Price> prices) {
 		this.prices = prices;
@@ -171,7 +171,7 @@ public class Product extends GeneralPersistentObject {
 		return priceNow;
 	}
 	
-    
+    */
     public Float findPriceAtPeriod(Date dateOfOrder) {
     	Iterator setprices = this.prices.iterator();
     	boolean found=false;
@@ -184,5 +184,5 @@ public class Product extends GeneralPersistentObject {
     		}
     	}
     	return precio;
-    }*/
+    }
 }

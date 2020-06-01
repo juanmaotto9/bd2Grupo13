@@ -4,16 +4,16 @@ import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
 
 public class ProductOrder extends GeneralPersistentObject {
 
-	private Order orden; //por el momento queda
+	//private Order orden; //por el momento queda
 	private Long quantity;
-	private Product product;
+	private Product product; //conviene tener el producto o su objectId?
 
 	public ProductOrder() {}
 	
-	public ProductOrder(Long quantity, Product myProduct, Order myOrden) {
+	public ProductOrder(Long quantity, Product myProduct/*, Order myOrden*/) {
 		this.quantity = quantity;
 		this.product = myProduct;
-		this.orden = myOrden;
+	//	this.orden = myOrden;
 	}
 
 	public Long getQuantity() {
@@ -32,13 +32,13 @@ public class ProductOrder extends GeneralPersistentObject {
 		this.product = product;
 	}
 	
-	public Order getOrden() {
+	/*public Order getOrden() {
 		return orden;
 	}
 
 	public void setOrden(Order orden) {
 		this.orden = orden;
-	}
+	}*/
 	
 
 }

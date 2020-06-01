@@ -67,9 +67,6 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return this.repository.getUserByUsername(username);
 	}
 	
-	/* --------------------- */
-	
-
 	@Override
 	public List<Product> getProductsByName(String name){
 		return this.repository.getProductsByName(name);
@@ -82,19 +79,31 @@ public class DBliveryServiceImpl implements DBliveryService {
         return orden;
 	}
 	
-/*
-
+	/* --------------------- */
+	
 
 	@Override
 	public Optional<Order> getOrderById(ObjectId id){
 		return this.repository.getOrderById(id);
 	}
-
 	
 	@Override
 	public Order addProduct (ObjectId order,Long quantity, Product product )throws DBliveryException{
-		return null;
-	}
+		Optional<Order> orden = this.getOrderById(order);
+    	if (orden.isPresent()) {
+    		Order ord= orden.get();
+    		ord.addProductOrder(quantity, product); 
+    		//ord.addAmountProduct(this.repository.findPriceAt(product,ord.getDateOfOrder() ), quantity);
+    		this.repository.updateOrder(ord);
+    		return ord;
+    	}else throw new DBliveryException("Order not found");
+		
+		}
+	
+/*
+
+
+
 
 	@Override
 	public Order deliverOrder(ObjectId order, User deliveryUser) throws DBliveryException{

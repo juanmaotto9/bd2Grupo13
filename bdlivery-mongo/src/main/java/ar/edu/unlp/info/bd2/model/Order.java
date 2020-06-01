@@ -14,10 +14,9 @@ public class Order extends GeneralPersistentObject {
 	private Float coordY;
 	private Float amount;
 	private Status myState;	
-	private List<Status> statusList =new ArrayList<Status>();
+	private List<Status> status =new ArrayList<Status>();
 	private List<ProductOrder> products =new ArrayList<ProductOrder>();
 	private User deliveryUser;	
-	
 	
 	
 	public Order() {}
@@ -29,8 +28,8 @@ public class Order extends GeneralPersistentObject {
 		this.amount = 0F;
 		this.coordX = coordX;
 		this.coordY = coordY;
-		this.myState = new Pending(dateOfOrder, this);
-		//this.statusList.add(this.myState);
+		this.myState = new Pending(dateOfOrder);
+		this.status.add(this.myState);
 	}
 	
 	
@@ -95,12 +94,12 @@ public class Order extends GeneralPersistentObject {
 	}
 	
 	
-	public List<Status> getStatusList() {
-		return statusList;
+	public List<Status> getStatus() {
+		return status;
 	}
 	
-	public void setStatusList(List<Status> list) {
-		this.statusList = list;
+	public void setStatus(List<Status> list) {
+		this.status = list;
 	}
 	
 	
@@ -108,8 +107,8 @@ public class Order extends GeneralPersistentObject {
 		return products;
     }
 	
-	public void setProducts(List<Status> list) {
-		this.statusList = list;
+	public void setProducts(List<ProductOrder> list) {
+		this.products = list;
 	}
 	
 	
@@ -120,9 +119,19 @@ public class Order extends GeneralPersistentObject {
 	public Status getMyState() {
 		return myState;
 	}
-	
-	
+		
 	//----------- end get y Set ----------------------
+
+	
+	public void addAmountProduct(Float price, Long quantity) {
+		 this.setAmount((price * quantity) + this.getAmount());	
+	}
+
+	public void addProductOrder(Long quantity, Product myProduct) {
+		ProductOrder productOrder = new ProductOrder(quantity, myProduct/*, this*/);
+		this.addAmountProduct(myProduct.findPriceAtPeriod(this.dateOfOrder), quantity);
+		this.products.add(productOrder);
+	}
 	
 	/* Nota: status es la coleccion de estados que tuve, y myState es el estado actual*/
 	/* entrega de hibernate no usados
@@ -134,16 +143,7 @@ public class Order extends GeneralPersistentObject {
 		this.status.add(myState);
 	}
 	
-	public void addAmountProduct(Float price, Long quantity) {
-		 this.setAmount((price * quantity) + this.getAmount());	
-	}
-	
-	public void addProductOrder(Long quantity, Product myProduct) {
-		ProductOrder productOrder = new ProductOrder(quantity, myProduct, this);
-		//this.addAmountProduct(myProduct.findPriceAtPeriod(this.dateOfOrder), quantity);
-		this.products.add(productOrder);
-	}
-	
+
     
 	public Boolean isSended() {
 		return myState.isSent();

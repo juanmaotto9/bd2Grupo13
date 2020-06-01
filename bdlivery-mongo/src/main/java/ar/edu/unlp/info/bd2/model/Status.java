@@ -12,11 +12,11 @@ public abstract class Status extends GeneralPersistentObject {
 
 	protected String status;
 	protected Date startDate;
-	protected Order orden;
+	//protected Order orden;
 	
 	public Status() {}
 	
-	public Status(Order myOrden) {
+	/*public Status(Order myOrden) {
 		this.startDate = new Date();
 		this.setOrden(myOrden);
 	}
@@ -25,6 +25,15 @@ public abstract class Status extends GeneralPersistentObject {
 		this.setStartDate(date);
 		this.orden = myOrden;
 	}
+	    	
+    public Order getOrden() {
+		return orden;
+	}
+
+	public void setOrden(Order orden) {
+		this.orden = orden;
+	}
+	*/
 	    
     protected Boolean isSent(){
         return false;
@@ -59,14 +68,7 @@ public abstract class Status extends GeneralPersistentObject {
     	this.startDate = startDate;
     }
     
-    	
-    public Order getOrden() {
-		return orden;
-	}
 
-	public void setOrden(Order orden) {
-		this.orden = orden;
-	}
     
     abstract public void setStatus();
     
