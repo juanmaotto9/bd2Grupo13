@@ -25,7 +25,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-
 public class DBliveryMongoRepository {
 
     @Autowired private MongoClient client;
@@ -57,7 +56,24 @@ public class DBliveryMongoRepository {
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
         return stream.collect(Collectors.toList());
     }
+/*--  agregado de la etapa 2 --*/
 
+    public <T extends PersistentObject> List<T> getObjectsAssociatedWith(
+            ObjectId objectId, Class<T> objectClass, String association, String destCollection) {
+        AggregateIterable<T> iterable =
+                this.getDb()
+                        .getCollection(association, objectClass)
+                        .aggregate(
+                                Arrays.asList(
+                                        match(eq("destination", objectId)),
+                                        lookup(destCollection, "source", "_id", "_matches"),
+                                        unwind("$_matches"),
+                                        replaceRoot("$_matches")));
+        Stream<T> stream =
+                StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), 0), false);
+        return stream.collect(Collectors.toList());
+    }
+    /*-- hasta acá --*/
     
     public void createUser(User usuario) {
     	MongoCollection<User> collection = this.getDb().getCollection("user", User.class);
@@ -65,17 +81,17 @@ public class DBliveryMongoRepository {
     }
 
     public void persistProduct(Product product){
-    	MongoCollection<Product> collection = this.getDb().getCollection("Product", Product.class);
+    	MongoCollection<Product> collection = this.getDb().getCollection("product", Product.class);
         collection.insertOne(product);
     }  
     
 	public void persistSupplier(Supplier supplier){
-		MongoCollection<Supplier> collection = this.getDb().getCollection("Supplier", Supplier.class);
+		MongoCollection<Supplier> collection = this.getDb().getCollection("supplier", Supplier.class);
         collection.insertOne(supplier);
     }	
 
     public void persistOrder(Order orden){
-        MongoCollection<Order> collection = this.getDb().getCollection("Order", Order.class);
+        MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
         collection.insertOne(orden);
     }
 
@@ -86,7 +102,7 @@ public class DBliveryMongoRepository {
     }
     
     public Optional getProductById(ObjectId id){
-    	MongoCollection collection = this.getDb().getCollection("Product", Product.class);
+    	MongoCollection collection = this.getDb().getCollection("product", Product.class);
     	return Optional.ofNullable(collection.find(eq("_id",id)).first());
     }
     
@@ -101,14 +117,14 @@ public class DBliveryMongoRepository {
     }
     
     public Optional getOrderById(ObjectId id){
-    	MongoCollection collection = this.getDb().getCollection("Order", Order.class);
+    	MongoCollection collection = this.getDb().getCollection("order", Order.class);
     	return Optional.ofNullable(collection.find(eq("_id",id)).first());
     }
     
     /* ------------------------ */
     
     public List<Product> getProductsByName(String name){
-        MongoCollection<Product> collection = this.getDb().getCollection("Product", Product.class);
+        MongoCollection<Product> collection = this.getDb().getCollection("product", Product.class);
         ArrayList<Product> list = new ArrayList<Product>();
         for (Product dbObject : collection.find(regex("name", name)))
         {
@@ -118,12 +134,12 @@ public class DBliveryMongoRepository {
     }
     
     public void updateProduct(Product product){
-        MongoCollection<Product> collection = this.getDb().getCollection("Product", Product.class);
+        MongoCollection<Product> collection = this.getDb().getCollection("product", Product.class);
         collection.replaceOne(eq("_id", product.getObjectId()), product);
     }
     
     public void updateOrder(Order order) {
-    	MongoCollection<Order> collection = this.getDb().getCollection("Order", Order.class);
+    	MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
     	collection.replaceOne(eq("_id", order.getObjectId()), order);
     }
     

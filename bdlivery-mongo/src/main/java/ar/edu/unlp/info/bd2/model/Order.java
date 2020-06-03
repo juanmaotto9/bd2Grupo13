@@ -4,6 +4,8 @@ import java.util.*;
 import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
+import com.mongodb.client.model.geojson.Point;
+import com.mongodb.client.model.geojson.Position;
 
 public class Order extends GeneralPersistentObject {
 	
@@ -18,6 +20,8 @@ public class Order extends GeneralPersistentObject {
 	private List<ProductOrder> products =new ArrayList<ProductOrder>();
 	private User deliveryUser;	
 	
+	private Point position;
+	
 	
 	public Order() {}
 	
@@ -26,17 +30,29 @@ public class Order extends GeneralPersistentObject {
 		this.address = address;
 		this.dateOfOrder = dateOfOrder;
 		this.amount = 0F;
-		this.coordX = coordX;
-		this.coordY = coordY;
+		//this.coordX = coordX;
+		//this.coordY = coordY;
 		this.myState = new Pending(dateOfOrder);
 		this.status.add(this.myState);
+		Position pos = new Position(coordX, coordY);
+		this.position = new Point(pos);
 	}
 	
 	
 	//------------------- Get y Set ------------------
+
+	public Point getPosition() {
+		return position;
+	}
+
+	public void setPosition(Point position) {
+		this.position = position;
+	}
+	
 	public User getClient() {
 		return client;
 	}
+
 
 	public void setClient(User client) {
 		this.client = client;
