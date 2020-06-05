@@ -5,7 +5,7 @@ import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 
 
-@BsonDiscriminator
+
 public abstract class GeneralPersistentObject implements PersistentObject {
 	
 	@BsonId

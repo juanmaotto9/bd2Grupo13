@@ -2,12 +2,15 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+
 import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
 
 
 //@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //dejo el comentario porq hay que saber como manejamos la herencia para cada estado
-public abstract class Status extends GeneralPersistentObject {
+@BsonDiscriminator
+public abstract class Status {
 	
 
 	protected String status;

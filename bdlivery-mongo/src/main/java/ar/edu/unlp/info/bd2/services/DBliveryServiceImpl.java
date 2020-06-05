@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.model.*;
+import ar.edu.unlp.info.bd2.mongo.Association;
 import ar.edu.unlp.info.bd2.repositories.*;
 
 
@@ -99,7 +100,15 @@ public class DBliveryServiceImpl implements DBliveryService {
 		Optional<Order> orden = this.getOrderById(order);
     	if (orden.isPresent()) {
     		Order ord= orden.get();
-    		ord.addProductOrder(quantity, product); 
+    		/*-- modifico acá para no guardar los productos en la orden. uso association --*/
+    		/*Association ass = new Association(ord.getObjectId(), product.getObjectId());
+    		this.repository.saveAssociation(ord, product, "productOrder");
+    		System.out.println(ass.getId());
+    		System.out.println(ass.getSource());
+    		System.out.println(ass.getDestination());*/
+    		ord.addProductOrder(quantity, product);// comente esta linea para agregar solo el objeto association
+    		
+    		/*-- hasta acá modifique --*/
     		//ord.addAmountProduct(this.repository.findPriceAt(product,ord.getDateOfOrder() ), quantity);
     		this.repository.updateOrder(ord);
     		return ord;
