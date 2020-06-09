@@ -12,8 +12,8 @@ public class Order extends GeneralPersistentObject {
 	private User client;	
 	private Date dateOfOrder;
 	private String address;
-	private Float coordX;
-	private Float coordY;
+	//private Float coordX;
+	//private Float coordY;
 	private Float amount;
 	private Status myState;	
 	private List<Status> status =new ArrayList<Status>();
@@ -84,7 +84,7 @@ public class Order extends GeneralPersistentObject {
 		this.address = address;
 	}
 	
-	public Float getCoordX() {
+/*	public Float getCoordX() {
 		return coordX;
 	}
 	
@@ -100,7 +100,7 @@ public class Order extends GeneralPersistentObject {
 	public void setCoordY(Float coordY) {
 		this.coordY = coordY;
 	}
-	
+	*/
 	
 	public Float getAmount() {
 		return amount;

@@ -143,6 +143,17 @@ public class DBliveryMongoRepository {
     	collection.replaceOne(eq("_id", order.getObjectId()), order);
     }
     
+    /*-- etapa 2: Consultas --*/
+    public List <Order> getPendingOrders(){
+    	MongoCollection<Order> collection = this.getDb().getCollection("order",Order.class);
+    	ArrayList<Order> list = new ArrayList<Order>();
+        for (Order dbObject : collection.find(regex("myState.status","Pending")) )
+        {
+            list.add(dbObject);
+        }
+        return list;
+    }
+
     
     
 }

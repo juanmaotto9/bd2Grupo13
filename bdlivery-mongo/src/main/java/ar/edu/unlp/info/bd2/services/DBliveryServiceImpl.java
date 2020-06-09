@@ -246,5 +246,9 @@ public class DBliveryServiceImpl implements DBliveryService {
 		}else throw new DBliveryException("The order can't be cancelled");
 	}
 
+	@Override
+	public  List <Order>  getPendingOrders(){
+		return this.repository.getPendingOrders();
+	}
 
 }
