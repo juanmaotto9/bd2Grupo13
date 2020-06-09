@@ -1,6 +1,8 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.*;
+
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
@@ -12,8 +14,10 @@ public class Order extends GeneralPersistentObject {
 	private User client;	
 	private Date dateOfOrder;
 	private String address;
-	//private Float coordX;
-	//private Float coordY;
+	@BsonIgnore
+	private Float coordX;
+	@BsonIgnore
+	private Float coordY; 
 	private Float amount;
 	private Status myState;	
 	private List<Status> status =new ArrayList<Status>();
@@ -83,8 +87,8 @@ public class Order extends GeneralPersistentObject {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-/*	public Float getCoordX() {
+	/*-- @BsonIgnore --*/
+	public Float getCoordX() {
 		return coordX;
 	}
 	
@@ -100,7 +104,7 @@ public class Order extends GeneralPersistentObject {
 	public void setCoordY(Float coordY) {
 		this.coordY = coordY;
 	}
-	*/
+	/*-- --*/
 	
 	public Float getAmount() {
 		return amount;
@@ -191,10 +195,11 @@ public class Order extends GeneralPersistentObject {
 		return myState.isReceived();
 	}
 */
+	@BsonIgnore
 	public Boolean isCancel() {
 		return myState.isCanceled();
 	}
-
+	@BsonIgnore
 	public Boolean isPending() {
 		return myState.isPending();
 	}

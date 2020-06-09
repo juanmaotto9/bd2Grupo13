@@ -21,15 +21,17 @@ public class DBliveryServiceImpl implements DBliveryService {
 	
 	@Override
 	public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
-		Product producto = new Product(name, price, weight, supplier.getObjectId());
+		Product producto = new Product(name, price, weight, supplier);
 		this.repository.persistProduct(producto);
+		this.repository.saveAssociation(supplier, producto, "productSupplier");
 		return producto;		
 	}
 	
  	@Override
  	public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date){
-		Product producto = new Product(name, price, weight, supplier.getObjectId(), date);
+		Product producto = new Product(name, price, weight, supplier, date);
 		this.repository.persistProduct(producto);
+		this.repository.saveAssociation(supplier, producto, "productSupplier");
 		return producto;
  	}
 	
@@ -100,15 +102,7 @@ public class DBliveryServiceImpl implements DBliveryService {
 		Optional<Order> orden = this.getOrderById(order);
     	if (orden.isPresent()) {
     		Order ord= orden.get();
-    		/*-- modifico acá para no guardar los productos en la orden. uso association --*/
-    		/*Association ass = new Association(ord.getObjectId(), product.getObjectId());
-    		this.repository.saveAssociation(ord, product, "productOrder");
-    		System.out.println(ass.getId());
-    		System.out.println(ass.getSource());
-    		System.out.println(ass.getDestination());*/
-    		ord.addProductOrder(quantity, product);// comente esta linea para agregar solo el objeto association
-    		
-    		/*-- hasta acá modifique --*/
+    		ord.addProductOrder(quantity, product);
     		//ord.addAmountProduct(this.repository.findPriceAt(product,ord.getDateOfOrder() ), quantity);
     		this.repository.updateOrder(ord);
     		return ord;
@@ -251,4 +245,8 @@ public class DBliveryServiceImpl implements DBliveryService {
 		return this.repository.getPendingOrders();
 	}
 
+/*	@Override
+	public Product getMaxWeigth() {
+		return this.repository.getMaxWeigth();
+	}*/
 }

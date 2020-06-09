@@ -2,6 +2,8 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+
 public class Sent extends Status {
 	
 	public Sent(Date date) { 
@@ -13,7 +15,7 @@ public class Sent extends Status {
 		this.setStatus();
 	}
 
-		
+	@BsonIgnore
 	public Boolean isSent(){
         return true;
     }

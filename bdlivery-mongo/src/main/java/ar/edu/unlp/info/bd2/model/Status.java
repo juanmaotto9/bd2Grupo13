@@ -3,38 +3,41 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.Date;
 
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 
 import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
 
 
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//dejo el comentario porq hay que saber como manejamos la herencia para cada estado
 @BsonDiscriminator
 public abstract class Status {
 	
-
+/*-- agrego @BsonIgnore en los metodos isStatus() para que no se mapee --*/
 	protected String status;
 	protected Date startDate;
-	//protected Order orden;
+	
 	
 	public Status() {}
 	
 	public Status(Date date) {
 		this.setStartDate(date);
 	}
-	    
+	
+	@BsonIgnore    
     protected Boolean isSent(){
         return false;
     }
 
+	@BsonIgnore
     protected Boolean isPending(){
         return false;
     }
 
+	@BsonIgnore
     protected Boolean isCanceled(){
         return false;
     }
 
+	@BsonIgnore
     protected Boolean isReceived(){
         return false;
     }

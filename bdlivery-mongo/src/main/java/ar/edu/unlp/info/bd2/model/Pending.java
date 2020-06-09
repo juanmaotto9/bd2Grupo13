@@ -2,6 +2,8 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+
 public class Pending extends Status {
 	
 	public Pending(){
@@ -14,6 +16,7 @@ public class Pending extends Status {
 		this.setStatus();
 	}
 	
+	@BsonIgnore
 	public Boolean isPending(){
         return true;
     }

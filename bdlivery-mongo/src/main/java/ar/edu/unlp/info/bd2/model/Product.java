@@ -5,14 +5,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Date;
 import java.util.Calendar;
+
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 
 import ar.edu.unlp.info.bd2.mongo.GeneralPersistentObject;
 
 public class Product extends GeneralPersistentObject {
 
-	private ObjectId supplier;
-	//private List<ProductOrder> productOrder =new ArrayList<ProductOrder>();
+	@BsonIgnore
+	private Supplier supplier; //BsonIgnore(para que no se embeba ninguno)
+	@BsonIgnore
+	private List<ProductOrder> productOrder =new ArrayList<ProductOrder>();
 	private Price priceNow;
 	private List<Price> prices =new ArrayList<Price>();
 	private String name;
@@ -23,7 +27,7 @@ public class Product extends GeneralPersistentObject {
 	public Product() { super(); }
 	
 	
-	public Product(String name, Float priceNew, Float weight, ObjectId supplier) {
+	public Product(String name, Float priceNew, Float weight, Supplier supplier) {
 		super();
 		this.setName(name);
 		this.setPrice(priceNew);
@@ -32,7 +36,7 @@ public class Product extends GeneralPersistentObject {
 		this.addPrices(priceNew);
 	}
 	
-	public Product(String name, Float price, Float weight, ObjectId supplier, Date date) {
+	public Product(String name, Float price, Float weight, Supplier supplier, Date date) {
 		this(name,price,weight,supplier);
 		this.setCreationDate(date);
 		this.updateDayPrice(date);
@@ -44,22 +48,22 @@ public class Product extends GeneralPersistentObject {
 	
 	// -------------------------- set y get --------------
 	  
-	public ObjectId getSupplier() {
+	public Supplier getSupplier() {
 		return supplier;
 	}
 
-	public void setSupplier(ObjectId supplier) {
+	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
 	}
-	
-/*	public List<ProductOrder> getProductOrder() {
+/*--    get y set ignorados    --*/	
+	public List<ProductOrder> getProductOrder() {
 		return productOrder;
 	}
 
 	public void setProductOrder(List<ProductOrder> productOrder) {
 		this.productOrder = productOrder;
-	}*/
-	
+	}
+/*---*/
 	public void setPrices(List<Price> prices) {
 		this.prices = prices;
 	}
