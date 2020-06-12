@@ -174,17 +174,22 @@ public class DBliveryMongoRepository {
     //Estoy comparando mal la fecha creo, me devuelve 0 :(
     //la logica no creo que este mal
     public List<Product> getSoldProductsOn(Date day) {
-        SimpleDateFormat myDate = new SimpleDateFormat();
-        String myDay= myDate.format(day);
+      //  SimpleDateFormat myDate = new SimpleDateFormat();
+       // String myDay= myDate.format(day);
         ArrayList<Product> list = new ArrayList<>();
         MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
-        for (Order dbObject : collection.find(eq("myState.startDate", myDay)))
+        for (Order dbObject : collection.find(eq("dateOfOrder", day)))
         {
         	for (ProductOrder Products: dbObject.getProducts())
             list.add(Products.getProduct());
         }
         return list;
     }
+    
+    /*
+     * crear nuevo date (fecha: new DataTime(day)  //day se recibe por parametro)
+     * 
+     */
     
     public List<Order> getOrderNearPlazaMoreno() {
         ArrayList<Order> list = new ArrayList<>();
