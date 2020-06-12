@@ -89,13 +89,13 @@ public class DBliveryStatisticsTestCase {
     public void testGetSentOrders() {
         List<Order> orders = this.service.getSentOrders();
         assertEquals(65,orders.size());
-    }
+    }//uno maaas
 
     @Test
     public void testGetDeliveredOrdersInPeriod() throws ParseException {
         List<Order> orders = this.service.getDeliveredOrdersInPeriod(sdf.parse("1/1/2013"),sdf.parse("31/12/2013"));
         assertEquals(18,orders.size());
-    }
+    }//andaaa
 
     @Test
     public void testGetDeliveredOrdersForUser() {

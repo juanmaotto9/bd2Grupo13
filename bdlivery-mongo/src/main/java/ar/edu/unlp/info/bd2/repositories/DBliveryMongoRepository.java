@@ -159,6 +159,29 @@ public class DBliveryMongoRepository {
         }
         return list;
     }
+    
+    public List<Order> getSentOrders() {
+        ArrayList<Order> list = new ArrayList<>();
+        MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+        for (Order dbObject : collection.find(eq("myState.status", "Sent")))
+        {
+            list.add(dbObject);
+        }
+        return list;
+    }
+    
+    public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
+        ArrayList<Order> list = new ArrayList<>();
+        MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+        for (Order order : collection.aggregate(Arrays.asList(
+                match(eq("myState.status", "Delivered")),
+                match(gt("myState.startDate", startDate)),
+                match(lt("myState.startDate", endDate))
+        ))) {
+            list.add(order);
+        }
+        return list;
+    }
 
 
     public List<Order> getAllOrdersMadeByUser(String username) {
@@ -171,11 +194,7 @@ public class DBliveryMongoRepository {
         return list;
     }
     
-    //Estoy comparando mal la fecha creo, me devuelve 0 :(
-    //la logica no creo que este mal
     public List<Product> getSoldProductsOn(Date day) {
-      //  SimpleDateFormat myDate = new SimpleDateFormat();
-       // String myDay= myDate.format(day);
         ArrayList<Product> list = new ArrayList<>();
         MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
         for (Order dbObject : collection.find(eq("dateOfOrder", day)))

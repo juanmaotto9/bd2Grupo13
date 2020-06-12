@@ -245,11 +245,21 @@ public class DBliveryServiceImpl implements DBliveryService {
 	@Override
 	public  List <Order>  getPendingOrders(){
 		return this.repository.getPendingOrders();
-	}	
+	}
+	
+	@Override
+	public List <Order>  getSentOrders(){
+		return this.repository.getSentOrders();
+	}
 	
 	@Override
 	public Product getMaxWeigth() {
 		return this.repository.getMaxWeigth();
+	}
+	
+	@Override
+	public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
+		return this.repository.getDeliveredOrdersInPeriod(startDate, endDate);
 	}
 	
 	@Override
