@@ -239,14 +239,36 @@ public class DBliveryServiceImpl implements DBliveryService {
 			}else throw new DBliveryException("The order can't be cancelled");
 		}else throw new DBliveryException("The order can't be cancelled");
 	}
+	
+	//SEGUNDA ENTREGA
 
 	@Override
 	public  List <Order>  getPendingOrders(){
 		return this.repository.getPendingOrders();
-	}
-
-/*	@Override
+	}	
+	
+	@Override
 	public Product getMaxWeigth() {
 		return this.repository.getMaxWeigth();
-	}*/
+	}
+	
+	@Override
+    public List<Order> getAllOrdersMadeByUser(String username) throws DBliveryException{
+		return this.repository.getAllOrdersMadeByUser(username);
+	}
+	
+	@Override
+	public List <Product> getSoldProductsOn(Date day){
+		return this.repository.getSoldProductsOn(day);
+	}
+	
+	@Override
+	public List<Order> getOrderNearPlazaMoreno() {
+		return this.repository.getOrderNearPlazaMoreno();
+	}
+	
+	@Override
+    public List<Product> getProductsOnePrice() {
+    	return this.repository.getProductsOnePrice();
+    }
 }

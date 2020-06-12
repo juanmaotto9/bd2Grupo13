@@ -63,13 +63,13 @@ public class DBliveryStatisticsTestCase {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
+    }//ADEEENTRO
 
     @Test
     public void testGetMaxWeigth() {
         Product product = this.service.getMaxWeigth();
         assertEquals("Milanesa con rúcula",product.getName());
-    }
+    }//Andaaaa
 
 
     @Test
@@ -113,21 +113,21 @@ public class DBliveryStatisticsTestCase {
     public void testGetProductsOnePrice() {
         List<Product> products = this.service.getProductsOnePrice();
         assertEquals(27, products.size());
-    }
+    }// PAsó nomaaaas.
 
     @Test
     public void testGetSoldProductsOn() throws ParseException {
         List<Product> products = this.service.getSoldProductsOn(sdf.parse("28/2/2010"));
         assertEquals(4, products.size());
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Filet de merluza a la romana","Bife de chorizo grillado","Milanesa americana","Ensalada de hojas verdes y queso"));
-    }
+    }//devuelve 0, pero logicamente creo que esta bien, falta comparar bien la fecha :(
 
 
     @Test
     public void testGetOrderNearPlazaMoreno() {
         List<Order> orders = this.service.getOrderNearPlazaMoreno();
         assertEquals(3,orders.size());
-    }
+    }//ANDAAAA
 
 
 

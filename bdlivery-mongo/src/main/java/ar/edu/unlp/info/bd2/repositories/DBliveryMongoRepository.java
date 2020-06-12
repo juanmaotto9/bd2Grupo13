@@ -3,6 +3,7 @@ package ar.edu.unlp.info.bd2.repositories;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.regex;
+import static com.mongodb.client.model.Filters.*;
 
 import ar.edu.unlp.info.bd2.model.*;
 import ar.edu.unlp.info.bd2.mongo.*;
@@ -11,11 +12,16 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.model.*;
+import com.mongodb.client.model.geojson.Point;
+import com.mongodb.client.model.geojson.Position;
+
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import java.text.SimpleDateFormat;
 
 import org.bson.BsonDocument;
 import org.bson.Document;
@@ -154,7 +160,56 @@ public class DBliveryMongoRepository {
         return list;
     }
 
+
+    public List<Order> getAllOrdersMadeByUser(String username) {
+        MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+        ArrayList<Order> list = new ArrayList<>();
+        for (Order dbObject : collection.find(regex("client.username", username)))
+        {
+            list.add(dbObject);
+        }
+        return list;
+    }
     
+    //Estoy comparando mal la fecha creo, me devuelve 0 :(
+    //la logica no creo que este mal
+    public List<Product> getSoldProductsOn(Date day) {
+        SimpleDateFormat myDate = new SimpleDateFormat();
+        String myDay= myDate.format(day);
+        ArrayList<Product> list = new ArrayList<>();
+        MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+        for (Order dbObject : collection.find(eq("myState.startDate", myDay)))
+        {
+        	for (ProductOrder Products: dbObject.getProducts())
+            list.add(Products.getProduct());
+        }
+        return list;
+    }
     
+    public List<Order> getOrderNearPlazaMoreno() {
+        ArrayList<Order> list = new ArrayList<>();
+        MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+        Point myPoint = new Point(new Position(-34.921236,-57.954571));
+        for (Order order : collection.find(Filters.near("position", myPoint, 400.0, 0.0))) 
+        {
+            list.add(order);
+        }
+        return list;
+    }
+    
+    public List<Product> getProductsOnePrice(){
+    	ArrayList<Product> list = new ArrayList<>();
+        MongoCollection<Product> collection = this.getDb().getCollection("product", Product.class);
+        for (Product dbObject : collection.find(size("prices",1)))
+        {
+            list.add(dbObject);
+        }
+        return list;
+    }
+    
+    public Product getMaxWeigth() {
+        MongoCollection<Product> collection = this.getDb().getCollection("product", Product.class);
+        return collection.find().sort(new Document("weight",-1)).first();
+    }   
     
 }
