@@ -234,14 +234,32 @@ public class DBliveryMongoRepository {
     
     /*-- Obtiene el producto con más demanda . agrupo por producto y sumo quantity--*/
     public Product getBestSellingProduct() {
-    	MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
-
-    	return null;
-    }
+    		MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+    		collection.aggregate(Arrays.asList(
+    				Aggregates.unwind("$products"),
+    				Aggregates.group("$products.product", 
+    						Accumulators.sum("quantity", "$products.quantity")),
+    				Aggregates.sort(
+    						Sorts.orderBy(Sorts.descending("quantity")) ),
+    				limit(1), replaceRoot("$_id"), out("bestProduct") )).toCollection();
+    		Product best = this.getDb().getCollection("bestProduct", Product.class).find().first();
+    		this.getDb().getCollection("bestProduct").drop();
+    		return best;
+    } //unwind deconstruye un arreglo en documentos. No pude hacer para directamente quedarme con el producto	  
+    //Aggregates.project(fields(include("products.product"))  )
+    
     
     /*-- Obtiene los n proveedores que más productos tienen en ordenes que están siendo enviadas --*/
     public List<Supplier> getTopNSuppliersInSentOrders(int n){
-    	
+    /*	MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+		collection.aggregate(Arrays.asList(
+				Aggregates.match(eq("myState.status", "Sent")),
+				Aggregates.unwind("$products"),
+				Aggregates.group("$products.product", 
+						Accumulators.sum("quantity", "$products.quantity")),
+				Aggregates.sort(
+						Sorts.orderBy(Sorts.descending("quantity")) ),
+				replaceRoot("$_id"), out("bestProducts") )).toCollection();	*/
     	return null;
     }
     
