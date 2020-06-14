@@ -120,7 +120,7 @@ public class DBliveryStatisticsTestCase {
         List<Product> products = this.service.getSoldProductsOn(sdf.parse("28/2/2010"));
         assertEquals(4, products.size());
         this.assertListEquality(products.stream().map(property -> property.getName()).collect(Collectors.toList()),Arrays.asList("Filet de merluza a la romana","Bife de chorizo grillado","Milanesa americana","Ensalada de hojas verdes y queso"));
-    }//devuelve 0, pero logicamente creo que esta bien, falta comparar bien la fecha :(
+    }//anda
 
 
     @Test

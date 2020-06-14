@@ -205,10 +205,6 @@ public class DBliveryMongoRepository {
         return list;
     }
     
-    /*
-     * crear nuevo date (fecha: new DataTime(day)  //day se recibe por parametro)
-     * 
-     */
     
     public List<Order> getOrderNearPlazaMoreno() {
         ArrayList<Order> list = new ArrayList<>();
@@ -236,4 +232,29 @@ public class DBliveryMongoRepository {
         return collection.find().sort(new Document("weight",-1)).first();
     }   
     
+    /*-- Obtiene el producto con más demanda . agrupo por producto y sumo quantity--*/
+    public Product getBestSellingProduct() {
+    	MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+
+    	return null;
+    }
+    
+    /*-- Obtiene los n proveedores que más productos tienen en ordenes que están siendo enviadas --*/
+    public List<Supplier> getTopNSuppliersInSentOrders(int n){
+    	
+    	return null;
+    }
+    
+    /*-- Obtiene todas las órdenes entregadas para el cliente con username username --*/
+    public List <Order> getDeliveredOrdersForUser(String username){
+    	MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+    	 ArrayList<Order> list = new ArrayList<>();
+         for (Order order : collection.aggregate(Arrays.asList(
+                 match(eq("myState.status", "Delivered")),
+                 match(eq("client.username", username))
+         ))) {
+             list.add(order);
+         }
+         return list;
+    }
 }

@@ -281,4 +281,19 @@ public class DBliveryServiceImpl implements DBliveryService {
     public List<Product> getProductsOnePrice() {
     	return this.repository.getProductsOnePrice();
     }
+	
+	@Override
+	public Product getBestSellingProduct() {
+		return this.repository.getBestSellingProduct();
+	}
+	
+	@Override
+	public List<Supplier> getTopNSuppliersInSentOrders(int n){
+		return this.repository.getTopNSuppliersInSentOrders(n);
+	}
+	
+	@Override
+	public List <Order> getDeliveredOrdersForUser(String username){
+		return this.repository.getDeliveredOrdersForUser(username);
+	}
 }
