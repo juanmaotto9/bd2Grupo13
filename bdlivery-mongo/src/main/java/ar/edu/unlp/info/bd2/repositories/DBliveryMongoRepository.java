@@ -203,28 +203,20 @@ public class DBliveryMongoRepository {
     }   
     
     /*-- Obtiene el producto con más demanda . agrupo por producto y sumo quantity--*/
-    public Product getBestSellingProduct() {
-    		MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
-    		collection.aggregate(Arrays.asList(
-    				Aggregates.unwind("$products"),
-    				Aggregates.group("$products.product", 
-    						Accumulators.sum("quantity", "$products.quantity")),
-    				Aggregates.sort(
-    						Sorts.orderBy(Sorts.descending("quantity")) ),
-    				limit(1), replaceRoot("$_id"), out("bestProduct") )).toCollection();
-    		Product best = this.getDb().getCollection("bestProduct", Product.class).find().first();
-    		this.getDb().getCollection("bestProduct").drop();
-    		return best;
-    } //unwind deconstruye un arreglo en documentos. No pude hacer para directamente quedarme con el producto	  
-    //Aggregates.project(  )
-    
+	public Product getBestSellingProduct() {
+		return this.getDb().getCollection("order", Product.class).aggregate(Arrays.asList(
+				Aggregates.unwind("$products"),
+				Aggregates.group("$products.product", 
+						Accumulators.sum("quantity", "$products.quantity")),
+				Aggregates.sort(
+						Sorts.orderBy(Sorts.descending("quantity")) ),
+				limit(1), replaceRoot("$_id") )).first();
+    } //unwind deconstruye un arreglo en documentos.    
     
     /*-- Obtiene los n proveedores que más productos tienen en ordenes que están siendo enviadas --*/
     public List<Supplier> getTopNSuppliersInSentOrders(int n){
     	List<Supplier> list = new ArrayList<>();
-		MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
-
-		collection.aggregate(Arrays.asList(
+		return this.getDb().getCollection("order", Supplier.class).aggregate(Arrays.asList(
 				match(eq("myState.status", "Sent")),
 				unwind("$products"), 
 				lookup("productSupplier", "products.product._id", "destination", "productSupplier"), 
@@ -233,11 +225,7 @@ public class DBliveryMongoRepository {
 				unwind("$productSupplier"),
 				group("$supplier", Accumulators.sum("quantity", "$products.quantity")),
 				sort(Sorts.orderBy(Sorts.descending("quantity"))),
-				replaceRoot("$_id"),limit(n),out("topSuppliers"))).toCollection();
-
-		this.getDb().getCollection("topSuppliers", Supplier.class).find().into(list);
-		this.getDb().getCollection("topSuppliers").drop();
-		return list;
+				replaceRoot("$_id"),limit(n) )).into(list);
     }
     //source = supplier y destination = product
     
