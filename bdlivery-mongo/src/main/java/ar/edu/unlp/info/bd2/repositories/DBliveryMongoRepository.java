@@ -11,7 +11,6 @@ import ar.edu.unlp.info.bd2.mongo.*;
 import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
 import com.mongodb.client.*;
-import com.mongodb.client.model.Updates;
 import com.mongodb.client.model.*;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
@@ -21,7 +20,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import java.text.SimpleDateFormat;
 
 import org.bson.BsonDocument;
 import org.bson.Document;
@@ -29,7 +27,7 @@ import org.bson.json.JsonParseException;
 import org.bson.json.JsonWriter;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import static com.mongodb.client.model.Projections.*;
 
 public class DBliveryMongoRepository {
 
@@ -132,11 +130,7 @@ public class DBliveryMongoRepository {
     public List<Product> getProductsByName(String name){
         MongoCollection<Product> collection = this.getDb().getCollection("product", Product.class);
         ArrayList<Product> list = new ArrayList<Product>();
-        for (Product dbObject : collection.find(regex("name", name)))
-        {
-            list.add(dbObject);
-        }
-        return list;
+        return collection.find(regex("name", name)).into(list);
     }
     
     public void updateProduct(Product product){
@@ -153,45 +147,29 @@ public class DBliveryMongoRepository {
     public List <Order> getPendingOrders(){
     	MongoCollection<Order> collection = this.getDb().getCollection("order",Order.class);
     	ArrayList<Order> list = new ArrayList<Order>();
-        for (Order dbObject : collection.find(regex("myState.status","Pending")) )
-        {
-            list.add(dbObject);
-        }
-        return list;
+        return collection.find(regex("myState.status","Pending")).into(list);
     }
     
     public List<Order> getSentOrders() {
         ArrayList<Order> list = new ArrayList<>();
         MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
-        for (Order dbObject : collection.find(eq("myState.status", "Sent")))
-        {
-            list.add(dbObject);
-        }
-        return list;
+        return collection.find(eq("myState.status", "Sent")).into(list);
     }
     
     public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
         ArrayList<Order> list = new ArrayList<>();
         MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
-        for (Order order : collection.aggregate(Arrays.asList(
+        return collection.aggregate(Arrays.asList(
                 match(eq("myState.status", "Delivered")),
                 match(gt("myState.startDate", startDate)),
-                match(lt("myState.startDate", endDate))
-        ))) {
-            list.add(order);
-        }
-        return list;
+                match(lt("myState.startDate", endDate)) )).into(list);
     }
 
 
     public List<Order> getAllOrdersMadeByUser(String username) {
         MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
         ArrayList<Order> list = new ArrayList<>();
-        for (Order dbObject : collection.find(regex("client.username", username)))
-        {
-            list.add(dbObject);
-        }
-        return list;
+        return collection.find(regex("client.username", username)).into(list);
     }
     
     public List<Product> getSoldProductsOn(Date day) {
@@ -210,21 +188,13 @@ public class DBliveryMongoRepository {
         ArrayList<Order> list = new ArrayList<>();
         MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
         Point myPoint = new Point(new Position(-34.921236,-57.954571));
-        for (Order order : collection.find(Filters.near("position", myPoint, 400.0, 0.0))) 
-        {
-            list.add(order);
-        }
-        return list;
+        return collection.find(Filters.near("position", myPoint, 400.0, 0.0)).into(list);
     }
     
     public List<Product> getProductsOnePrice(){
     	ArrayList<Product> list = new ArrayList<>();
         MongoCollection<Product> collection = this.getDb().getCollection("product", Product.class);
-        for (Product dbObject : collection.find(size("prices",1)))
-        {
-            list.add(dbObject);
-        }
-        return list;
+        return collection.find(size("prices",1)).into(list);
     }
     
     public Product getMaxWeigth() {
@@ -246,33 +216,37 @@ public class DBliveryMongoRepository {
     		this.getDb().getCollection("bestProduct").drop();
     		return best;
     } //unwind deconstruye un arreglo en documentos. No pude hacer para directamente quedarme con el producto	  
-    //Aggregates.project(fields(include("products.product"))  )
+    //Aggregates.project(  )
     
     
     /*-- Obtiene los n proveedores que más productos tienen en ordenes que están siendo enviadas --*/
     public List<Supplier> getTopNSuppliersInSentOrders(int n){
-    /*	MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+    	List<Supplier> list = new ArrayList<>();
+		MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
+
 		collection.aggregate(Arrays.asList(
-				Aggregates.match(eq("myState.status", "Sent")),
-				Aggregates.unwind("$products"),
-				Aggregates.group("$products.product", 
-						Accumulators.sum("quantity", "$products.quantity")),
-				Aggregates.sort(
-						Sorts.orderBy(Sorts.descending("quantity")) ),
-				replaceRoot("$_id"), out("bestProducts") )).toCollection();	*/
-    	return null;
+				match(eq("myState.status", "Sent")),
+				unwind("$products"), 
+				lookup("productSupplier", "products.product._id", "destination", "productSupplier"), 
+				lookup("supplier", "productSupplier.source", "_id", "supplier"),
+				unwind("$supplier"),
+				unwind("$productSupplier"),
+				group("$supplier", Accumulators.sum("quantity", "$products.quantity")),
+				sort(Sorts.orderBy(Sorts.descending("quantity"))),
+				replaceRoot("$_id"),limit(n),out("topSuppliers"))).toCollection();
+
+		this.getDb().getCollection("topSuppliers", Supplier.class).find().into(list);
+		this.getDb().getCollection("topSuppliers").drop();
+		return list;
     }
+    //source = supplier y destination = product
     
     /*-- Obtiene todas las órdenes entregadas para el cliente con username username --*/
     public List <Order> getDeliveredOrdersForUser(String username){
     	MongoCollection<Order> collection = this.getDb().getCollection("order", Order.class);
     	 ArrayList<Order> list = new ArrayList<>();
-         for (Order order : collection.aggregate(Arrays.asList(
+         return collection.aggregate(Arrays.asList(
                  match(eq("myState.status", "Delivered")),
-                 match(eq("client.username", username))
-         ))) {
-             list.add(order);
-         }
-         return list;
+                 match(eq("client.username", username)) )).into(list);
     }
 }
