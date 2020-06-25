@@ -47,7 +47,7 @@ public class DBliveryServiceTestCase {
         Date dob = cal.getTime();
         User u1 = this.service.createUser("hugo.gamarra@testmail.com", "123456", "hgamarra", "Hugo Gamarra", dob);
         assertNotNull(u1.getId());
-    }
+    }//pasooo
 
     @Test
     public void testGetUser() {
@@ -78,7 +78,7 @@ public class DBliveryServiceTestCase {
             assertEquals("hugo.gamarra@testmail.com", u7.getEmail());
             assertEquals(u7.getId(), u1.getId());
         }
-    }
+    }//ATROOOODEN
 
     @Test
     public void testCreateProduct() {
@@ -89,7 +89,7 @@ public class DBliveryServiceTestCase {
         assertNotNull(p1.getId());
         assertEquals("Combo Stacker ATR",p1.getName());
         assertEquals(1,p1.getPrices().size());
-    }/ANDAAAA :D
+    }//ANDAAAA :D
 
     @Test
     public void testUpdateProductPrice() throws DBliveryException{
@@ -222,6 +222,5 @@ public class DBliveryServiceTestCase {
         assertEquals(this.service.getProductsByName("Combo Stacker ATR").size(),2);
         assertEquals(this.service.getProductsByName("Combo Tostado de Campo").size(),1);
         assertEquals(this.service.getProductsByName("triple").size(),1);
-
-    }
+    }//INSIDEEE
 }
