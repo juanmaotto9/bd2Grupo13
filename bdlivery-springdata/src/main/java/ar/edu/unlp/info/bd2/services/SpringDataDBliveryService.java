@@ -86,8 +86,7 @@ public class SpringDataDBliveryService implements DBliveryService {
     @Transactional
 	@Override
 	public Product getMaxWeigth() {
-		// TODO Auto-generated method stub
-		return null;
+    	return this.productRepository.findMaxWeight();
 	}
 
 	@Transactional	
@@ -129,8 +128,7 @@ public class SpringDataDBliveryService implements DBliveryService {
 	@Transactional
 	@Override
 	public List<Product> getProductsOnePrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.productRepository.findProductWithOnePrice();
 	}
 
 	@Transactional
@@ -298,7 +296,7 @@ public class SpringDataDBliveryService implements DBliveryService {
 		}
 	}
 
-	@Transactional	
+	@Transactional
 	@Override
 	public Status getActualStatus(Long order) {
 		try {
