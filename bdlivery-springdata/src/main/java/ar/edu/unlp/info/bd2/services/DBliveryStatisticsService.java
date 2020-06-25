@@ -13,7 +13,7 @@ public interface DBliveryStatisticsService {
      * obtiene el producto más pesado
      * @return el producto más pesado
      */
-    Product  getMaxWeigth();
+    Product getMaxWeigth();
 
     /**
      * Obtiene todas las ordenes realizadas por el usuario con username <code>username</code>

@@ -25,7 +25,13 @@ public class SpringDataDBliveryService implements DBliveryService {
     OrderRepository orderRepository;
     
     @Autowired
+    ProductOrderRepository productOrderRepository;
+    
+    @Autowired
     StatusRepository statusRepository;
+    
+    @Autowired
+    PriceRepository priceRepository;
     
     
 
@@ -82,8 +88,8 @@ public class SpringDataDBliveryService implements DBliveryService {
 
 	@Override
 	public List<Order> getAllOrdersMadeByUser(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<User> user = this.getUserByUsername(username);
+		return orderRepository.findByClient(user.get());
 	}
 
 	@Override
