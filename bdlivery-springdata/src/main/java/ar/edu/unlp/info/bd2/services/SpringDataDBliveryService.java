@@ -23,6 +23,11 @@ public class SpringDataDBliveryService implements DBliveryService {
 
     @Autowired
     OrderRepository orderRepository;
+    
+    @Autowired
+    StatusRepository statusRepository;
+    
+    
 
     @Override
     public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
