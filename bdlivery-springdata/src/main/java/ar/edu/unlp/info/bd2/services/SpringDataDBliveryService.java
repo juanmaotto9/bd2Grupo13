@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.transaction.annotation.Transactional;
+
 public class SpringDataDBliveryService implements DBliveryService {
 	
 
@@ -25,109 +27,120 @@ public class SpringDataDBliveryService implements DBliveryService {
     OrderRepository orderRepository;
     
     @Autowired
-    ProductOrderRepository productOrderRepository;
-    
-    @Autowired
     StatusRepository statusRepository;
     
-    @Autowired
-    PriceRepository priceRepository;
     
-    
-
+    @Transactional	
     @Override
     public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
         Product prod = new Product(name, price, weight, supplier);
         return productRepository.save(prod);
     }
 
+    @Transactional	
     @Override
     public Product createProduct(String name, Float price, Float weight, Supplier supplier, Date date) {
         Product prod = new Product(name, price, weight, supplier, date);
         return productRepository.save(prod);
     }
     
+    @Transactional	
     @Override
     public Supplier createSupplier(String name, String cuil, String address, Float coordX, Float coordY) {
         Supplier supp = new Supplier(name, cuil, address, coordX, coordY);
         return supplierRepository.save(supp);
     }
     
+    @Transactional	
     @Override
     public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
         User user = new User(username, name, email, password, dateOfBirth);
         return userRepository.save(user);
     }
 
-
+    
+    @Transactional	
     @Override
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
     
+    @Transactional	
     @Override
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
     
+    @Transactional	
     @Override
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
     
+    @Transactional	
     @Override
     public List<Product> getProductsByName(String name) {
         return productRepository.findByNameContaining(name);
     }
-
+    
+    @Transactional
 	@Override
 	public Product getMaxWeigth() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Transactional	
 	@Override
 	public List<Order> getAllOrdersMadeByUser(String username) {
 		Optional<User> user = this.getUserByUsername(username);
-		return orderRepository.findByClient(user.get());
+		return orderRepository.findByUser(user.get());
 	}
-
+	
+	@Transactional
 	@Override
 	public List<Order> getPendingOrders() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Transactional
 	@Override
 	public List<Order> getSentOrders() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Transactional
 	@Override
 	public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Transactional
 	@Override
 	public List<Order> getDeliveredOrdersForUser(String username) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	
+	@Transactional
 	@Override
 	public List<Product> getProductsOnePrice() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Transactional
 	@Override
 	public List<Product> getSoldProductsOn(Date day) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Transactional	
 	@Override
 	public Product updateProductPrice(Long id, Float price, Date startDate) throws DBliveryException {
 		Optional<Product> optProd = this.productRepository.findById(id);
@@ -140,18 +153,21 @@ public class SpringDataDBliveryService implements DBliveryService {
         	throw new DBliveryException("The product don't exist");
         }
 	}
-
+	
+	@Transactional	
 	@Override
 	public Optional<Order> getOrderById(Long id) {
 		return orderRepository.findById(id);
 	}
 
+	@Transactional	
 	@Override
 	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
 		Order orden = new Order(dateOfOrder, address, coordX, coordY, client);
 		return this.orderRepository.save(orden);
 	}
 
+	@Transactional	
 	@Override
 	public Order addProduct(Long order, Long quantity, Product product) throws DBliveryException {
 		Optional<Order> orden = this.getOrderById(order);
@@ -164,7 +180,8 @@ public class SpringDataDBliveryService implements DBliveryService {
     	}else throw new DBliveryException("Orden no encontrada");
 
 	}
-
+	
+	@Transactional	
 	@Override
 	public Order deliverOrder(Long order, User deliveryUser) throws DBliveryException {
 		if(this.canDeliver(order)) {
@@ -177,6 +194,7 @@ public class SpringDataDBliveryService implements DBliveryService {
 		}else throw new DBliveryException("The order can't be delivered");
 	}
 
+	@Transactional	
 	@Override
 	public Order deliverOrder(Long order, User deliveryUser, Date date) throws DBliveryException {
 		if(this.canDeliver(order)) {
@@ -188,7 +206,8 @@ public class SpringDataDBliveryService implements DBliveryService {
 			}else throw new DBliveryException("The order can't be delivered");
 		}else throw new DBliveryException("The order can't be delivered");
 	}
-
+	
+	@Transactional	
 	@Override
 	public Order cancelOrder(Long order) throws DBliveryException {
 		if(this.canCancel(order)) {
@@ -202,12 +221,14 @@ public class SpringDataDBliveryService implements DBliveryService {
 		}else throw new DBliveryException("The order can't be cancelled");
 	}
 
+	@Transactional
 	@Override
 	public Order cancelOrder(Long order, Date date) throws DBliveryException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Transactional	
 	@Override
 	public Order finishOrder(Long order) throws DBliveryException {
 		if(this.canFinish(order)) {
@@ -220,6 +241,7 @@ public class SpringDataDBliveryService implements DBliveryService {
 		}else throw new DBliveryException("The order can't be finished");
 	}
 
+	@Transactional	
 	@Override
 	public Order finishOrder(Long order, Date date) throws DBliveryException {
 		if(this.canFinish(order)) {
@@ -232,6 +254,7 @@ public class SpringDataDBliveryService implements DBliveryService {
 		}else throw new DBliveryException("The order can't be finished");
 	}
 
+	@Transactional	
 	@Override
 	public boolean canCancel(Long order) throws DBliveryException {
 		try {
@@ -245,6 +268,7 @@ public class SpringDataDBliveryService implements DBliveryService {
 		}
 	}
 
+	@Transactional	
 	@Override
 	public boolean canFinish(Long id) throws DBliveryException {
 		try {
@@ -259,6 +283,7 @@ public class SpringDataDBliveryService implements DBliveryService {
 		}
 	}
 
+	@Transactional	
 	@Override
 	public boolean canDeliver(Long order) throws DBliveryException {
 		try {
@@ -273,6 +298,7 @@ public class SpringDataDBliveryService implements DBliveryService {
 		}
 	}
 
+	@Transactional	
 	@Override
 	public Status getActualStatus(Long order) {
 		try {

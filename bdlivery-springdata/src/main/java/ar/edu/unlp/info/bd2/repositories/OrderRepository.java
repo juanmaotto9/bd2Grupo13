@@ -13,5 +13,5 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {
-	List<Order> findByClient(User client);
+	List<Order> findByUser(User user);
 }
