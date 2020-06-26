@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface DBliveryService {
+public interface DBliveryService extends DBliveryStatisticsService {
 
 	/**
 	 *  Crea y devuelve un nuevo Producto.
@@ -160,7 +160,7 @@ public interface DBliveryService {
 	 * @param order pedido del cual se debe retornar el estado actual
 	 * @return el estado del pedido actual
 	 */
-	OrderStatus getActualStatus(Long order);
+	Status getActualStatus(Long order);
 
 	/**
 	 * Obtiene el listado de productos que su nombre contega el string dado
