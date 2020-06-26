@@ -23,6 +23,11 @@ public class SpringDataDBliveryService implements DBliveryService {
 
     @Autowired
     OrderRepository orderRepository;
+    
+    @Autowired
+    StatusRepository statusRepository;
+    
+    
 
     @Override
     public Product createProduct(String name, Float price, Float weight, Supplier supplier) {
@@ -41,6 +46,32 @@ public class SpringDataDBliveryService implements DBliveryService {
         Supplier supp = new Supplier(name, cuil, address, coordX, coordY);
         return supplierRepository.save(supp);
     }
+    
+    @Override
+    public User createUser(String email, String password, String username, String name, Date dateOfBirth) {
+        User user = new User(username, name, email, password, dateOfBirth);
+        return userRepository.save(user);
+    }
 
+
+    @Override
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+    
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+    
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+    
+    @Override
+    public List<Product> getProductsByName(String name) {
+        return productRepository.findByNameContaining(name);
+    }
 
 }
