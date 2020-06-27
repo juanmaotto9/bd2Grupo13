@@ -8,8 +8,10 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -26,4 +28,11 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 			+ "where s1.status = 'Delivered')")
 	List<Order> findSentOrders();
 	
+	@Query("select o from Order o join o.myState as s "
+			+ "where s.status = 'Delivered' and (s.startDate BETWEEN :startDate AND :endDate)")
+	List<Order>findDeliveredOrdersInPeriod(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+	
+	@Query("select o from Order o where o.myState.status = 'Delivered' "
+			+ "and o.user.username = :username")
+	List<Order> findDeliveredOrdersForUser(@Param("username") String username);
 }

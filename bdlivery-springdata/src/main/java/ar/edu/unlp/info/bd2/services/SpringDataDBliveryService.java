@@ -111,15 +111,13 @@ public class SpringDataDBliveryService implements DBliveryService {
 	@Transactional
 	@Override
 	public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepository.findDeliveredOrdersInPeriod(startDate, endDate);
 	}
 
 	@Transactional
 	@Override
 	public List<Order> getDeliveredOrdersForUser(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.orderRepository.findDeliveredOrdersForUser(username);
 	}
 
 	
@@ -132,8 +130,7 @@ public class SpringDataDBliveryService implements DBliveryService {
 	@Transactional
 	@Override
 	public List<Product> getSoldProductsOn(Date day) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.productRepository.findSoldProductsOn(day);
 	}
 	
 	@Transactional	
