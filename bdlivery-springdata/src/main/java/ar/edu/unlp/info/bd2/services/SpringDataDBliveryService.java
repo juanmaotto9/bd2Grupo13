@@ -74,4 +74,210 @@ public class SpringDataDBliveryService implements DBliveryService {
         return productRepository.findByNameContaining(name);
     }
 
+	@Override
+	public Product getMaxWeigth() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getAllOrdersMadeByUser(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getPendingOrders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getSentOrders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getDeliveredOrdersInPeriod(Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getDeliveredOrdersForUser(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Product> getProductsOnePrice() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Product> getSoldProductsOn(Date day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Product updateProductPrice(Long id, Float price, Date startDate) throws DBliveryException {
+		Optional<Product> optProd = this.productRepository.findById(id);
+        if (optProd.isPresent()){
+        	Product prod = optProd.get();
+        	prod.updateProductPrice(price, startDate);
+        	this.productRepository.save(prod);
+        	return prod;
+        } else {
+        	throw new DBliveryException("The product don't exist");
+        }
+	}
+
+	@Override
+	public Optional<Order> getOrderById(Long id) {
+		return orderRepository.findById(id);
+	}
+
+	@Override
+	public Order createOrder(Date dateOfOrder, String address, Float coordX, Float coordY, User client) {
+		Order orden = new Order(dateOfOrder, address, coordX, coordY, client);
+		return this.orderRepository.save(orden);
+	}
+
+	@Override
+	public Order addProduct(Long order, Long quantity, Product product) throws DBliveryException {
+		Optional<Order> orden = this.getOrderById(order);
+    	if (orden.isPresent()) {
+    		Order ord= orden.get();
+    		ord.addProductOrder(quantity, product); 
+    		Float priceAct = product.findPriceAtPeriod(ord.getDateOfOrder());
+    		ord.addAmountProduct(priceAct, quantity);
+    		return this.orderRepository.save(ord);
+    	}else throw new DBliveryException("Orden no encontrada");
+
+	}
+
+	@Override
+	public Order deliverOrder(Long order, User deliveryUser) throws DBliveryException {
+		if(this.canDeliver(order)) {
+			Optional<Order> o = this.getOrderById(order);
+			if (o.isPresent()) {
+				Order orden= o.get();
+				this.orderRepository.save(orden.deliverOrder(deliveryUser));
+				return orden;
+			}else throw new DBliveryException("The order can't be delivered");
+		}else throw new DBliveryException("The order can't be delivered");
+	}
+
+	@Override
+	public Order deliverOrder(Long order, User deliveryUser, Date date) throws DBliveryException {
+		if(this.canDeliver(order)) {
+			Optional<Order> o = this.getOrderById(order);
+			if (o.isPresent()) {
+				Order orden= o.get();
+				this.orderRepository.save(orden.deliverOrder(deliveryUser, date));
+				return orden;
+			}else throw new DBliveryException("The order can't be delivered");
+		}else throw new DBliveryException("The order can't be delivered");
+	}
+
+	@Override
+	public Order cancelOrder(Long order) throws DBliveryException {
+		if(this.canCancel(order)) {
+			Optional<Order> o = this.getOrderById(order);
+			if (o.isPresent()) {
+				Order orden = o.get();
+				orden.changeStateToCanceled();
+				this.orderRepository.save(orden);
+				return orden;
+			}else throw new DBliveryException("The order can't be cancelled");
+		}else throw new DBliveryException("The order can't be cancelled");
+	}
+
+	@Override
+	public Order cancelOrder(Long order, Date date) throws DBliveryException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Order finishOrder(Long order) throws DBliveryException {
+		if(this.canFinish(order)) {
+			Optional<Order> o = this.getOrderById(order);
+			if (o.isPresent()) {
+	    		Order orden= o.get();
+	    		this.orderRepository.save(orden.changeStateToReceived());
+			return orden;
+			}else throw new DBliveryException("The order can't be finished");
+		}else throw new DBliveryException("The order can't be finished");
+	}
+
+	@Override
+	public Order finishOrder(Long order, Date date) throws DBliveryException {
+		if(this.canFinish(order)) {
+			Optional<Order> o = this.getOrderById(order);
+			if (o.isPresent()) {
+	    		Order orden= o.get();
+	    		this.orderRepository.save(orden.changeStateToReceived(date));
+	    		return orden;
+			}else throw new DBliveryException("The order can't be finished");
+		}else throw new DBliveryException("The order can't be finished");
+	}
+
+	@Override
+	public boolean canCancel(Long order) throws DBliveryException {
+		try {
+			Optional<Order> o = this.getOrderById(order); 
+			if (o.isPresent()) {
+	    		Order orden= o.get();
+	    		return orden.isPending();
+			}else  throw new DBliveryException("Order not found");
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean canFinish(Long id) throws DBliveryException {
+		try {
+			Optional<Order> order = this.getOrderById(id);
+			if (order.isPresent()) {
+	    		Order ord= order.get();
+				if (ord.getDeliveryUser() == null) throw new DBliveryException("The order can't be finished--DeliveryUser");
+				return !ord.isCancel();
+			}else  throw new DBliveryException("Order not found");
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean canDeliver(Long order) throws DBliveryException {
+		try {
+			Optional<Order> o = this.getOrderById(order); 
+			if (o.isPresent()) {
+	    		Order orden= o.get();
+				if (orden.getProducts().isEmpty()) throw new Exception("Order without products");
+				return orden.isPending();
+			}else  throw new DBliveryException("Order not found"); 
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public Status getActualStatus(Long order) {
+		try {
+			Optional <Order> o = this.getOrderById(order);
+			if(o.isPresent()) {
+				Order orden = o.get();
+				return orden.getMyState();
+			}else throw new DBliveryException("The order can't be delivered");
+		}catch (Exception e) {
+			return null;
+		}
+	}
+
 }
