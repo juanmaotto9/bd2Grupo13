@@ -2,6 +2,7 @@ package ar.edu.unlp.info.bd2.repositories;
 
 import ar.edu.unlp.info.bd2.model.Order;
 import ar.edu.unlp.info.bd2.model.User;
+import ar.edu.unlp.info.bd2.model.Status;
 
 import java.util.Optional;
 

@@ -53,7 +53,7 @@ public class DBliveryStatisticsTestCase {
     public void testGetMaxWeigth() {
         Product product = this.service.getMaxWeigth();
         assertEquals("Milanesa con rúcula",product.getName());
-    }
+    }// andaaa
 
     @Test
     public void testGetAllOrdersMadeByUser() {
@@ -88,7 +88,7 @@ public class DBliveryStatisticsTestCase {
     public void testGetProductsOnePrice() {
         List<Product> products = this.service.getProductsOnePrice();
         assertEquals(27, products.size());
-    }
+    }//ADEEEENTRO 
 
     @Test
     public void testGetSoldProductsOn() throws ParseException {
