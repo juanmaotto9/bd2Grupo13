@@ -58,7 +58,7 @@ public class DBliveryStatisticsTestCase {
     @Test
     public void testGetAllOrdersMadeByUser() {
         assertEquals(5,this.service.getAllOrdersMadeByUser("rubnpastor265").size());
-    }
+    }//ANDAAA :D
 
     @Test
     public void testGetPendingOrders() {
