@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 public class SpringDataDBliveryService implements DBliveryService {
 	
 
@@ -95,7 +97,8 @@ public class SpringDataDBliveryService implements DBliveryService {
 	@Override
 	public List<Order> getPendingOrders() {
 		// TODO Auto-generated method stub
-		return null;
+				return null;
+		//return this.orderRepository.findPending;
 	}
 
 	@Override
@@ -204,8 +207,15 @@ public class SpringDataDBliveryService implements DBliveryService {
 
 	@Override
 	public Order cancelOrder(Long order, Date date) throws DBliveryException {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.canCancel(order)) {
+			Optional<Order> o = this.getOrderById(order);
+			if (o.isPresent()) {
+				Order orden = o.get();
+				orden.changeStateToCanceled(date);
+				this.orderRepository.save(orden);
+				return orden;
+			}else throw new DBliveryException("The order can't be cancelled");
+		}else throw new DBliveryException("The order can't be cancelled");
 	}
 
 	@Override
